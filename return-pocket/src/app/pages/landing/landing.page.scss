@@ -1,0 +1,49 @@
+.nav-container {
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 200px); /* Adjust based on header height */
+  padding: 30px 24px;
+  justify-content: space-between;
+
+  .top-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 40px; /* Adds space between the buttons and the header */
+    padding: 0 10px; /* Extra padding from the edges */
+  }
+
+  .bottom-button {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 40px; /* More space at the bottom */
+  }
+
+  ion-button {
+    --padding-start: 20px;
+    --padding-end: 20px;
+    --padding-top: 15px;
+    --padding-bottom: 15px;
+    --border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    margin: 0 10px; /* Add some margin to each button */
+
+    ion-icon {
+      font-size: 24px;
+    }
+  }
+
+  .scanButton {
+    --background: #0800ff;
+  }
+
+  .viewButton {
+    --background: #ff0000;
+  }
+
+  .statsButton {
+    --background: #55ff52;
+  }
+}

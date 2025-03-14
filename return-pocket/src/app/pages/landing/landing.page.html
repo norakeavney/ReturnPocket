@@ -1,3 +1,18 @@
 <ion-content [fullscreen]="true">
   <app-header [mainText]="'Return Pocket'" [subText]="'Simple Scanning, Smart Saving'" [imgSrc]="'assets/resources/tempIcon.svg'"></app-header>
+  <div class="nav-container">
+    <div class="top-buttons">
+      <ion-button class="scanButton" routerLink="/" shape="round">
+        <ion-icon name="camera-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+      <ion-button class="viewButton" routerLink="/receipts" shape="round">
+        <ion-icon name="documents-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </div>
+    <div class="bottom-button">
+      <ion-button class="statsButton" routerLink="/" shape="round">
+        <ion-icon name="stats-chart-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </div>
+  </div>
 </ion-content>
