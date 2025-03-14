@@ -1,4 +1,4 @@
+<img *ngIf="imgSrc" [src]="imgSrc" alt="Header image" width="75vw" height="75vh">
 <h1>{{ mainText }}</h1>
 <h2 *ngIf="subText">{{ subText }}</h2>
-<img *ngIf="imgSrc" [src]="imgSrc" alt="Header image">
 <style *ngIf="customStyles" [innerHTML]="customStyles"></style>
