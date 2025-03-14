@@ -1,0 +1,7 @@
+{
+  "name": "Return Pocket",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
