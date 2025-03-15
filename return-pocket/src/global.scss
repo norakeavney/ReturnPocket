@@ -35,3 +35,47 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import "@ionic/angular/css/palettes/dark.system.css";
+
+/* Apply custom background color with high specificity */
+body, html, ion-app, ion-content {
+  --background: #e7e7e7 !important;
+  background-color: #e7e7e7 !important;
+}
+
+.ion-page {
+  background-color: #e7e7e7 !important;
+}
+
+/* Safe area handling for iOS notch/Dynamic Island */
+:root {
+  /* Add padding for the status bar */
+  --ion-safe-area-top: env(safe-area-inset-top);
+  --ion-safe-area-bottom: env(safe-area-inset-bottom);
+  --ion-safe-area-left: env(safe-area-inset-left);
+  --ion-safe-area-right: env(safe-area-inset-right);
+}
+
+/* Adjust page padding for safe areas */
+ion-header {
+  padding-top: var(--ion-safe-area-top, 0);
+}
+
+ion-content {
+  padding-top: var(--ion-safe-area-top, 0);
+  padding-bottom: var(--ion-safe-area-bottom, 0);
+  padding-left: var(--ion-safe-area-left, 0);
+  padding-right: var(--ion-safe-area-right, 0);
+}
+
+ion-footer {
+  padding-bottom: var(--ion-safe-area-bottom, 0);
+}
+
+/* Add safe area spacer class that can be used in any component */
+.safe-area-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}

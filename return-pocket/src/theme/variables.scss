@@ -1,2 +1,19 @@
 // For information on how to create your own theme, please see:
 // http://ionicframework.com/docs/theming/
+:root {
+    /* Set the background color for the entire app */
+    --ion-background-color: #edbdbd;
+    --ion-background: #edbdbd;
+    
+    /* Make sure content on the background is readable */
+    --ion-text-color: #000000;
+}
+
+/* Apply the same background color in dark mode */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --ion-background-color: #e7e7e7;
+        --ion-background: #edbdbd;
+        --ion-text-color: #000000;
+    }
+}
