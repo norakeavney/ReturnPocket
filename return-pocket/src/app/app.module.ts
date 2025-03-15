@@ -10,6 +10,8 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
+import { SqliteService } from './services/sqlite.service';
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -19,7 +21,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     BrowserAnimationsModule,
     MatToolbarModule
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, SqliteService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
