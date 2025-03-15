@@ -45,5 +45,11 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>We need camera access to scan your receipts!</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We need access to get your receipts.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>We need access to save your receipt photos to your library.</string>
 </dict>
 </plist>

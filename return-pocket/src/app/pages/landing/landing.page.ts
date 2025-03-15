@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HeaderComponent } from 'src/app/components/header/header.component';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 @Component({
   standalone: false,
@@ -11,11 +11,17 @@ export class LandingPage implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
+  async takePicture() {
+    const image = await Camera.getPhoto({
+      quality: 90,
+      allowEditing: false,
+      resultType: CameraResultType.Uri
+    });
+  }
 
-    // Code to put here for when the app starts what do we want it to do when it first boots?
-    // Sync to the SQLite start loading their receipts in the background while the app boots?
-
+  async ngOnInit() {
+    // When the app boots up for the first time, get permission for the camera
+    await Camera.requestPermissions();
   }
 
 }
