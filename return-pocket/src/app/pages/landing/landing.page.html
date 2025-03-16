@@ -15,6 +15,5 @@
       </button>
     </div>
   </div>
-  <img *ngIf="processedImage" [src]="processedImage">
-  <button (click)="imagePath && handleImage(imagePath)" [disabled]="!imagePath">Preprocess Image</button>
+  <p *ngIf="OCRText" [innerHTML]="OCRText"></p>
 </ion-content>

@@ -14,14 +14,7 @@ export class LandingPage implements OnInit {
 
   processedImage: string | null = null;
   imagePath: string | null = null;
-  
-  async handleImage(imagePath: string) {
-    try {
-      this.processedImage = await this.ocrService.processImage(imagePath)
-    } catch (error) {
-      console.error('handleImage', error);
-    }
-  }
+  OCRText: string | null = null;
 
   async takePicture() {
     const image = await Camera.getPhoto({
@@ -31,7 +24,13 @@ export class LandingPage implements OnInit {
       source: CameraSource.Camera
     });
 
-    this.imagePath = image.webPath || null;
+    if (image.webPath) {
+      this.imagePath = image.webPath;
+      this.processedImage = await this.ocrService.processImage(image.webPath);
+
+      this.OCRText = await this.ocrService.runOCR(this.processedImage);
+    }
+
   }
 
   async ngOnInit() {
