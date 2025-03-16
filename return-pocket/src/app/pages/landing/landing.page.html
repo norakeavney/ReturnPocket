@@ -15,5 +15,6 @@
       </button>
     </div>
   </div>
+  <p *ngIf="barcodeData">Scanned Barcode: {{ barcodeData }}</p>
   <p *ngIf="OCRText" [innerHTML]="OCRText"></p>
 </ion-content>
