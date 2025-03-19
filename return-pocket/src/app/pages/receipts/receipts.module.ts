@@ -8,6 +8,7 @@ import { ReceiptsPageRoutingModule } from './receipts-routing.module';
 
 import { ReceiptsPage } from './receipts.page';
 import { HeaderComponent } from "../../components/header/header.component";
+import { ReceiptCardComponent } from 'src/app/components/receipt-card/receipt-card.component';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { HeaderComponent } from "../../components/header/header.component";
     FormsModule,
     IonicModule,
     ReceiptsPageRoutingModule,
-    HeaderComponent
+    HeaderComponent,
+    ReceiptCardComponent
   ],
   declarations: [ReceiptsPage]
 })
