@@ -1,9 +1,21 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>receipts</ion-title>
+    <ion-title>Receipts</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <app-header [mainText]="'Return Pocket'" [subText]="'Simple Scanning, Smart Saving'" [imgSrc]="'https://pixabay.com/get/g89941b0234d0c014cbf4332c92813ab0927571fd8b3b1b27c798591a17ec6147d4871bced28bec015845388b37e7795a01644d8e02d6cc4b58fa50e34122ee47_1280.jpg'"></app-header>
+<ion-content class="ion-padding">
+  <ion-list *ngIf="receipts.length > 0; else noReceipts">
+    <ion-item *ngFor="let receipt of receipts">
+      <ion-label>
+        <h2>{{ receipt.store_name }}</h2>
+        <p>{{ receipt.location }}</p>
+        <p>Bottles: {{ receipt.bottle_count }} | €{{ receipt.total_amount }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ng-template #noReceipts>
+    <p>No receipts found.</p>
+  </ng-template>
 </ion-content>
