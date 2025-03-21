@@ -8,8 +8,8 @@ export interface Receipt {
   location: string;
   bottle_count: number;
   total_amount: number;
-  img_path: string;
-  barcode_data: string;
+  img_path?: string;
+  barcode_data?: string;
   timestamp?: string;
 }
 
