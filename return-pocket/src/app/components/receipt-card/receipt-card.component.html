@@ -1,7 +1,11 @@
-<div class="receipt-card" [style.backgroundImage]="'url(assets/resources/Receipt.svg)'">
-  <img [src]="storeLogo" class="store-logo" alt="Store Logo" />
-  <h3>{{ storeName }}</h3>
-  <p>{{ location }}</p>
-  <p>{{ bottleCount }} Bottles</p>
-  <h2>€{{ totalAmount }}</h2>
+<div class="receipt-container">
+  <img src="./assets/resources/lidl.jpg" alt="Receipt Logo" class="receipt-logo" />
+  
+  <h2 class="receipt-header">{{ receipt.store_name }}</h2>
+  <p class="receipt-details">{{ receipt.location }}</p>
+  <p class="receipt-details">🧴 Bottles: {{ receipt.bottle_count }} | 💰 €{{ receipt.total_amount }}</p>
+
+  <div class="receipt-footer">
+    ** Thank you for recycling! **
+  </div>
 </div>

@@ -1,97 +1,57 @@
-.receipt-card {
-  border-radius: 12px;
-  padding: 16px;
-  background: url("/assets/resources/Receipt.svg") no-repeat center center;
-  background-size: cover;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  font-family: Arial, sans-serif;
+:host {
+  display: block;
+  font-family: 'Roboto Mono', Courier, monospace; /* Printed receipt look */
+  padding: 15px;
+  border-radius: 5px;
+}
+
+.receipt-container {
+  background: url('/assets/resources/Receipt.svg') no-repeat center top / contain;
+  padding: 30px;
+  width: 80%;
+  max-width: 320px;
+  min-height: 400px; /* Adjust height if needed */
+  margin: 20px auto;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 12px;
-  width: 90%;
-  max-width: 350px;
-  margin: 10px auto;
-  padding: 20px;
-  position: relative;
+  justify-content: flex-start;
+  align-items: center;
+  
+}
+
+.receipt-logo {
+  width: 50px; /* Adjust based on the logo size */
+  height: auto;
+  margin-bottom: 10px;
+}
+
+
+.receipt-item {
+  padding: 8px 0;
+  border-bottom: 1px dashed #333; /* Simulate a printed receipt line */
 }
 
 .receipt-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-}
-
-.store-logo {
-  width: 50px;
-  height: 50px;
-}
-
-.receipt-info {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.store-name {
-  font-size: 1.2rem;
-  font-weight: bold;
-  margin: 0;
-}
-
-.location {
-  font-size: 0.9rem;
-  color: #666;
-  margin: 0;
-}
-
-.receipt-body {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 100%;
-}
-
-.bottle-info {
-  font-size: 1rem;
   color: #444;
   font-weight: bold;
+  font-size: 1.2rem;
 }
 
-.total-section {
+.receipt-details {
+  font-size: 0.9rem;
+  color: #444;
+}
+
+.receipt-footer {
+  color: #444;
+  text-align: center;
+  font-size: 0.8rem;
+  margin-top: 15px;
+ 
+}
+
+.receipt-wrapper {
   display: flex;
-  justify-content: space-between;
-  width: 100%;
-  padding: 8px 16px;
-  background: rgba(255, 255, 255, 0.8);
-  border-radius: 8px;
-}
-
-.total-label {
-  font-size: 1rem;
-  font-weight: bold;
-  color: #666;
-}
-
-.total-amount {
-  font-size: 1.4rem;
-  font-weight: bold;
-  color: #222;
-}
-
-.barcode-btn {
-  margin-top: 10px;
-  padding: 8px 12px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  font-weight: bold;
-  color: #ff9900;
-  text-decoration: underline;
-  align-self: flex-end;
-}
-
-.barcode-btn:hover {
-  color: #cc7700;
+  flex-direction: column;
+  min-height: 100vh; /* Ensures full page height */
 }

@@ -9,13 +9,7 @@ import { CommonModule } from '@angular/common';
 })
 export class ReceiptCardComponent  {
 
-  @Input() storeName: string | null = null;;
-  @Input() storeLogo: string | null = null;;
-  @Input() location: string | null = null;;
-  @Input() bottleCount: number | null = null;;
-  @Input() totalAmount: number | null = null;;
-  @Input() imagePath: string | undefined;
-  //@Input() barcode: string | null = null;;
+  @Input() receipt: any;
 
   constructor() { }
 

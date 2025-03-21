@@ -10,22 +10,16 @@ import { SqliteService } from '../../services/sqlite.service';
 })
 export class ReceiptsPage implements OnInit {
 
-  receipts: any[] = [];
+  receipts = this.sqliteService.getReceipts();
 
-  constructor() {}
+  constructor(private sqliteService: SqliteService) {
+    
+  }
 
   async ngOnInit() {
   }
   
 
-  async loadReceipts() {
-    try {
-      console.log("🔍 Loading receipts...");
-      //this.receipts = await SqliteService.getReceipts();
-      console.log("📦 Loaded Receipts:", this.receipts);
-    } catch (error) {
-      console.error("❌ Error loading receipts:", error);
-    }
-  }
 }
+
 

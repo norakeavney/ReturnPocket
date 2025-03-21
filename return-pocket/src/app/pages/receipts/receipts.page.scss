@@ -1,0 +1,24 @@
+ion-content {
+    --background: #f8c8c8; /* Keep the pink background */
+    display: flex;
+    justify-content: center; /* Center receipts horizontally */
+    align-items: center; /* Center receipts vertically */
+    flex-direction: column;
+    min-height: 100vh;
+    padding: 20px;
+  }
+  
+  .receipt-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    max-width: 500px; /* Limit width */
+  }
+  
+  .receipt-container {
+    width: 100%;
+    max-width: 280px; /* Keep receipts a reasonable size */
+    min-height: 350px; /* Ensure they don’t shrink */
+  }
+  
