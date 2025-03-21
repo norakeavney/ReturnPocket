@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Capacitor } from '@capacitor/core';
 import { SQLiteConnection, CapacitorSQLite, SQLiteDBConnection } from '@capacitor-community/sqlite';
 
 export interface Receipt {

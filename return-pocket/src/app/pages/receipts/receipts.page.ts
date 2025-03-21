@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { SqliteService } from '../../services/sqlite.service';
 
 @Component({
@@ -6,19 +6,14 @@ import { SqliteService } from '../../services/sqlite.service';
   selector: 'app-receipts',
   templateUrl: './receipts.page.html',
   styleUrls: ['./receipts.page.scss'],
-  providers: [SqliteService]
 })
-export class ReceiptsPage implements OnInit {
+export class ReceiptsPage {
 
   receipts = this.sqliteService.getReceipts();
 
   constructor(private sqliteService: SqliteService) {
     
   }
-
-  async ngOnInit() {
-  }
-  
 
 }
 
