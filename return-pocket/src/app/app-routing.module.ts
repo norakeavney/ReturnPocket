@@ -9,6 +9,10 @@ const routes: Routes = [
   {
     path: 'receipts',
     loadChildren: () => import('./pages/receipts/receipts.module').then( m => m.ReceiptsPageModule)
+  },
+  {
+    path: 'stats',
+    loadChildren: () => import('./pages/stats/stats.module').then( m => m.StatsPageModule)
   }
 ];
 @NgModule({
