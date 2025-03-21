@@ -31,6 +31,7 @@
     "@capacitor/haptics": "7.0.0",
     "@capacitor/ios": "^7.1.0",
     "@capacitor/keyboard": "7.0.0",
+    "@capacitor/splash-screen": "^7.0.0",
     "@capacitor/status-bar": "7.0.0",
     "@ionic/angular": "^8.0.0",
     "@zxing/browser": "^0.1.5",

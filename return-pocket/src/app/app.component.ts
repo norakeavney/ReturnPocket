@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { SqliteService } from './services/sqlite.service';
+import { SplashScreen } from '@capacitor/splash-screen';
 
 @Component({
   selector: 'app-root',
@@ -10,11 +11,12 @@ import { SqliteService } from './services/sqlite.service';
 export class AppComponent {
 
   constructor(private sqliteService: SqliteService) {
-    this.initialiseDB();
+    this.initApp();
   }
 
-  async initialiseDB() {
-    await this.sqliteService.initDB();
+  async initApp() {
+    await this.sqliteService.initialise();
+    SplashScreen.hide();
   }
   
-}
+} 

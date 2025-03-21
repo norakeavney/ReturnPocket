@@ -1,47 +1,38 @@
 import { Injectable } from '@angular/core';
 import { Capacitor } from '@capacitor/core';
 import { SQLiteConnection, CapacitorSQLite, SQLiteDBConnection } from '@capacitor-community/sqlite';
-import { c } from '@angular/core/navigation_types.d-u4EOrrdZ';
+
+export interface Receipt {
+  id?: number;
+  store_name: string;
+  location: string;
+  bottle_count: number;
+  total_amount: number;
+  img_path: string;
+  barcode_data: string;
+  timestamp?: string;
+}
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class SqliteService {
 
-  private sqlite: SQLiteConnection;
+  
+  private receipts: Receipt[] = [];
+  private sqlite: SQLiteConnection = new SQLiteConnection(CapacitorSQLite);
+  private db: SQLiteDBConnection | null = null;
 
-  constructor() { 
-    this.sqlite = new SQLiteConnection(CapacitorSQLite);
-  }
+  constructor() { }
 
-  async initDB() {
+  async initialise() {
 
-    try {
-      const platform = Capacitor.getPlatform();
+    this.db = await this.sqlite.createConnection('receipt_db', false, 'no-encryption', 1, false);
 
-      const db = await this.sqlite.createConnection(
-        'receipt_db',
-        false, 
-        platform === 'ios' || platform === 'android' ? 'native' : 'no-encryption',
-        1,  // version number
-        false  // mode (false for read-write mode)
-      );
+    await this.db.open();
 
-      await db.open();
-      console.log('DB Opened Successfully');
-
-      await this.createTables(db);
-      await this.testData(db);
-
-    } catch (error) {
-      console.error('initDB', error);
-    }
-
-  }
-
-  async createTables(db: SQLiteDBConnection) {
-
-    const query = `
+    const schema = `
       CREATE TABLE IF NOT EXISTS receipts_table(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         store_name TEXT,
@@ -53,42 +44,54 @@ export class SqliteService {
         timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
       );
       `;
+    await this.db.execute(schema);
+    this.loadReceipts();
+
+    return true;
+  }
+
+  async loadReceipts() {
+    const receipts = await this.db?.query('SELECT * FROM receipts_table');
+    this.receipts = receipts?.values || [];
+  }
+
+  async addReceipt(receipt: Receipt) {
+    const query = `
+      INSERT INTO receipts_table (store_name, location, bottle_count, total_amount, img_path, barcode_data)
+      VALUES (?, ?, ?, ?, ?, ?);
+    `;
+
+    const values = [
+      receipt.store_name,
+      receipt.location,
+      receipt.bottle_count,
+      receipt.total_amount,
+      receipt.img_path,
+      receipt.barcode_data
+    ];
 
     try {
-      await db.execute(query);
-      console.log('Table Created Successfully');
+      await this.db?.run(query, values);
+      await this.loadReceipts();
     } catch (error) {
-      console.error('createTables', error);
+      console.error('Error adding receipt:', error);
+      throw error;
     }
   }
 
-  async testData(db: SQLiteDBConnection) {
-
+  async deleteReceipt(id: number) {
+    const query = 'DELETE FROM receipts_table WHERE id = ?';
     try {
-
-      const checkQuery = 'SELECT COUNT(*) AS count FROM receipts_table';
-      const result = await db.query(checkQuery);
-
-      if (result.values && result.values[0].count === 0) {
-        console.log('testData', 'No test data found, populating...');
-
-        const insertQuery = `
-          INSERT INTO receipts_table (store_name, location, bottle_count, total_amount, img_path, barcode_data)
-          VALUES
-          ('Tesco', 'Headford Road, Galway', 15, 2.25, '/path/to/img.jpg', '1234567890'),
-          ('Aldi', 'Ballybrit, Galway', 10, 1.50, '/path/to/img.jpg', '0987654321'),
-          ('Lidl', 'Westside, Galway', 20, 3.00, '/path/to/img.jpg', '5432167890');
-        `;
-
-        await db.execute(insertQuery);
-        console.log('testData', 'Data inserted successfully');
-
-      } else {
-        console.log('testData', 'Data already exists');
-      }
-
+      await this.db?.run(query, [id]);
+      await this.loadReceipts();
     } catch (error) {
-      console.error('testData', error);
+      console.error('Error deleting receipt:', error);
+      throw error;
     }
   }
+  
+  getReceipts() {
+    return this.receipts;
+  }
+  
 }
