@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { Geolocation } from '@capacitor/geolocation';
-import { OcrService } from 'src/app/services/ocr.service';
-import { BarcodeService } from 'src/app/services/barcode.service';
+import { ReceiptscanserviceService } from 'src/app/services/receiptscanservice.service';
+import { InfoModalComponent } from 'src/app/components/info-modal/info-modal.component';
 
 @Component({
   standalone: false,
@@ -12,14 +12,21 @@ import { BarcodeService } from 'src/app/services/barcode.service';
 })
 export class LandingPage implements OnInit {
 
-  constructor(private ocrService: OcrService, private barcodeService: BarcodeService) { }
+  constructor(private receiptScan: ReceiptscanserviceService) { }
 
-  processedImage: string | null = null;
-  barcodeData: string | null = null;
   imagePath: string | null = null;
-  OCRText: string | null = null;
+  showInfoModal: boolean = false;
 
   async takePicture() {
+    // Show the info modal first before taking a picture
+    this.showInfoModal = true;
+  }
+
+  async handleModalClose() {
+    // Hide the modal
+    this.showInfoModal = false;
+    
+    // Now proceed with taking the picture
     const image = await Camera.getPhoto({
       quality: 90,
       allowEditing: false,
@@ -29,21 +36,12 @@ export class LandingPage implements OnInit {
 
     if (image.webPath) {
       this.imagePath = image.webPath;
-      this.processedImage = await this.ocrService.processImage(image.webPath);
-
-      //this.OCRText = await this.ocrService.runOCR(this.processedImage);
-
-      //this.barcodeData = await this.barcodeService.scanBarcode(this.processedImage);
+      await this.receiptScan.scanAndSaveReceipt(this.imagePath);
     }
-
-  }
-
-  async startScanning() {
-    this.barcodeData = await this.barcodeService.scanBarcode();
   }
 
   async ngOnInit() {
-    // When the app boots up for the first time, get permission for the camera
+    // When the app boots up for the first time, get permissions
     await Camera.requestPermissions();
     await Geolocation.requestPermissions();
   }

@@ -2,7 +2,7 @@
   <app-header [mainText]="'Return Pocket'" [subText]="'Simple Scanning, Smart Saving'" [imgSrc]="'assets/resources/tempIcon.svg'"></app-header>
   <div class="nav-container">
     <div class="top-buttons">
-      <button class="mat-button scanButton" (click)="startScanning()">
+      <button class="mat-button scanButton" (click)="takePicture()">
         <ion-icon name="scan-outline"></ion-icon>
       </button>
       <button class="mat-button viewButton" routerLink="/receipts">
@@ -15,6 +15,5 @@
       </button>
     </div>
   </div>
-  <p *ngIf="barcodeData">Scanned Barcode: {{ barcodeData }}</p>
-  <p *ngIf="OCRText" [innerHTML]="OCRText"></p>
+  <app-info-modal *ngIf="showInfoModal" (close)="handleModalClose()"></app-info-modal>
 </ion-content>
