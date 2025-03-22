@@ -29,12 +29,13 @@ export class ReceiptscanserviceService {
     const processedImage = await this.ocr.processImage(imagePath);
     const { store, amount } = await this.ocr.runOCR(processedImage);
 
-    const bottleCount = amount ? Math.ceil(amount / 0.15) : 0;
+    // Calculate points as total_amount * 100 instead of bottle count
+    const points = amount ? Math.round(amount * 100) : 0;
 
     const receipt: Receipt = {
       store_name: store || 'Unknown',
       location,
-      bottle_count: bottleCount,
+      bottle_count: points, // Using bottle_count field for points
       total_amount: amount || 0,
       img_path: imagePath,
       barcode_data: barcode || '',

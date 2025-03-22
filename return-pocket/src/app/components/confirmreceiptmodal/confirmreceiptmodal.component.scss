@@ -136,6 +136,90 @@
     .detail-value {
       text-align: right;
     }
+    
+    .amount-field {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      
+      .edit-btn {
+        font-size: 0.75rem;
+        background-color: transparent;
+        color: #007bff;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        text-decoration: underline;
+      }
+    }
+    
+    .points-warning {
+      font-size: 0.75rem;
+      color: #ff6b6b;
+      margin-left: 5px;
+    }
+    
+    .edit-amount-field {
+      width: 100%;
+      
+      .input-wrapper {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+        
+        .currency-symbol {
+          margin-right: 5px;
+        }
+        
+        .amount-input {
+          width: 100%;
+          padding: 5px;
+          border: 1px solid #ccc;
+          border-radius: 3px;
+          font-family: inherit;
+          text-align: right;
+        }
+      }
+      
+      .edit-buttons {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        margin-bottom: 8px;
+        
+        button {
+          padding: 5px 8px;
+          font-size: 0.8rem;
+          border: none;
+          border-radius: 3px;
+          cursor: pointer;
+        }
+        
+        .cancel-edit-btn {
+          background-color: #f2f2f2;
+          color: #333;
+        }
+        
+        .save-edit-btn {
+          background-color: #000;
+          color: #fff;
+        }
+      }
+      
+      .edit-warning {
+        background-color: rgba(255, 107, 107, 0.1);
+        padding: 5px;
+        border-radius: 3px;
+        border-left: 3px solid #ff6b6b;
+        
+        p {
+          margin: 0;
+          font-size: 0.7rem;
+          color: #ff6b6b;
+        }
+      }
+    }
   }
   
   .info-note {

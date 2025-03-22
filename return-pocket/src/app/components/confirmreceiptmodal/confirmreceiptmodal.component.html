@@ -21,12 +21,34 @@
       
       <div class="receipt-detail">
         <span class="detail-label">Points:</span>
-        <span class="detail-value">{{ receipt.bottle_count || 0 }}</span>
+        <span class="detail-value">
+          {{ isAmountEdited ? 0 : receipt.bottle_count || 0 }}
+          <span *ngIf="isAmountEdited" class="points-warning">(edited)</span>
+        </span>
       </div>
       
       <div class="receipt-detail">
         <span class="detail-label">Total Amount:</span>
-        <span class="detail-value">€{{ receipt.total_amount.toFixed(2) || '0.00' }}</span>
+        <div *ngIf="!editingAmount" class="detail-value amount-field">
+          <span>€{{ receipt.total_amount.toFixed(2) || '0.00' }}</span>
+          <button class="edit-btn" (click)="startEditingAmount()">Edit</button>
+        </div>
+        <div *ngIf="editingAmount" class="edit-amount-field">
+          <div class="input-wrapper">
+            <span class="currency-symbol">€</span>
+            <input type="number" 
+                  step="0.01" 
+                  [(ngModel)]="tempAmount" 
+                  class="amount-input">
+          </div>
+          <div class="edit-buttons">
+            <button (click)="cancelEditingAmount()" class="cancel-edit-btn">Cancel</button>
+            <button (click)="saveAmount()" class="save-edit-btn">Save</button>
+          </div>
+          <div class="edit-warning">
+            <p>Warning: Editing the amount will reset your points to 0</p>
+          </div>
+        </div>
       </div>
       
       <div class="receipt-divider">- - - - - - - - - - - - - - - - - - - -</div>

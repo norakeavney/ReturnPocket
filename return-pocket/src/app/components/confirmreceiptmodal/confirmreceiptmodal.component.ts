@@ -3,13 +3,14 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
 import { Receipt } from '../../services/sqlite.service';
 import { CommonModule } from '@angular/common';
 import { ModalController } from '@ionic/angular';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-confirmreceiptmodal',
   templateUrl: './confirmreceiptmodal.component.html',
   styleUrls: ['./confirmreceiptmodal.component.scss'],
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   animations: [
     trigger('fadeIn', [
       state('void', style({
@@ -33,6 +34,9 @@ export class ConfirmreceiptmodalComponent implements OnInit {
   
   animationState = 'in';
   showStoreSelection = false;
+  editingAmount = false;
+  isAmountEdited = false;
+  tempAmount: number = 0;
   
   storeOptions = [
     { name: 'Tesco', logo: 'tesco.png' },
@@ -47,7 +51,10 @@ export class ConfirmreceiptmodalComponent implements OnInit {
 
   constructor(private modalController: ModalController) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    // Store original amount for reference
+    this.tempAmount = this.receipt.total_amount;
+  }
   
   getStoreLogo(): string {
     const store = this.storeOptions.find(s => 
@@ -63,6 +70,33 @@ export class ConfirmreceiptmodalComponent implements OnInit {
   selectStore(storeName: string) {
     this.receipt.store_name = storeName;
     this.showStoreSelection = false;
+  }
+  
+  startEditingAmount() {
+    this.editingAmount = true;
+    this.tempAmount = this.receipt.total_amount;
+  }
+  
+  saveAmount() {
+    // Check if amount has actually changed
+    if (this.tempAmount !== this.receipt.total_amount) {
+      this.receipt.total_amount = this.tempAmount;
+      this.isAmountEdited = true;
+      // Reset points to 0 if user manually edits amount
+      this.receipt.bottle_count = 0;
+    }
+    this.editingAmount = false;
+  }
+  
+  cancelEditingAmount() {
+    this.editingAmount = false;
+    this.tempAmount = this.receipt.total_amount;
+  }
+  
+  // Update points calculation when store changes
+  // Keep the points calculation method for any internal calculations
+  calculatePoints(amount: number): number {
+    return Math.round(amount * 100);
   }
   
   confirmReceipt() {
