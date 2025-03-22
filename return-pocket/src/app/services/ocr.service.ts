@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { createWorker } from 'tesseract.js';
 
-export enum StoreNames {
+enum StoreNames {
   Tesco = 'Tesco',
   Dunnes = 'Dunnes',
   Lidl = 'Lidl',
@@ -65,34 +65,44 @@ export class OcrService {
 
   }
 
-  async runOCR(processedImage: string): Promise<string> {
+  async runOCR(processedImage: string): Promise<{ store: string | null; amount: number | null; }> {
 
     const worker = await this.workerPromise;
 
     const { data: { text } } = await worker.recognize(processedImage);
 
-    return this.scrubText(text);
+    return this.extractData(text);
 
   }
-  scrubText(text: string): string {
-    // Convert to uppercase
-    text = text.toUpperCase();
-  
-    // Split text into an array of lines
-    let splitText: string[] = text.split('\n');
-  
-    for (let i = 0; i < splitText.length; i++) {
-      let line = splitText[i];
-  
-      // Remove all special characters except € . and :
-      line = line.replace(/[^A-Z0-9€.: ]/g, '');
-  
-      // Trim spaces
-      splitText[i] = line.trim();
-    }
-    console.log(splitText.filter(line => line.length > 0).join("\n"));
-    return splitText.filter(line => line.length > 0).join("\n"); // Remove empty lines
+
+  extractData(text: string):  {store: string | null; amount: number | null; } {
+
+    const lines = text.toUpperCase().split('\n').map(line =>
+      line.replace(/[^A-Z0-9€.: ]/g, '').trim()
+    ).filter(Boolean);
+
+    let storeMatch: string | null = null;
+    let highestAmount: number | null = null;
+
+    for (const line of lines) {
+      if (!storeMatch) {
+        storeMatch = Object.values(StoreNames).find(store =>
+          line.includes(store.toUpperCase())
+        ) || 'Other';
+      }
+    
+
+    const amounts = [...line.matchAll(/(?:€|EUR)?\s?(\d{1,3}\.\d{1,2})/g)];
+    amounts.forEach(match => {
+      const amount = parseFloat(match[1]);
+      if (!highestAmount || amount > highestAmount) {
+        highestAmount = amount;
+      }
+    });
   }
-  
+
+  return { store: storeMatch, amount: highestAmount };
+
+  }
   
 }

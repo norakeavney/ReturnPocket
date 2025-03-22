@@ -31,7 +31,7 @@ export class GeolocationService {
       const res: any = await firstValueFrom(this.http.get(url, { headers }));
 
       const address = res?.address;
-      if(!address) return "Unknown Location";
+      if(!address) return "Unknown";
 
       const parts = [
         address.shop,
@@ -44,7 +44,7 @@ export class GeolocationService {
 
     } catch (error) {
       console.error("❌ Geolocation Error:", error);
-      return "Unknown Location";
+      return "Unknown";
     }
   }
 

@@ -17,8 +17,8 @@ export class BarcodeService {
     try {
       const result = await CapacitorBarcodeScanner.scanBarcode({
         hint: CapacitorBarcodeScannerTypeHint.ALL, // Can be QRCODE, CODE128, etc.
-        scanInstructions: "Make sure you can see the Barcode, Store Info & Amount",
-        scanButton: true,
+        scanInstructions: "Scan your barcode!",
+        scanButton: false,
         scanText: "Store Me",
         cameraDirection: CapacitorBarcodeScannerCameraDirection.BACK,
         scanOrientation: CapacitorBarcodeScannerScanOrientation.ADAPTIVE,

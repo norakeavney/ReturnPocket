@@ -27,7 +27,11 @@ export class SqliteService {
 
   async initialise() {
 
-    this.db = await this.sqlite.createConnection('receipt_db', false, 'no-encryption', 1, false);
+    try {
+      this.db = await this.sqlite.retrieveConnection('receipt_db', false);
+    } catch (e) {
+      this.db = await this.sqlite.createConnection('receipt_db', false, 'no-encryption', 1, false);
+    }
 
     await this.db.open();
 
