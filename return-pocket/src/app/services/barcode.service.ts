@@ -1,31 +1,36 @@
 import { Injectable } from '@angular/core';
-import { BrowserMultiFormatReader } from '@zxing/browser';
+import {
+  CapacitorBarcodeScanner,
+  CapacitorBarcodeScannerTypeHint,
+  CapacitorBarcodeScannerCameraDirection,
+  CapacitorBarcodeScannerScanOrientation,
+  CapacitorBarcodeScannerAndroidScanningLibrary
+} from '@capacitor/barcode-scanner';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BarcodeService {
-  private codeReader = new BrowserMultiFormatReader();
+  constructor() {}
 
-  constructor() { }
+  async scanBarcode(): Promise<string | null> {
+    try {
+      const result = await CapacitorBarcodeScanner.scanBarcode({
+        hint: CapacitorBarcodeScannerTypeHint.ALL, // Can be QRCODE, CODE128, etc.
+        scanInstructions: "Make sure you can see the Barcode, Store Info & Amount",
+        scanButton: true,
+        scanText: "Store Me",
+        cameraDirection: CapacitorBarcodeScannerCameraDirection.BACK,
+        scanOrientation: CapacitorBarcodeScannerScanOrientation.ADAPTIVE,
+        android: {
+          scanningLibrary: CapacitorBarcodeScannerAndroidScanningLibrary.ZXING
+        }
+      });
 
-
-  async scanBarcode(imagePath: string): Promise<string> {
-    try{
-
-      const imgElement = document.createElement('img');
-      imgElement.src = imagePath;
-
-      await new Promise((resolve) => imgElement.onload = resolve);
-      
-      const result  = await this.codeReader.decodeFromImageElement(imgElement);
-      return result ? result.getText() : '';
-      
+      return result.ScanResult || null; // Returns the barcode data
     } catch (error) {
-      console.error('scanBarcode', error);
-      return '';
+      console.error("❌ Barcode Scan Error:", error);
+      return null;
     }
-  
   }
-
 }

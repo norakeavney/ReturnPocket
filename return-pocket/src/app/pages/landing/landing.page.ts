@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { Geolocation } from '@capacitor/geolocation';
 import { OcrService } from 'src/app/services/ocr.service';
 import { BarcodeService } from 'src/app/services/barcode.service';
 
@@ -30,16 +31,21 @@ export class LandingPage implements OnInit {
       this.imagePath = image.webPath;
       this.processedImage = await this.ocrService.processImage(image.webPath);
 
-      this.OCRText = await this.ocrService.runOCR(this.processedImage);
+      //this.OCRText = await this.ocrService.runOCR(this.processedImage);
 
-      this.barcodeData = await this.barcodeService.scanBarcode(this.processedImage);
+      //this.barcodeData = await this.barcodeService.scanBarcode(this.processedImage);
     }
 
+  }
+
+  async startScanning() {
+    this.barcodeData = await this.barcodeService.scanBarcode();
   }
 
   async ngOnInit() {
     // When the app boots up for the first time, get permission for the camera
     await Camera.requestPermissions();
+    await Geolocation.requestPermissions();
   }
 
 }
