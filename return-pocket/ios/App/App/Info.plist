@@ -43,10 +43,6 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>We need access to your location to show nearby return locations.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>We need access to your location to show nearby return locations.</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
@@ -55,5 +51,9 @@
 	<string>We need access to get your receipts.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>We need access to save your receipt photos to your library.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>We need access to your location to show nearby return locations.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We need access to your location to show nearby return locations.</string>
 </dict>
 </plist>

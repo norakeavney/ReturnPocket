@@ -1,0 +1,47 @@
+<div class="receipt-container" [@fadeIn]="animationState">
+  <div class="receipt-header">
+    <h1>RETURN POCKET</h1>
+    <p class="timestamp">{{ currentDate | date:'MMM dd, yyyy hh:mm a' }}</p>
+  </div>
+  
+  <div class="receipt-divider">* * * * * * * * * * * * * * * * * * * *</div>
+  
+  <div class="receipt-content">
+    <h2>HOW IT WORKS</h2>
+    
+    <div class="step">
+      <div class="step-number">1</div>
+      <div class="step-text">
+        <h3>CAPTURE RECEIPT</h3>
+        <p>Take a clear photo of your receipt. Ensure the store name and total amount are clearly visible.</p>
+      </div>
+    </div>
+    
+    <div class="receipt-divider">- - - - - - - - - - - - - - - - - - - -</div>
+    
+    <div class="step">
+      <div class="step-number">2</div>
+      <div class="step-text">
+        <h3>SCAN BARCODE</h3>
+        <p>Scan the item barcode. Use 0.5x zoom if you're having trouble scanning.</p>
+      </div>
+    </div>
+    
+    <div class="receipt-divider">- - - - - - - - - - - - - - - - - - - -</div>
+    
+    <div class="step">
+      <div class="step-number">3</div>
+      <div class="step-text">
+        <h3>CONFIRM DETAILS</h3>
+        <p>Review and confirm all information before submitting.</p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="receipt-divider">* * * * * * * * * * * * * * * * * * * *</div>
+  
+  <div class="receipt-footer">
+    <p>THANK YOU FOR USING RETURN POCKET</p>
+    <button (click)="closeModal()" class="got-it-btn">GOT IT!</button>
+  </div>
+</div>

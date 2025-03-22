@@ -11,7 +11,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { SqliteService } from './services/sqlite.service';
-import { HttpClient } from '@angular/common/http';
+import { provideHttpClient } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,7 +22,7 @@ import { HttpClient } from '@angular/common/http';
     BrowserAnimationsModule,
     MatToolbarModule
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, SqliteService],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, SqliteService, provideHttpClient()],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
