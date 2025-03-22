@@ -1,0 +1,306 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
+
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.receipt-container {
+  background-color: #fff;
+  max-width: 350px;
+  width: 90%;
+  padding: 20px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+  font-family: 'Roboto Mono', monospace;
+  overflow: auto;
+  max-height: 90vh;
+  color: #333;
+  position: relative;
+  
+  // Slight edge treatment to look like a receipt
+  &::before, &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 20px;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 5px,
+      rgba(0, 0, 0, 0.03) 5px,
+      rgba(0, 0, 0, 0.03) 10px
+    );
+  }
+  
+  &::before {
+    top: -10px;
+  }
+  
+  &::after {
+    bottom: -10px;
+  }
+}
+
+.receipt-header {
+  text-align: center;
+  margin-bottom: 15px;
+  
+  h1 {
+    font-size: 1.5rem;
+    margin: 0 0 15px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .store-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    
+    .store-logo {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      border-radius: 50%;
+      background-color: #f2f2f2;
+      padding: 5px;
+    }
+    
+    .store-name-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      
+      h2 {
+        font-size: 1.2rem;
+        margin: 0 0 5px;
+        font-weight: bold;
+        color: #333;
+      }
+      
+      .change-store-btn {
+        font-size: 0.8rem;
+        background-color: transparent;
+        color: #007bff;
+        border: none;
+        cursor: pointer;
+        text-decoration: underline;
+        padding: 0;
+      }
+    }
+  }
+}
+
+.receipt-divider {
+  text-align: center;
+  margin: 15px 0;
+  color: #666;
+  font-size: 0.8rem;
+  letter-spacing: -1px;
+}
+
+.receipt-content {
+  .receipt-detail {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+    font-size: 0.95rem;
+    
+    .detail-label {
+      font-weight: bold;
+    }
+    
+    .detail-value {
+      text-align: right;
+    }
+  }
+  
+  .info-note {
+    background-color: rgba(255, 235, 190, 0.5);
+    padding: 10px;
+    border-radius: 5px;
+    border-left: 3px solid #ffc107;
+    margin: 15px 0;
+    
+    p {
+      font-size: 0.8rem;
+      margin: 0;
+      line-height: 1.4;
+      color: #555;
+    }
+  }
+}
+
+.receipt-footer {
+  text-align: center;
+  
+  p {
+    font-size: 1rem;
+    margin-bottom: 15px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    
+    button {
+      flex: 1;
+      padding: 10px 0;
+      font-family: 'Roboto Mono', monospace;
+      font-weight: bold;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+    }
+    
+    .cancel-btn {
+      background-color: #f2f2f2;
+      color: #333;
+      
+      &:hover {
+        background-color: #e0e0e0;
+      }
+    }
+    
+    .confirm-btn {
+      background-color: #000;
+      color: #fff;
+      
+      &:hover {
+        background-color: #333;
+        transform: translateY(-2px);
+      }
+      
+      &:active {
+        transform: translateY(0);
+      }
+    }
+  }
+}
+
+// Store selection overlay
+.store-selection-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1100;
+}
+
+.store-selection-container {
+  background-color: white;
+  width: 90%;
+  max-width: 350px;
+  border-radius: 5px;
+  padding: 20px;
+  max-height: 80vh;
+  overflow-y: auto;
+  
+  h2 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.3rem;
+  }
+  
+  .store-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
+    
+    .store-option {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px;
+      border: 1px solid #eee;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.2s;
+      
+      img {
+        width: 60px;
+        height: 60px;
+        object-fit: contain;
+        margin-bottom: 8px;
+      }
+      
+      span {
+        font-size: 0.9rem;
+        text-align: center;
+      }
+      
+      &:hover {
+        background-color: #f9f9f9;
+        transform: translateY(-2px);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      }
+    }
+  }
+  
+  .cancel-btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: #f2f2f2;
+    color: #333;
+    border: none;
+    border-radius: 3px;
+    font-weight: bold;
+    cursor: pointer;
+    
+    &:hover {
+      background-color: #e0e0e0;
+    }
+  }
+}
+
+// Animation keyframes
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { 
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to { 
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

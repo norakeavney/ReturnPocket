@@ -1,0 +1,66 @@
+<div class="modal-backdrop" [@fadeIn]="animationState">
+  <div class="receipt-container" [@slideIn]="animationState">
+    <div class="receipt-header">
+      <h1>CONFIRM RECEIPT</h1>
+      <div class="store-info">
+        <img [src]="getStoreLogo()" alt="Store logo" class="store-logo">
+        <div class="store-name-container">
+          <h2>{{ receipt.store_name || 'Unknown Store' }}</h2>
+          <button class="change-store-btn" (click)="changeStore()">Change</button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="receipt-divider">* * * * * * * * * * * * * * * * * * * *</div>
+    
+    <div class="receipt-content">
+      <div class="receipt-detail">
+        <span class="detail-label">Location:</span>
+        <span class="detail-value">{{ receipt.location || 'Unknown' }}</span>
+      </div>
+      
+      <div class="receipt-detail">
+        <span class="detail-label">Points:</span>
+        <span class="detail-value">{{ receipt.bottle_count || 0 }}</span>
+      </div>
+      
+      <div class="receipt-detail">
+        <span class="detail-label">Total Amount:</span>
+        <span class="detail-value">€{{ receipt.total_amount.toFixed(2) || '0.00' }}</span>
+      </div>
+      
+      <div class="receipt-divider">- - - - - - - - - - - - - - - - - - - -</div>
+      
+      <div class="info-note">
+        <p><strong>NOTE:</strong> This information is only for your tracking and statistics. 
+          Your barcode will still scan normally at the till.</p>
+      </div>
+    </div>
+    
+    <div class="receipt-divider">* * * * * * * * * * * * * * * * * * * *</div>
+    
+    <div class="receipt-footer">
+      <p>IS THIS INFORMATION CORRECT?</p>
+      <div class="button-group">
+        <button (click)="cancelConfirmation()" class="cancel-btn">CANCEL</button>
+        <button (click)="confirmReceipt()" class="confirm-btn">CONFIRM</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Store selection overlay -->
+  <div *ngIf="showStoreSelection" class="store-selection-overlay" [@fadeIn]="'in'">
+    <div class="store-selection-container" [@slideIn]="'in'">
+      <h2>Select Store</h2>
+      <div class="store-list">
+        <div *ngFor="let store of storeOptions" 
+             class="store-option" 
+             (click)="selectStore(store.name)">
+          <img [src]="'/assets/resources/store-logos/' + store.logo" [alt]="store.name">
+          <span>{{ store.name }}</span>
+        </div>
+      </div>
+      <button (click)="showStoreSelection = false" class="cancel-btn">CANCEL</button>
+    </div>
+  </div>
+</div>
