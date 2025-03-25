@@ -6,7 +6,6 @@ import { OcrService } from './ocr.service';
 import { ModalController } from '@ionic/angular';
 import { ConfirmreceiptmodalComponent } from '../components/confirmreceiptmodal/confirmreceiptmodal.component';
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -22,9 +21,16 @@ export class ReceiptscanserviceService {
     console.log("Services injected");
   }
 
-  async scanAndSaveReceipt(imagePath: string) {
-
+  async scanAndSaveReceipt(imagePath: string, onBarcodeScanned?: () => void) {
+    // First scan the barcode
     const barcode = await this.bar.scanBarcode();
+    
+    // Now that we have the barcode, trigger the loading state in the parent component
+    if (onBarcodeScanned) {
+      onBarcodeScanned();
+    }
+
+    // Continue with the rest of the processing
     const location = await this.geo.resolveLocation();
     const processedImage = await this.ocr.processImage(imagePath);
     const { store, amount } = await this.ocr.runOCR(processedImage);

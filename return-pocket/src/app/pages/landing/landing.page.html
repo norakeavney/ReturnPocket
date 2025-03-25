@@ -16,4 +16,12 @@
     </div>
   </div>
   <app-info-modal *ngIf="showInfoModal" (close)="handleModalClose()"></app-info-modal>
+  
+  <!-- Loading overlay -->
+  <div class="loading-overlay" *ngIf="isLoading">
+    <div class="loading-content">
+      <ion-spinner name="crescent" color="primary"></ion-spinner>
+      <p>{{ loadingMessage }}</p>
+    </div>
+  </div>
 </ion-content>
