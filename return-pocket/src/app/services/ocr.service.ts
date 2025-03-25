@@ -88,21 +88,23 @@ export class OcrService {
       if (!storeMatch) {
         storeMatch = Object.values(StoreNames).find(store =>
           line.includes(store.toUpperCase())
-        ) || 'Other';
+        ) || null;
       }
     
+      const amounts = [...line.matchAll(/(?:€|EUR)?\s?(\d{1,3}\.\d{1,2})/g)];
+      amounts.forEach(match => {
+        const amount = parseFloat(match[1]);
+        if (!highestAmount || amount > highestAmount) {
+          highestAmount = amount;
+        }
+      });
+    }
 
-    const amounts = [...line.matchAll(/(?:€|EUR)?\s?(\d{1,3}\.\d{1,2})/g)];
-    amounts.forEach(match => {
-      const amount = parseFloat(match[1]);
-      if (!highestAmount || amount > highestAmount) {
-        highestAmount = amount;
-      }
-    });
-  }
+    if (!storeMatch) {
+      storeMatch = 'Other';
+    }
 
-  return { store: storeMatch, amount: highestAmount };
-
+    return { store: storeMatch, amount: highestAmount };
   }
   
 }
