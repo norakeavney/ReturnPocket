@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { Geolocation } from '@capacitor/geolocation';
+import { LocalNotifications } from '@capacitor/local-notifications';
 import { ReceiptscanserviceService } from 'src/app/services/receiptscanservice.service';
 
 @Component({
@@ -91,6 +92,7 @@ export class LandingPage implements OnInit, OnDestroy {
     // When the app boots up for the first time, get permissions
     await Camera.requestPermissions();
     await Geolocation.requestPermissions();
+    await LocalNotifications.requestPermissions();
   }
   
   ngOnDestroy() {

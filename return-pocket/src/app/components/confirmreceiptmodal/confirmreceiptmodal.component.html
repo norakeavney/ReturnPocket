@@ -61,6 +61,33 @@
     
     <div class="receipt-divider">* * * * * * * * * * * * * * * * * * * *</div>
     
+    <div class="reminder-section">
+      <div class="reminder-header">
+        <span>Remind Me?</span>
+        <div class="reminder-toggle">
+          <input type="checkbox" id="reminderToggle" 
+                 [ngModel]="reminderEnabled" 
+                 (ngModelChange)="setReminderEnabled($event)">
+          <label for="reminderToggle" class="toggle-label"></label>
+        </div>
+      </div>
+      
+      <div *ngIf="reminderEnabled" class="reminder-options">
+        <p>Remind me to scan in:</p>
+        <div class="reminder-time-buttons">
+          <button 
+            *ngFor="let time of reminderTimes" 
+            [class.selected]="selectedReminderTime === time.value"
+            (click)="setReminderTime(time.value)" 
+            class="time-btn">
+            {{ time.label }}
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="receipt-divider">* * * * * * * * * * * * * * * * * * * *</div>
+    
     <div class="receipt-footer">
       <p>IS THIS INFORMATION CORRECT?</p>
       <div class="button-group">

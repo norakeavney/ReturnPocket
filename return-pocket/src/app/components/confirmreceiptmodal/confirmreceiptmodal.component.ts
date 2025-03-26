@@ -4,6 +4,7 @@ import { Receipt } from '../../services/sqlite.service';
 import { CommonModule } from '@angular/common';
 import { ModalController } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
+import { ReminderService } from '../../services/reminder.service';
 
 @Component({
   selector: 'app-confirmreceiptmodal',
@@ -38,6 +39,16 @@ export class ConfirmreceiptmodalComponent implements OnInit {
   isAmountEdited = false;
   tempAmount: number = 0;
   
+  // Reminder related properties
+  reminderEnabled = false;
+  selectedReminderTime: number | null = null;
+  reminderTimes = [
+    { value: 1, label: '1 min' },
+    { value: 5, label: '5 mins' },
+    { value: 10, label: '10 mins' },
+    { value: 30, label: '30 mins' }
+  ];
+  
   storeOptions = [
     { name: 'Tesco', logo: 'tesco.png' },
     { name: 'Dunnes', logo: 'dunnes.png' },
@@ -49,7 +60,10 @@ export class ConfirmreceiptmodalComponent implements OnInit {
     { name: 'Other', logo: 'other.png' }
   ];
 
-  constructor(private modalController: ModalController) { }
+  constructor(
+    private modalController: ModalController,
+    private reminderService: ReminderService
+  ) { }
 
   ngOnInit() {
     // Store original amount for reference
@@ -99,7 +113,40 @@ export class ConfirmreceiptmodalComponent implements OnInit {
     return Math.round(amount * 100);
   }
   
+  setReminderTime(minutes: number) {
+    this.selectedReminderTime = minutes;
+  }
+  
+  scheduleReminder() {
+    if (this.reminderEnabled && this.selectedReminderTime) {
+      const storeName = this.receipt.store_name || 'Unknown Store';
+      const amount = this.receipt.total_amount.toFixed(2);
+      const message = `Don't forget to scan your ${storeName} receipt for €${amount} at the till!`;
+      
+      this.reminderService.scheduleReminder(message, this.selectedReminderTime);
+    }
+  }
+  
+  // Add this method to handle the reminder toggle
+  setReminderEnabled(enabled: boolean) {
+    this.reminderEnabled = enabled;
+    // When enabling, select the first option by default and force change detection
+    if (enabled) {
+      if (this.selectedReminderTime === null) {
+        this.selectedReminderTime = this.reminderTimes[0].value;
+      }
+      
+      // Force UI refresh with a slight delay
+      setTimeout(() => {
+        this.selectedReminderTime = this.selectedReminderTime;
+      }, 50);
+    }
+  }
+
   confirmReceipt() {
+    if (this.reminderEnabled && this.selectedReminderTime) {
+      this.scheduleReminder();
+    }
     this.confirmed.emit(this.receipt);
     this.modalController.dismiss(this.receipt);
   }
