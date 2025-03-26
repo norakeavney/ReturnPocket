@@ -1,5 +1,10 @@
 ion-card {
   margin: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  
+  ion-card-header {
+    padding-bottom: 8px;
+  }
 }
 
 ion-button {
@@ -19,4 +24,162 @@ ion-card-title {
   text-align: center;
   padding: 20px;
   color: var(--ion-color-medium);
+  font-style: italic;
+}
+
+// Safe area spacing for device notches/dynamic islands
+.safe-area-top {
+  height: 50px; // Adjust this value based on testing with different devices
+}
+
+// Back button container to position it correctly
+.back-button-container {
+  position: relative;
+  height: 40px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+// Back button styling - repositioned
+.back-button {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  margin: 0;
+  --padding-start: 8px;
+  --padding-end: 8px;
+  
+  ion-icon {
+    font-size: 24px;
+    color: var(--ion-color-dark);
+  }
+}
+
+// User Profile Card - adjusted margin
+.user-profile-card {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.profile-container {
+  display: flex;
+  align-items: center;
+}
+
+.avatar-container {
+  margin-right: 20px;
+  
+  ion-avatar {
+    width: 80px;
+    height: 80px;
+    border: 2px solid var(--ion-color-primary);
+  }
+}
+
+.user-info {
+  h1 {
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: bold;
+  }
+  
+  .hero-tag {
+    color: var(--ion-color-primary);
+    margin: 4px 0 12px 0;
+    font-weight: 500;
+  }
+}
+
+// Stats Grid
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.stat-card {
+  border-radius: 12px;
+  margin: 0;
+  text-align: center;
+  
+  ion-card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+  }
+  
+  .stat-icon {
+    font-size: 28px;
+    margin-bottom: 8px;
+  }
+  
+  .stat-value {
+    font-size: 1.6rem;
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+  
+  .stat-title {
+    font-size: 0.9rem;
+    color: var(--ion-color-medium);
+  }
+}
+
+// Store Card
+.store-card {
+  margin-bottom: 20px;
+  border-radius: 12px;
+  
+  ion-card-title {
+    display: flex;
+    align-items: center;
+    
+    ion-icon {
+      margin-right: 8px;
+    }
+  }
+}
+
+// Achievement styling
+.achieved {
+  opacity: 1;
+}
+
+ion-item:not(.achieved) {
+  opacity: 0.7;
+}
+
+// Environmental Impact
+.impact-card {
+  margin-bottom: 20px;
+  border-radius: 12px;
+}
+
+.impact-stats {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.impact-item {
+  text-align: center;
+  padding: 8px;
+  flex: 1 1 30%;
+  min-width: 100px;
+  
+  .impact-value {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: var(--ion-color-success);
+  }
+  
+  .impact-label {
+    font-size: 0.8rem;
+    color: var(--ion-color-medium);
+  }
 }

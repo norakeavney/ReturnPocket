@@ -1,68 +1,118 @@
-<ion-header>
-  <ion-toolbar color="primary">
-    <ion-title>Stats & Data Management</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Add New Receipt</ion-card-title>
-    </ion-card-header>
+<ion-content class="ion-padding">
+  <!-- Safe area spacing for device notches -->
+  <div class="safe-area-top"></div>
+  
+  <!-- Minimal back button - moved below safe area -->
+  <div class="back-button-container">
+    <ion-button fill="clear" class="back-button" (click)="goBack()">
+      <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+    </ion-button>
+  </div>
+  
+  <!-- User Profile Card -->
+  <ion-card class="user-profile-card">
     <ion-card-content>
-      <form (ngSubmit)="addReceipt()">
-        <ion-item>
-          <ion-label position="floating">Store Name</ion-label>
-          <ion-input [(ngModel)]="newReceipt.store_name" name="storeName" required></ion-input>
-        </ion-item>
-        
-        <ion-item>
-          <ion-label position="floating">Location</ion-label>
-          <ion-input [(ngModel)]="newReceipt.location" name="location" required></ion-input>
-        </ion-item>
-        
-        <ion-item>
-          <ion-label position="floating">Bottle Count</ion-label>
-          <ion-input type="number" [(ngModel)]="newReceipt.bottle_count" name="bottleCount" required></ion-input>
-        </ion-item>
-        
-        <ion-item>
-          <ion-label position="floating">Total Amount</ion-label>
-          <ion-input type="number" [(ngModel)]="newReceipt.total_amount" name="totalAmount" required></ion-input>
-        </ion-item>
-
-        <ion-button expand="block" type="submit" class="ion-margin-top">Add Receipt</ion-button>
-      </form>
+      <div class="profile-container">
+        <div class="avatar-container">
+          <ion-avatar>
+            <img [src]="userProfileImage" alt="Profile Image">
+          </ion-avatar>
+        </div>
+        <div class="user-info">
+          <h1>{{ userName }}</h1>
+          <p class="hero-tag">{{ userLevel }}</p>
+          <ion-button fill="outline" size="small">
+            <ion-icon name="create-outline" slot="start"></ion-icon>
+            Edit Profile
+          </ion-button>
+        </div>
+      </div>
     </ion-card-content>
   </ion-card>
 
-  <ion-card>
+  <!-- Quick Stats Grid - Updated to use animated values -->
+  <div class="stats-grid">
+    <ion-card class="stat-card" *ngFor="let stat of statCards">
+      <ion-card-content>
+        <ion-icon [name]="stat.icon" [color]="stat.color" class="stat-icon"></ion-icon>
+        <div class="stat-value">{{ stat.displayValue }}</div>
+        <div class="stat-title">{{ stat.title }}</div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- Top Stores -->
+  <ion-card class="store-card">
     <ion-card-header>
-      <ion-card-title>Receipts</ion-card-title>
+      <ion-card-title>
+        <ion-icon name="star" color="warning"></ion-icon>
+        Top Stores
+      </ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <ion-list>
-        <ion-item *ngIf="receipts.length === 0">
-          <ion-label>No receipts found</ion-label>
+      <div class="empty-state" *ngIf="topStores.length === 0">
+        No store data available yet. Start returning bottles to see your stats!
+      </div>
+      
+      <ion-list lines="none" *ngIf="topStores.length > 0">
+        <ion-item *ngFor="let store of topStores; let i = index">
+          <ion-label>
+            <h2>{{ i + 1 }}. {{ store.name }}</h2>
+            <p>{{ store.count }} bottles returned</p>
+          </ion-label>
+          <ion-badge slot="end" color="primary">{{ store.count }}</ion-badge>
         </ion-item>
-        
-        <ion-item-sliding *ngFor="let receipt of receipts">
-          <ion-item>
-            <ion-label>
-              <h2>{{ receipt.store_name }}</h2>
-              <p>Location: {{ receipt.location }}</p>
-              <p>Bottles: {{ receipt.bottle_count }} | Amount: ${{ receipt.total_amount }}</p>
-              <p>Date: {{ receipt.timestamp | date:'medium' }}</p>
-            </ion-label>
-          </ion-item>
-          
-          <ion-item-options side="end">
-            <ion-item-option color="danger" (click)="receipt.id !== undefined && deleteReceipt(receipt.id)">
-              <ion-icon slot="icon-only" name="trash"></ion-icon>
-            </ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
       </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Achievements -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        <ion-icon name="trophy" color="warning"></ion-icon>
+        Achievements
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list lines="none">
+        <ion-item *ngFor="let achievement of achievements" [class.achieved]="achievement.achieved">
+          <ion-icon [name]="achievement.icon" slot="start" [color]="achievement.achieved ? 'success' : 'medium'"></ion-icon>
+          <ion-label>
+            <h2>{{ achievement.name }}</h2>
+            <p>{{ achievement.description }}</p>
+          </ion-label>
+          <ion-badge slot="end" [color]="achievement.achieved ? 'success' : 'light'">
+            {{ achievement.achieved ? 'Completed' : 'Pending' }}
+          </ion-badge>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Environmental Impact - Updated to use animated values -->
+  <ion-card class="impact-card">
+    <ion-card-header>
+      <ion-card-title>
+        <ion-icon name="leaf" color="success"></ion-icon>
+        Environmental Impact
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="impact-stats">
+        <div class="impact-item">
+          <div class="impact-value">{{ displayBottles }}</div>
+          <div class="impact-label">Bottles Recycled</div>
+        </div>
+        <div class="impact-item">
+          <div class="impact-value">{{ displayCO2 }}kg</div>
+          <div class="impact-label">CO₂ Emissions Saved</div>
+        </div>
+        <div class="impact-item">
+          <div class="impact-value">{{ displayLandfill }}m³</div>
+          <div class="impact-label">Landfill Space Saved</div>
+        </div>
+      </div>
     </ion-card-content>
   </ion-card>
 </ion-content>
