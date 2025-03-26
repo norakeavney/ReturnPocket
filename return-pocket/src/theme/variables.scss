@@ -2,8 +2,8 @@
 // http://ionicframework.com/docs/theming/
 :root {
     /* Set the background color for the entire app */
-    --ion-background-color: #edbdbd;
-    --ion-background: #edbdbd;
+    --ion-background-color: #DFDDD9;
+    --ion-background: #DFDDD9;
     
     /* Make sure content on the background is readable */
     --ion-text-color: #000000;
@@ -12,8 +12,8 @@
 /* Apply the same background color in dark mode */
 @media (prefers-color-scheme: dark) {
     :root {
-        --ion-background-color: #f58d8d;
-        --ion-background: #edbdbd;
+        --ion-background-color: #DFDDD9;
+        --ion-background: #DFDDD9;
         --ion-text-color: #000000;
     }
 }

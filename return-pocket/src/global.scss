@@ -38,12 +38,12 @@
 
 /* Apply custom background color with high specificity */
 body, html, ion-app, ion-content {
-  --background: #edbdbd !important;
-  background-color: #edbdbd !important;
+  --background: #DFDDD9 !important;
+  background-color: #DFDDD9 !important;
 }
 
 .ion-page {
-  background-color: #edbdbd !important;
+  background-color: #DFDDD9 !important;
 }
 
 /* Safe area handling for iOS notch/Dynamic Island */

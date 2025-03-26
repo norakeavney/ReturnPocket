@@ -7,3 +7,43 @@
     padding-top: calc(16px + env(safe-area-inset-top));
     font-family: 'Roboto Mono', monospace;
 }
+
+.header-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: auto;
+    gap: 16px;
+    padding: 24px 16px;
+    text-align: center;
+}
+
+.logo-section {
+    margin-bottom: 12px;
+}
+
+.text-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.header-logo {
+    width: 180px;
+    height: 180px;
+    object-fit: contain;
+}
+
+.mat-headline-4 {
+    color: #333333;
+    font-weight: 500;
+    margin: 0;
+}
+
+.mat-subheading-2 {
+    font-weight: 400;
+    font-size: 1em;
+    margin: 0;
+    color: #444444;
+}

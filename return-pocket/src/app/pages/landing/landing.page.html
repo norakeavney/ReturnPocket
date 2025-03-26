@@ -1,20 +1,29 @@
 <ion-content [fullscreen]="true" [scrollY]="false">
-  <app-header [mainText]="'Return Pocket'" [subText]="'Simple Scanning, Smart Saving'" [imgSrc]="'assets/resources/tempIcon.svg'"></app-header>
+  <app-header [mainText]="''" [subText]="'Simple Scanning, Smart Saving'" [imgSrc]="'assets/icon/icon.svg'"></app-header>
+  
   <div class="nav-container">
-    <div class="top-buttons">
-      <button class="mat-button scanButton" (click)="takePicture()">
-        <ion-icon name="scan-outline"></ion-icon>
-      </button>
-      <button class="mat-button viewButton" routerLink="/receipts">
-        <ion-icon name="receipt-outline"></ion-icon>
-      </button>
-    </div>
-    <div class="bottom-button">
-      <button class="mat-button statsButton" routerLink="/stats">
-        <ion-icon name="person-outline"></ion-icon>
-      </button>
+    <div class="actions-grid">
+      <div class="button-wrapper">
+        <button class="action-button scan-action" (click)="takePicture()">
+          <ion-icon name="scan-outline"></ion-icon>
+          <span>Scan Receipt</span>
+        </button>
+      </div>
+      <div class="button-wrapper">
+        <button class="action-button view-action" routerLink="/receipts">
+          <ion-icon name="albums-outline"></ion-icon>
+          <span>View Receipts</span>
+        </button>
+      </div>
+      <div class="button-wrapper">
+        <button class="action-button stats-action" routerLink="/stats">
+          <ion-icon name="bar-chart-outline"></ion-icon>
+          <span>Analytics</span>
+        </button>
+      </div>
     </div>
   </div>
+  
   <app-info-modal *ngIf="showInfoModal" (close)="handleModalClose()"></app-info-modal>
   
   <!-- Loading overlay -->
