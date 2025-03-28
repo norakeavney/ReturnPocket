@@ -104,5 +104,11 @@ export class SqliteService {
     return result?.values?.[0]?.barcode_data || null;
     
   }
+
+  async getReceiptById(id: number): Promise<Receipt | null> {
+    const result = await this.db?.query('SELECT * FROM receipts_table WHERE id = ?', [id]);
+    return result?.values?.[0] || null;
+  }
+  
   
 }

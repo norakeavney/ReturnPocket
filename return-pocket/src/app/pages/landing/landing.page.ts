@@ -99,4 +99,8 @@ export class LandingPage implements OnInit, OnDestroy {
     this.clearLoadingTimeout();
     this.isLoading = false;
   }
+
+  
 }
+
+

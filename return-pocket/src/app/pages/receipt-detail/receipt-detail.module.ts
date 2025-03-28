@@ -7,14 +7,16 @@ import { IonicModule } from '@ionic/angular';
 import { ReceiptDetailPageRoutingModule } from './receipt-detail-routing.module';
 
 import { ReceiptDetailPage } from './receipt-detail.page';
+import { BarcodeComponent } from "../../components/barcode/barcode.component";
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ReceiptDetailPageRoutingModule
-  ],
+    ReceiptDetailPageRoutingModule,
+    BarcodeComponent
+],
   declarations: [ReceiptDetailPage]
 })
 export class ReceiptDetailPageModule {}

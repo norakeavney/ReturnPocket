@@ -1,13 +1,38 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>receipt-detail</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content [fullscreen]="true" class="receipt-detail">
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">receipt-detail</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <!-- Grey background -->
+  <div class="background-container">
+    <img src="assets/resources/Receipt.svg" class="receipt-bg" />
+  </div>
+
+  <!-- Main Receipt Content -->
+  <div class="receipt-card">
+    <img src="assets/resources/tesco-logo.png" class="store-logo" />
+
+    <h2>{{ receipt?.store_name }}</h2>
+    <p>{{ receipt?.location }}</p>
+    <p class="subtle">Present Barcode at Till</p>
+
+    <h3>Total Amount</h3>
+    <div class="amount">€{{ receipt?.total_amount }}</div>
+
+    <div class="info-boxes">
+      <div class="info">
+        <label>Bottles</label>
+        <div>{{ receipt?.bottle_count }}</div>
+      </div>
+      <div class="info">
+        <label>Set Reminder</label>
+        <div>{{ receipt?.timestamp | date: 'dd MMM yyyy, HH:mm' }}</div>
+      </div>
+    </div>
+
+    <div class="barcode">
+      <app-barcode [receiptId]="+currentId"></app-barcode>
+    </div>
+
+    <ion-button fill="clear" class="pdf-btn">📄 Get PDF Receipt</ion-button>
+    <ion-button expand="block" color="warning">Done</ion-button>
+  </div>
+
 </ion-content>
