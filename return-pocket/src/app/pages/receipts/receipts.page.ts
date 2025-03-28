@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { SqliteService } from '../../services/sqlite.service';
+import { Router } from '@angular/router';
+
 
 @Component({
   standalone: false,
@@ -11,9 +13,16 @@ export class ReceiptsPage {
 
   receipts = this.sqliteService.getReceipts();
 
-  constructor(private sqliteService: SqliteService) {
+  constructor(private sqliteService: SqliteService, private router: Router) {
     
   }
+
+  viewReceipt(id: string | undefined) {
+    if (!id) return; // don't navigate if id is missing
+    this.router.navigate(['/receipt-detail', id]);
+  }
+  
+  
 
 }
 

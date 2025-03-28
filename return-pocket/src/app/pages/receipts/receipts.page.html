@@ -6,6 +6,6 @@
 
 <ion-content>
   <div class="receipt-list">
-    <app-receipt-card *ngFor="let receipt of receipts" [receipt]="receipt"></app-receipt-card>
+    <app-receipt-card *ngFor="let receipt of receipts" [receipt]="receipt" (click)="viewReceipt(receipt.id?.toString())"></app-receipt-card>
   </div>
 </ion-content>

@@ -13,7 +13,12 @@ const routes: Routes = [
   {
     path: 'stats',
     loadChildren: () => import('./pages/stats/stats.module').then( m => m.StatsPageModule)
+  },
+  {
+    path: 'receipt-detail/:id',
+    loadChildren: () => import('./pages/receipt-detail/receipt-detail.module').then( m => m.ReceiptDetailPageModule)
   }
+
 ];
 @NgModule({
   imports: [
