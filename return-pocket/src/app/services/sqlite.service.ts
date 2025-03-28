@@ -96,5 +96,13 @@ export class SqliteService {
   getReceipts() {
     return this.receipts;
   }
+
+  async getBarcodeDataById(id: number): Promise<string | null> {
+    const query = 'SELECT barcode_data FROM receipts_table WHERE id = ?';
+    const result = await this.db?.query(query, [id]);
+
+    return result?.values?.[0]?.barcode_data || null;
+    
+  }
   
 }
