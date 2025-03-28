@@ -1,0 +1,10 @@
+<div class="barcode-container">
+  <div *ngIf="barcodeData; else noBarcode" class="barcode-wrapper">
+    <canvas id="barcode"></canvas>
+  </div>
+  <ng-template #noBarcode>
+    <div class="no-barcode-message">
+      <p>No barcode data available</p>
+    </div>
+  </ng-template>
+</div>
