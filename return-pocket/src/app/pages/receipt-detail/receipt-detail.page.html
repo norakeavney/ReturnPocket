@@ -1,38 +1,78 @@
-<ion-content [fullscreen]="true" class="receipt-detail">
+<ion-content class="receipt-detail" [fullscreen]="true">
+  <div class="receipt-wrapper" *ngIf="receipt; else loading">
+    <!-- 🧾 SVG as CSS Background Container -->
+    <div class="receipt-bg-frame">
+      <div class="receipt-content">
+        <!-- Store Logo -->
+        <div class="store-logo-container">
+          <img [src]="storeLogoPath"
+               (error)="onLogoError()"
+               class="store-logo"
+               [alt]="receipt.store_name + ' logo'" />
+        </div>
 
-  <!-- Grey background -->
-  <div class="background-container">
-    <img src="assets/resources/Receipt.svg" class="receipt-bg" />
-  </div>
+        <h3 class="subtext">Return Receipt</h3>
+        <p class="store-name">{{ receipt.store_name }}</p>
 
-  <!-- Main Receipt Content -->
-  <div class="receipt-card">
-    <img src="assets/resources/tesco-logo.png" class="store-logo" />
+        <h1 class="total-label">Refund Amount</h1>
+        <div class="total-amount">€{{ receipt.total_amount }}</div>
 
-    <h2>{{ receipt?.store_name }}</h2>
-    <p>{{ receipt?.location }}</p>
-    <p class="subtle">Present Barcode at Till</p>
+        <div class="details-row">
+          <div class="info-box">
+            <label>Points</label>
+            <div>{{ receipt.bottle_count }}</div>
+          </div>
+          <div class="info-box">
+            <label>Reminder</label>
+            <div *ngIf="reminderSet">{{ reminderDate | date:'dd MMM, HH:mm' }}</div>
+            <ion-button size="small" fill="clear" (click)="openReminderModal()">
+              <ion-icon slot="start" name="alarm-outline"></ion-icon>
+              {{ reminderSet ? 'Change' : 'Set' }}
+            </ion-button>
+          </div>
+        </div>
 
-    <h3>Total Amount</h3>
-    <div class="amount">€{{ receipt?.total_amount }}</div>
-
-    <div class="info-boxes">
-      <div class="info">
-        <label>Bottles</label>
-        <div>{{ receipt?.bottle_count }}</div>
-      </div>
-      <div class="info">
-        <label>Set Reminder</label>
-        <div>{{ receipt?.timestamp | date: 'dd MMM yyyy, HH:mm' }}</div>
+        <div class="barcode">
+          <app-barcode [receiptId]="+currentId"></app-barcode>
+        </div>
       </div>
     </div>
-
-    <div class="barcode">
-      <app-barcode [receiptId]="+currentId"></app-barcode>
-    </div>
-
-    <ion-button fill="clear" class="pdf-btn">📄 Get PDF Receipt</ion-button>
-    <ion-button expand="block" color="warning">Done</ion-button>
   </div>
 
+  <!-- 🌀 Skeleton Loading -->
+  <ng-template #loading>
+    <div class="receipt-wrapper">
+      <ion-skeleton-text animated style="width: 100px; height: 100px; margin: 0 auto; border-radius: 50%"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 60%; margin: 16px auto"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 80%; margin: 16px auto"></ion-skeleton-text>
+    </div>
+  </ng-template>
+
+  <!-- ⏰ Reminder Modal -->
+  <ion-modal [isOpen]="reminderModalOpen" (didDismiss)="reminderModalOpen = false">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Set Return Reminder</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="reminderModalOpen = false">
+              <ion-icon name="close-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="modal-content">
+        <ion-datetime
+          [(ngModel)]="reminderDate"
+          presentation="date-time"
+          [min]="minDateTime"
+          placeholder="Select date and time">
+        </ion-datetime>
+        <ion-button expand="block" (click)="setReminder()">
+          <ion-icon slot="start" name="save-outline"></ion-icon>
+          Save Reminder
+        </ion-button>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </ion-content>
