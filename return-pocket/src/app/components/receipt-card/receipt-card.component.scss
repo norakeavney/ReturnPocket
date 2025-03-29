@@ -1,57 +1,74 @@
-:host {
-  display: block;
-  font-family: 'Roboto Mono', Courier, monospace; /* Printed receipt look */
-  padding: 15px;
-  border-radius: 5px;
+.receipt-card {
+  width: 100%;
+  max-width: 430px;
+  margin: 12px auto;
 }
 
-.receipt-container {
-  background: url('/assets/resources/Receipt.svg') no-repeat center top / contain;
-  padding: 30px;
-  width: 80%;
-  max-width: 320px;
-  min-height: 400px; /* Adjust height if needed */
-  margin: 20px auto;
+.receipt-background {
+  background-image: url('/assets/resources/Receipt.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  padding: 5px;
+  min-height: 150px;
+  position: relative;
+  border-radius: 2px;
+}
+
+.receipt-content {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  
 }
 
-.receipt-logo {
-  width: 50px; /* Adjust based on the logo size */
-  height: auto;
-  margin-bottom: 10px;
+.left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-
-.receipt-item {
-  padding: 8px 0;
-  border-bottom: 1px dashed #333; /* Simulate a printed receipt line */
+.store-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: fill;
 }
 
-.receipt-header {
-  color: #444;
-  font-weight: bold;
-  font-size: 1.2rem;
-}
-
-.receipt-details {
-  font-size: 0.9rem;
-  color: #444;
-}
-
-.receipt-footer {
-  color: #444;
-  text-align: center;
-  font-size: 0.8rem;
-  margin-top: 15px;
- 
-}
-
-.receipt-wrapper {
+.info {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* Ensures full page height */
+}
+
+.store-name {
+  font-weight: bold;
+}
+
+.points,
+.location {
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.right {
+  text-align: right;
+}
+
+.total-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: #888;
+}
+
+.total-amount {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 4px 0;
+}
+
+.view-barcode {
+  color: #f59e0b;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
 }

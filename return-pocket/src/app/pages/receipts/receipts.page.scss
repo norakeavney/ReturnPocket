@@ -10,15 +10,15 @@ ion-content {
   
   .receipt-list {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-direction: column;
+    gap: 16px;
     width: 100%;
-    max-width: 500px; /* Limit width */
+    max-width: 600px;
+    padding: 16px;
+    margin: 0 auto;
   }
   
   .receipt-container {
     width: 100%;
-    max-width: 280px; /* Keep receipts a reasonable size */
-    min-height: 350px; /* Ensure they don’t shrink */
+    min-height: auto;
   }
-  

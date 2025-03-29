@@ -1,11 +1,20 @@
-<div class="receipt-container">
-  <img src="./assets/resources/lidl.jpg" alt="Receipt Logo" class="receipt-logo" />
-  
-  <h2 class="receipt-header">{{ receipt.store_name }}</h2>
-  <p class="receipt-details">{{ receipt.location }}</p>
-  <p class="receipt-details">🧴 Bottles: {{ receipt.bottle_count }} | 💰 €{{ receipt.total_amount }}</p>
+<div class="receipt-card">
+  <div class="receipt-background">
+    <div class="receipt-content">
+      <div class="left">
+        <img [src]="getStoreLogo(receipt.store_name)" class="store-logo" />
+        <div class="info">
+          <div class="store-name">{{ receipt.store_name }}</div>
+          <div class="location">{{ receipt.location }}</div>
+          <div class="points">{{ receipt.bottle_count }} Points</div>
+        </div>
+      </div>
 
-  <div class="receipt-footer">
-    ** Thank you for recycling! **
+      <div class="right">
+        <div class="total-label">TOTAL</div>
+        <div class="total-amount">€{{ receipt.total_amount }}</div>
+        <a class="view-barcode" (click)="viewReceipt(receipt.id)">View Barcode</a>
+      </div>
+    </div>
   </div>
 </div>
