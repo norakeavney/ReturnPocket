@@ -22,3 +22,48 @@ ion-content {
     width: 100%;
     min-height: auto;
   }
+
+  .filter-container {
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 12px;
+    margin: 16px;
+  }
+  
+  .button-group-label {
+    font-size: 0.9em;
+    color: #666;
+    margin-bottom: 8px;
+  }
+  
+  .button-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  
+  .store-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  
+  ion-button {
+    --background: #ffffff;
+    --color: #333333;
+    --border-radius: 20px;
+    --box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    --padding-start: 12px;
+    --padding-end: 12px;
+  
+    &.active {
+      --background: #ff9ecd;
+      --color: #ffffff;
+    }
+  }
+  
+  .sort-buttons, .store-filters {
+    margin-bottom: 16px;
+  }
