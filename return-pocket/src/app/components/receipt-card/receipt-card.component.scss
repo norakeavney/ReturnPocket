@@ -5,27 +5,36 @@
 }
 
 .receipt-background {
-  background-image: url('/assets/resources/Receipt.svg');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
   display: flex;
-  padding: 5px;
-  min-height: 150px;
+  padding: 20px 24px;
+  min-height: 120px;
   position: relative;
-  border-radius: 2px;
+  width: 100%;
 }
 
 .receipt-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap; 
+  gap: 12px;       
+  width: 100%;
 }
 
 .left {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex: 1; 
+  min-width: 0;
+}
+
+.right {
+  text-align: right;
+  flex-shrink: 0; 
 }
 
 .store-logo {
