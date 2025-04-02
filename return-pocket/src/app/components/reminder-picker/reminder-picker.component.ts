@@ -1,14 +1,16 @@
+// Imports
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { IonicModule, ToastController } from '@ionic/angular';
+import {trigger,style,transition,animate,state} from '@angular/animations'; // Animation imports
 import { ReminderService } from '../../services/reminder.service';
 import { Receipt } from '../../services/sqlite.service';
-import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import {
-  trigger, style, transition, animate, state
-} from '@angular/animations';
 
-
+/**
+ * Component for picking reminder dates(notifications) for receipts
+ * Includes animation for smooth entry/exit transitions
+ */
 @Component({
   selector: 'app-reminder-picker',
   templateUrl: './reminder-picker.component.html',
@@ -42,17 +44,27 @@ import {
 })
 export class ReminderPickerComponent {
   @Input() receipt!: Receipt;
-  @Output() reminderSet = new EventEmitter<void>();
+  @Output() reminderSet: EventEmitter<void> = new EventEmitter<void>();
 
+  // Component state
   reminderDate: string = '';
-  minDateTime = new Date().toISOString();
+  minDateTime: string = new Date().toISOString();
 
   constructor(
     private reminderService: ReminderService,
     private toastCtrl: ToastController
   ) {}
 
-  async setReminder() {
+  /**
+   * Sets a reminder for the receipt.
+   * 
+   * This method validates the selected reminder date and schedules a notification
+   * if the date is valid. It ensures that the reminder is set for a future date
+   * and calculates the delay in minutes before scheduling the reminder.
+   * 
+   * @returns {Promise<void>} A promise that resolves when the reminder is set or rejects on failure.
+   */
+  async setReminder(): Promise<void> {
     if (!this.reminderDate || !this.receipt) return;
 
     const selected = new Date(this.reminderDate);
@@ -70,12 +82,26 @@ export class ReminderPickerComponent {
       this.showToast('Reminder set successfully!', 'success');
       this.reminderSet.emit();
     } catch (e) {
-      console.error(e);
+      console.error('Failed to set reminder:', e);
       this.showToast('Failed to set reminder', 'danger');
     }
   }
 
-  private async showToast(message: string, color: 'success' | 'warning' | 'danger') {
+  /**
+   * Displays a toast message to the user.
+   * 
+   * This method creates and presents a toast notification with the specified
+   * message and color. The toast is displayed at the bottom of the screen for
+   * a duration of 2 seconds.
+   * 
+   * @param {string} message - The message to display.
+   * @param {'success' | 'warning' | 'danger'} color - The color of the toast, indicating its type.
+   * @returns {Promise<void>} A promise that resolves when the toast is presented.
+   */
+  private async showToast(
+    message: string, 
+    color: 'success' | 'warning' | 'danger'
+  ): Promise<void> {
     const toast = await this.toastCtrl.create({
       message,
       duration: 2000,
@@ -85,8 +111,13 @@ export class ReminderPickerComponent {
     await toast.present();
   }
 
-  handleReminderDone() {
-    this.setReminder(); 
+  /**
+   * Handler for reminder completion.
+   * 
+   * This method is triggered when the reminder is marked as done. It calls
+   * the `setReminder` method to ensure the reminder is properly set.
+   */
+  handleReminderDone(): void {
+    this.setReminder();
   }
-  
 }

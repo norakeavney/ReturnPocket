@@ -22,6 +22,9 @@ export class ReceiptsPage {
     this.applyFilters();
   }
 
+  /**
+   * Applies the current filters and sorting to the receipts list.
+   */
   applyFilters() {
     let data = [...this.receipts];
 
@@ -47,16 +50,28 @@ export class ReceiptsPage {
     this.filteredReceipts = data;
   }
 
+  /**
+   * Navigates to the receipt detail page for the given receipt ID.
+   * @param id The ID of the receipt to view.
+   */
   viewReceipt(id: string | undefined) {
     if (!id) return;
     this.router.navigate(['/receipt-detail', id]);
   }
 
+  /**
+   * Sets the sorting criteria and reapplies filters.
+   * @param sort The sorting criteria ('dateAsc', 'dateDesc', 'amountAsc', 'amountDesc').
+   */
   setSortBy(sort: string) {
     this.sortBy = sort;
     this.applyFilters();
   }
 
+  /**
+   * Sets the store filter and reapplies filters.
+   * @param store The name of the store to filter by.
+   */
   setFilterStore(store: string) {
     this.filterStore = store;
     this.applyFilters();

@@ -38,6 +38,9 @@ export class ReceiptDetailPage implements OnInit {
     private sqliteService: SqliteService,
   ) {}
 
+  /**
+   * Initializes the component by fetching the receipt data based on the current route ID.
+   */
   async ngOnInit() {
     this.currentId = this.route.snapshot.paramMap.get('id') || '';
     if (this.currentId) {
@@ -52,16 +55,28 @@ export class ReceiptDetailPage implements OnInit {
     }
   }
 
+  /**
+   * Handles the event when a reminder is set.
+   * Closes the reminder modal and marks the reminder as set.
+   */
   onReminderSet() {
-  this.reminderSet = true;
-  this.reminderModalOpen = false;
-}
+    this.reminderSet = true;
+    this.reminderModalOpen = false;
+  }
 
-
+  /**
+   * Fallback handler for when the store logo image fails to load.
+   * Sets the store logo path to a default image.
+   */
   onLogoError() {
     this.storeLogoPath = 'assets/resources/other.png';
   }
 
+  /**
+   * Retrieves the logo path for a given store name.
+   * @param store - The name of the store.
+   * @returns The path to the store's logo image.
+   */
   getLogoPath(store: string): string {
     switch (store.toLowerCase()) {
       case 'tesco': return 'assets/resources/store-logos/tesco.png';

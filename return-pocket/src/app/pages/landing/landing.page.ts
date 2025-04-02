@@ -20,12 +20,17 @@ export class LandingPage implements OnInit, OnDestroy {
   loadingMessage: string = 'Working our magic!';
   private loadingTimeout: number | null = null;
   
+  /**
+   * Displays the info modal before initiating the picture-taking process.
+   */
   async takePicture() {
     // Show the info modal first before taking a picture
     this.showInfoModal = true;
   }
 
-  // Clear any active timeout
+  /**
+   * Clears any active loading timeout to prevent memory leaks or unintended behavior.
+   */
   private clearLoadingTimeout() {
     if (this.loadingTimeout !== null) {
       window.clearTimeout(this.loadingTimeout);
@@ -33,6 +38,10 @@ export class LandingPage implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Handles the closing of the info modal and proceeds with taking a picture.
+   * Initiates receipt scanning and manages the loading state.
+   */
   async handleModalClose() {
     // Hide the modal
     this.showInfoModal = false;
@@ -88,6 +97,10 @@ export class LandingPage implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Lifecycle hook that runs when the component is initialized.
+   * Requests necessary permissions for Camera, Geolocation, and Local Notifications.
+   */
   async ngOnInit() {
     // When the app boots up for the first time, get permissions
     await Camera.requestPermissions();
@@ -95,6 +108,10 @@ export class LandingPage implements OnInit, OnDestroy {
     await LocalNotifications.requestPermissions();
   }
   
+  /**
+   * Lifecycle hook that runs when the component is destroyed.
+   * Ensures cleanup of timeouts and resets the loading state.
+   */
   ngOnDestroy() {
     this.clearLoadingTimeout();
     this.isLoading = false;

@@ -14,11 +14,19 @@ export class ReceiptCardComponent  {
 
   constructor(private router: Router) {}
 
+  /**
+   * Navigates to the receipt detail page for the given receipt ID.
+   * @param id - The ID of the receipt to view.
+   */
   viewReceipt(id: string | number) {
     this.router.navigate(['/receipt-detail', id]);
   }
 
-
+  /**
+   * Returns the logo path for a given store name.
+   * @param store - The name of the store.
+   * @returns The file path to the store's logo.
+   */
   getStoreLogo(store: string): string {
     switch (store.toLowerCase()) {
       case 'tesco': return 'assets/resources/store-logos/tesco.png';
