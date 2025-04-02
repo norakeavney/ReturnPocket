@@ -1,6 +1,6 @@
 <ion-content class="receipt-detail" [fullscreen]="true">
   <div class="receipt-wrapper" *ngIf="receipt; else loading">
-    <!-- 🧾 SVG as CSS Background Container -->
+    <!-- SVG as CSS Background Container -->
     <div class="receipt-bg-frame">
       <div class="receipt-content">
         <!-- Store Logo -->
@@ -24,6 +24,7 @@
           </div>
           <div class="info-box">
             <label>Reminder</label>
+            <br>
             <div *ngIf="reminderSet">{{ reminderDate | date:'dd MMM, HH:mm' }}</div>
             <ion-button size="small" fill="clear" (click)="openReminderModal()">
               <ion-icon slot="start" name="alarm-outline"></ion-icon>
@@ -39,7 +40,7 @@
     </div>
   </div>
 
-  <!-- 🌀 Skeleton Loading -->
+  <!-- Skeleton Loading -->
   <ng-template #loading>
     <div class="receipt-wrapper">
       <ion-skeleton-text animated style="width: 100px; height: 100px; margin: 0 auto; border-radius: 50%"></ion-skeleton-text>
@@ -48,7 +49,7 @@
     </div>
   </ng-template>
 
-  <!-- ⏰ Reminder Modal -->
+  <!-- Reminder Modal -->
   <ion-modal [isOpen]="reminderModalOpen" (didDismiss)="reminderModalOpen = false">
     <ng-template>
       <ion-header>
@@ -63,11 +64,12 @@
       </ion-header>
       <ion-content class="modal-content">
         <ion-datetime
-          [(ngModel)]="reminderDate"
-          presentation="date-time"
-          [min]="minDateTime"
-          placeholder="Select date and time">
-        </ion-datetime>
+        [(ngModel)]="reminderDate"
+        [min]="minDateTime"
+        presentation="date-time"
+        show-default-buttons="true"
+        color="primary">
+      </ion-datetime>      
         <ion-button expand="block" (click)="setReminder()">
           <ion-icon slot="start" name="save-outline"></ion-icon>
           Save Reminder

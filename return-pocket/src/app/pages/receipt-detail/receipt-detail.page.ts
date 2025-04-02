@@ -47,55 +47,59 @@ export class ReceiptDetailPage implements OnInit {
   }
 
   async setReminder() {
-    if (!this.reminderDate || !this.receipt) return;
-    
-    const selectedDate = new Date(this.reminderDate);
-    if (selectedDate <= new Date()) {
-      const toast = await this.toastCtrl.create({
-        message: 'Please select a future date and time',
-        duration: 2000,
-        position: 'bottom',
-        color: 'warning'
-      });
-      await toast.present();
-      return;
+    if (!this.receipt || !this.reminderDate) return;
+  
+    const selected = new Date(this.reminderDate);
+    if (selected <= new Date()) {
+      return this.showToast('Please select a future date and time', 'warning');
     }
-    
-    const delayInMins = Math.floor((selectedDate.getTime() - Date.now()) / 60000);
-    if (delayInMins <= 0) {
-      console.warn('Date must be in the future');
-      return;
-    }
-    
+  
+    const delayMins = Math.floor((selected.getTime() - Date.now()) / 60000);
     try {
       await this.reminderService.scheduleReminder(
         `Don't forget to use your ${this.receipt.store_name} receipt!`,
-        delayInMins
+        delayMins
       );
       this.reminderSet = true;
       this.reminderModalOpen = false;
-      console.log('Reminder set for', selectedDate);
-      const toast = await this.toastCtrl.create({
-        message: 'Reminder set successfully!',
-        duration: 2000,
-        position: 'bottom',
-        color: 'success'
-      });
-      await toast.present();
-    } catch (error) {
-      console.error('Error scheduling reminder:', error);
+      this.showToast('Reminder set successfully!', 'success');
+    } catch (e) {
+      console.error(e);
+      this.showToast('Failed to set reminder', 'danger');
     }
+  
+  
 
     this.reminderModalOpen = false; // closes the modal
   }
-  
-  getLogoPath(storeName: string): string {
-    const normalizedName = storeName.toLowerCase().replace(/\s+/g, '-');
-    return `assets/resources/${normalizedName}.png`;
+
+  async showToast(msg: string, color: 'success' | 'warning' | 'danger') {
+    const toast = await this.toastCtrl.create({
+      message: msg,
+      duration: 2000,
+      position: 'bottom',
+      color
+    });
+    await toast.present();
   }
+  
+  
 
   onLogoError() {
     this.storeLogoPath = 'assets/resources/other.png';
+  }
+
+  getLogoPath(store: string): string {
+    switch (store.toLowerCase()) {
+      case 'tesco': return 'assets/resources/store-logos/tesco.png';
+      case 'lidl': return 'assets/resources/store-logos/lidl.png';
+      case 'aldi': return 'assets/resources/store-logos/aldi.png';
+      case 'centra': return 'assets/resources/store-logos/centra.png';
+      case 'spar': return 'assets/resources/store-logos/spar.png';
+      case 'dunnes' : return 'assets/resources/store-logos/dunnes.png';
+      case 'supervalu': return 'assets/resources/store-logos/supervalu.png';
+      default: return 'assets/resources/store-logos/other.png';
+    }
   }
 
  
