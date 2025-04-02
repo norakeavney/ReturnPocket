@@ -8,6 +8,7 @@ import { ReceiptDetailPageRoutingModule } from './receipt-detail-routing.module'
 
 import { ReceiptDetailPage } from './receipt-detail.page';
 import { BarcodeComponent } from "../../components/barcode/barcode.component";
+import { ReminderPickerComponent } from "../../components/reminder-picker/reminder-picker.component";
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { BarcodeComponent } from "../../components/barcode/barcode.component";
     FormsModule,
     IonicModule,
     ReceiptDetailPageRoutingModule,
-    BarcodeComponent
+    BarcodeComponent,
+    ReminderPickerComponent
 ],
   declarations: [ReceiptDetailPage]
 })

@@ -1,0 +1,17 @@
+<ion-card>
+  <ion-card-header>
+    <ion-card-title>Set a Reminder</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    <div [@popup]>
+      <ion-datetime
+        [(ngModel)]="reminderDate"
+        [min]="minDateTime"
+        presentation="date-time"
+        show-default-buttons="true"
+        (ionDone)="handleReminderDone()">
+      </ion-datetime>
+    </div>
+    
+  </ion-card-content>
+</ion-card>

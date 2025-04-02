@@ -1,15 +1,27 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SqliteService, Receipt } from '../../services/sqlite.service';
-import { ReminderService } from '../../services/reminder.service';
-import { ToastController } from '@ionic/angular';
-
+import {
+  trigger, transition, style, animate
+} from '@angular/animations';
 
 @Component({
   standalone: false,
   selector: 'app-receipt-detail',
   templateUrl: './receipt-detail.page.html',
   styleUrls: ['./receipt-detail.page.scss'],
+  animations: [
+    trigger('slideIn', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateX(100px)' }),
+        animate('300ms ease-out', style({ opacity: 1, transform: 'translateX(0)' }))
+      ]),
+      transition(':leave', [
+        animate('200ms ease-in', style({ opacity: 0, transform: 'translateX(100px)' }))
+      ])
+    ])
+  ]
+  
 })
 export class ReceiptDetailPage implements OnInit {
   currentId: string = '';
@@ -24,8 +36,6 @@ export class ReceiptDetailPage implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private sqliteService: SqliteService,
-    private reminderService: ReminderService,
-    private toastCtrl: ToastController
   ) {}
 
   async ngOnInit() {
@@ -42,48 +52,11 @@ export class ReceiptDetailPage implements OnInit {
     }
   }
 
-  openReminderModal() {
-    this.reminderModalOpen = true;
-  }
+  onReminderSet() {
+  this.reminderSet = true;
+  this.reminderModalOpen = false;
+}
 
-  async setReminder() {
-    if (!this.receipt || !this.reminderDate) return;
-  
-    const selected = new Date(this.reminderDate);
-    if (selected <= new Date()) {
-      return this.showToast('Please select a future date and time', 'warning');
-    }
-  
-    const delayMins = Math.floor((selected.getTime() - Date.now()) / 60000);
-    try {
-      await this.reminderService.scheduleReminder(
-        `Don't forget to use your ${this.receipt.store_name} receipt!`,
-        delayMins
-      );
-      this.reminderSet = true;
-      this.reminderModalOpen = false;
-      this.showToast('Reminder set successfully!', 'success');
-    } catch (e) {
-      console.error(e);
-      this.showToast('Failed to set reminder', 'danger');
-    }
-  
-  
-
-    this.reminderModalOpen = false; // closes the modal
-  }
-
-  async showToast(msg: string, color: 'success' | 'warning' | 'danger') {
-    const toast = await this.toastCtrl.create({
-      message: msg,
-      duration: 2000,
-      position: 'bottom',
-      color
-    });
-    await toast.present();
-  }
-  
-  
 
   onLogoError() {
     this.storeLogoPath = 'assets/resources/other.png';
