@@ -108,6 +108,41 @@ export class SqliteService {
     const result = await this.db?.query('SELECT * FROM receipts_table WHERE id = ?', [id]);
     return result?.values?.[0] || null;
   }
+
+  async getUnsyncedPointsTotal(): Promise<number> {
+    const res = await this.db?.query("SELECT SUM(points) as total FROM receipts_table WHERE synced = 0");
+    return res?.values?.[0]?.total || 0;
+  }
+
+  async getUnsyncedReceiptIds(): Promise<number[]> {
+    const res = await this.db?.query("SELECT id FROM receipts_table WHERE synced = 0");
+    return res?.values?.map(r => r.id) || [];
+  }  
+
+  async markDataSynced(ids: number[]): Promise<void> {
+    if (!ids.length) return;
+
+    const placeholders = ids.map(() => '?').join(',');
+    const query = `UPDATE receipts_table SET synced = 1 WHERE id IN (${placeholders})`;
+    await this.db?.run(query, ids);
+  }
+
+  async getUnsyncedStoreBreakdown(): Promise<Record<string, number>> {
+    const res = await this.db?.query(`
+      SELECT store_name, SUM(points) as total 
+      FROM receipts_table 
+      WHERE synced = 0 
+      GROUP BY store_name
+    `);
+  
+    const result: Record<string, number> = {};
+    res?.values?.forEach((row: any) => {
+      result[row.store_name] = row.total;
+    });
+  
+    return result;
+  }
+  
   
   
 }
