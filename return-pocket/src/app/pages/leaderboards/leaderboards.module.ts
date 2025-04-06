@@ -1,11 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
 import { IonicModule } from '@ionic/angular';
-
 import { LeaderboardsPageRoutingModule } from './leaderboards-routing.module';
-
 import { LeaderboardsPage } from './leaderboards.page';
 
 @NgModule({
@@ -13,8 +10,9 @@ import { LeaderboardsPage } from './leaderboards.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    LeaderboardsPageRoutingModule
+    LeaderboardsPageRoutingModule,
+    LeaderboardsPage
   ],
-  declarations: [LeaderboardsPage]
+  declarations: []
 })
 export class LeaderboardsPageModule {}

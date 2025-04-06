@@ -1,13 +1,133 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>leaderboards</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">leaderboards</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <!-- Safe area spacing for device notches -->
+  <div class="safe-area-top"></div>
+  
+  <!-- Back button -->
+  <div class="back-button-container">
+    <ion-button fill="clear" class="back-button" (click)="goBack()">
+      <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+    </ion-button>
+  </div>
+  
+  <!-- Page header -->
+  <div class="page-header">
+    <h1>Leaderboards</h1>
+    <div class="filter-badge" *ngIf="selectedCounty || selectedStore">
+      <span *ngIf="selectedCounty">{{ selectedCounty }}</span>
+      <span *ngIf="selectedCounty && selectedStore"> | </span>
+      <img *ngIf="selectedStore" [src]="getSelectedStoreLogo()" [alt]="selectedStore" class="filter-store-icon">
+    </div>
+  </div>
+  
+  <!-- Current user rank summary (if logged in and not in top 10) -->
+  <ion-card class="user-rank-card" *ngIf="currentUserRank > 0 && !isCurrentUserInTop10">
+    <ion-card-content>
+      <div class="user-rank-content">
+        <div class="rank-badge" [class]="getBadgeColor(currentUserRank)">
+          {{ currentUserRank }}
+        </div>
+        <div class="rank-info">
+          <h2>Your Position: {{ formatRank(currentUserRank) }}</h2>
+          <p>Keep recycling to climb the leaderboard!</p>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+  
+  <!-- Leaderboard results -->
+  <ion-card class="leaderboard-card">
+    <ion-card-header>
+      <ion-card-title>
+        <ion-icon name="trophy" color="warning"></ion-icon>
+        Top Recyclers
+      </ion-card-title>
+      <ion-button fill="clear" class="filter-toggle-btn" (click)="toggleFilters()">
+        <ion-icon name="funnel-outline" slot="start"></ion-icon>
+        Filter
+      </ion-button>
+    </ion-card-header>
+    
+    <ion-card-content>
+      <!-- Loading state -->
+      <div class="loading-container" *ngIf="isLoading">
+        <ion-spinner name="crescent"></ion-spinner>
+        <p>Loading leaderboards...</p>
+      </div>
+      
+      <!-- Error state -->
+      <div class="error-container" *ngIf="loadingError">
+        <ion-icon name="alert-circle-outline" color="danger"></ion-icon>
+        <p>{{ loadingError }}</p>
+        <ion-button (click)="loadLeaderboardData()">Retry</ion-button>
+      </div>
+      
+      <!-- Empty state -->
+      <div class="empty-state" *ngIf="!isLoading && !loadingError && filteredUsers.length === 0">
+        <ion-icon name="search-outline" color="medium"></ion-icon>
+        <p>No recyclers found with the current filters.</p>
+        <ion-button (click)="resetFilters()">Reset Filters</ion-button>
+      </div>
+      
+      <!-- Leaderboard list (top 10 only) -->
+      <ion-list lines="none" *ngIf="!isLoading && !loadingError && topUsers.length > 0">
+        <ion-item *ngFor="let user of topUsers" [class.current-user]="isCurrentUser(user.id)">
+          <div class="rank-indicator" slot="start" [class]="getBadgeColor(user.rank || 0)">
+            {{ user.rank }}
+          </div>
+          <ion-label>
+            <h2>{{ user.display_name || 'Anonymous Recycler' }}</h2>
+            <p>{{ user.user_county || 'Unknown Location' }}</p>
+          </ion-label>
+          <div class="points-display" slot="end">
+            <span class="points-value">{{ getPoints(user) }}</span>
+            <span class="points-label">pts</span>
+          </div>
+        </ion-item>
+      </ion-list>
+      
+      <!-- Show message if current user is outside top 10 -->
+      <div class="score-footer" *ngIf="currentUserRank > 10 && !isLoading && !loadingError">
+        <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+        <p>{{ filteredUsers.length - 10 }} more users between top 10 and your position</p>
+      </div>
+    </ion-card-content>
+  </ion-card>
+  
+  <!-- Filter section (hidden by default) -->
+  <ion-card class="filter-card" *ngIf="showFilters">
+    <ion-card-content>
+      <!-- County filter -->
+      <div class="filter-section">
+        <h3>Filter by County</h3>
+        <ion-select interface="popover" [(ngModel)]="selectedCounty" placeholder="Select County">
+          <ion-select-option value="">All Counties</ion-select-option>
+          <ion-select-option *ngFor="let county of irishCounties" [value]="county">{{ county }}</ion-select-option>
+        </ion-select>
+      </div>
+      
+      <!-- Store filter with logo buttons -->
+      <div class="filter-section">
+        <h3>Filter by Store</h3>
+        <div class="store-logo-grid">
+          <div class="store-logo-item" 
+               *ngFor="let store of storeOptions" 
+               [class.selected]="selectedStore === store.value"
+               (click)="selectedStore = store.value">
+            <img [src]="store.logo" [alt]="store.name">
+            <span>{{ store.name }}</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Filter buttons -->
+      <div class="filter-buttons">
+        <ion-button expand="block" (click)="applyFilters()">
+          Apply Filters
+        </ion-button>
+        <ion-button expand="block" fill="outline" (click)="resetFilters()">
+          Reset
+        </ion-button>
+      </div>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
