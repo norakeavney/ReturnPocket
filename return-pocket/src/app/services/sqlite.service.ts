@@ -5,11 +5,11 @@ export interface Receipt {
   id?: number;
   store_name: string;
   location: string;
-  bottle_count: number;
+  points: number;
   total_amount: number;
-  img_path?: string;
   barcode_data?: string;
   timestamp?: string;
+  synced?: number;
 }
 
 
@@ -40,11 +40,11 @@ export class SqliteService {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         store_name TEXT,
         location TEXT,
-        bottle_count INTEGER,
+        points INTEGER,
         total_amount REAL,
-        img_path TEXT,
         barcode_data TEXT,
-        timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+        timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+        synced INTEGER DEFAULT 0
       );
       `;
     await this.db.execute(schema);
@@ -60,16 +60,15 @@ export class SqliteService {
 
   async addReceipt(receipt: Receipt) {
     const query = `
-      INSERT INTO receipts_table (store_name, location, bottle_count, total_amount, img_path, barcode_data)
+      INSERT INTO receipts_table (store_name, location, points, total_amount, barcode_data)
       VALUES (?, ?, ?, ?, ?, ?);
     `;
 
     const values = [
       receipt.store_name,
       receipt.location,
-      receipt.bottle_count,
+      receipt.points,
       receipt.total_amount,
-      receipt.img_path,
       receipt.barcode_data
     ];
 
