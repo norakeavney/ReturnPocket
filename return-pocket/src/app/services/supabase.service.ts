@@ -17,25 +17,33 @@ export class SupabaseService {
   constructor(private sqlite: SqliteService) { }
 
   async signUp(email: string, password: string, county: string, displayName: string) {
-
     const { data, error } = await this.supabase.auth.signUp({
-      email: email,
-      password: password
-    })
-
+      email,
+      password
+    });
+  
     if (error) throw error;
-    const userID = data.user?.id;
-    if (!userID) return;
-
-    await this.supabase.from('users').insert({
-      id: userID,
-      display_name: displayName,
-      location: county,
-      total_points: 0,
-    })
-
-
+  
+    // Wait until user is fully confirmed
+    const user = data.user;
+    if (!user) throw new Error("User not created.");
+  
+    // Add to your users table
+    const { error: insertError } = await this.supabase
+      .from('users')
+      .insert({
+        id: user.id,
+        email: email,
+        display_name: displayName,
+        user_county: county,
+        total_points: 0,
+        store_points: {}, // if you're using JSONB
+        last_sync: new Date().toISOString()
+      });
+  
+    if (insertError) throw insertError;
   }
+  
 
   async signIn(email: string, password: string) {
     await this.supabase.auth.signInWithPassword({
@@ -47,6 +55,15 @@ export class SupabaseService {
   async signOut() {
     await this.supabase.auth.signOut();
   }
+
+  async getCurrentUser() {
+    const { data: { user }, error } = await this.supabase.auth.getUser();
+    if (error) {
+      console.error('Error getting current user:', error);
+      return null;
+    }
+    return user;
+  }  
 
   async updateUserEmail(email: string) {
     await this.supabase.auth.updateUser({
