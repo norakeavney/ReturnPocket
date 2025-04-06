@@ -21,6 +21,10 @@ const routes: Routes = [
   {
     path: 'auth',
     loadChildren: () => import('./pages/auth/auth.module').then( m => m.AuthPageModule)
+  },
+  {
+    path: 'leaderboards',
+    loadChildren: () => import('./pages/leaderboards/leaderboards.module').then( m => m.LeaderboardsPageModule)
   }
 
 ];
