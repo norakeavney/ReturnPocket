@@ -85,6 +85,12 @@
         </ion-item>
       </ion-list>
       
+      <!-- Empty list message -->
+      <div class="empty-state" *ngIf="!isLoading && !loadingError && topUsers.length === 0">
+        <ion-icon name="people-outline" color="medium"></ion-icon>
+        <p>No users found on the leaderboard yet.</p>
+      </div>
+      
       <!-- Show message if current user is outside top 10 -->
       <div class="score-footer" *ngIf="currentUserRank > 10 && !isLoading && !loadingError">
         <ion-icon name="ellipsis-vertical-outline"></ion-icon>

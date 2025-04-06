@@ -145,4 +145,15 @@
       </div>
     </ion-card-content>
   </ion-card>
+
+  <!-- Logout Button - Only show when logged in -->
+  <ion-button 
+    *ngIf="isLoggedIn" 
+    expand="block" 
+    color="medium" 
+    class="logout-button" 
+    (click)="logout()">
+    <ion-icon name="log-out-outline" slot="start"></ion-icon>
+    Log Out
+  </ion-button>
 </ion-content>

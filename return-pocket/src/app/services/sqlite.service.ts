@@ -61,7 +61,7 @@ export class SqliteService {
   async addReceipt(receipt: Receipt) {
     const query = `
       INSERT INTO receipts_table (store_name, location, points, total_amount, barcode_data)
-      VALUES (?, ?, ?, ?, ?, ?);
+      VALUES (?, ?, ?, ?, ?);
     `;
 
     const values = [

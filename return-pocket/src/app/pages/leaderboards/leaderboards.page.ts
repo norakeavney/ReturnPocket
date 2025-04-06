@@ -95,6 +95,8 @@ export class LeaderboardsPage implements OnInit {
       if (error) throw error;
       
       if (data) {
+        console.log('Leaderboard data received:', data); // Debug log to check fetched data
+        
         // Add rank to each user
         this.users = data.map((user, index) => ({
           ...user,
@@ -115,6 +117,11 @@ export class LeaderboardsPage implements OnInit {
             this.isCurrentUserInTop10 = this.currentUserRank <= 10;
           }
         }
+      } else {
+        console.log('No data returned from leaderboard query');
+        this.users = [];
+        this.filteredUsers = [];
+        this.topUsers = [];
       }
     } catch (error) {
       console.error('Error loading leaderboard data:', error);
@@ -127,6 +134,7 @@ export class LeaderboardsPage implements OnInit {
   updateTopUsers() {
     // Update the top 10 users from filtered users
     this.topUsers = this.filteredUsers.slice(0, 10);
+    console.log('Top users updated:', this.topUsers); // Debug log to check top users
   }
   
   toggleFilters() {

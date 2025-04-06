@@ -351,4 +351,22 @@ export class StatsPage implements OnInit {
   goBack() {
     this.navCtrl.navigateBack('/');
   }
+
+  async logout() {
+    try {
+      await this.supabaseService.signOut();
+      // Reset user state
+      this.isLoggedIn = false;
+      this.userName = '';
+      this.userLevel = '';
+      this.userLevelNumber = 1;
+      this.userPoints = 0;
+      this.pointsToNextLevel = 100;
+      this.userLevelProgress = 0;
+      // Navigate to auth page
+      this.navCtrl.navigateRoot('/auth');
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  }
 }

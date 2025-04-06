@@ -18,6 +18,7 @@ export class AppComponent {
   async initApp() {
     await this.sqliteService.initialise();
     const user = await this.supa.getCurrentUser();
+    if (user) this.supa.syncData();
     SplashScreen.hide();
   }
   

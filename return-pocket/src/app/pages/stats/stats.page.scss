@@ -362,3 +362,16 @@ ion-item:not(.achieved) {
     color: #A8A6A4;
   }
 }
+
+// Logout Button
+.logout-button {
+  margin: 20px 16px 30px;
+  --border-radius: 12px;
+  --color: white;
+  --background: #908E8B;
+  font-family: 'Roboto Mono', monospace;
+  
+  ion-icon {
+    margin-right: 8px;
+  }
+}
