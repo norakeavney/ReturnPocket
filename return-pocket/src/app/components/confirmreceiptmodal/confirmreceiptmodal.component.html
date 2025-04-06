@@ -22,7 +22,7 @@
       <div class="receipt-detail">
         <span class="detail-label">Points:</span>
         <span class="detail-value">
-          {{ isAmountEdited ? 0 : receipt.bottle_count || 0 }}
+          {{ isAmountEdited ? 0 : receipt.points || 0 }}
           <span *ngIf="isAmountEdited" class="points-warning">(edited)</span>
         </span>
       </div>

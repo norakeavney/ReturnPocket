@@ -95,7 +95,7 @@ export class StatsPage implements OnInit {
     this.totalReceipts = receipts.length;
     
     this.totalBottles = receipts.reduce((total, receipt) => {
-      const actualBottles = (receipt.bottle_count / 100) / 0.15;
+      const actualBottles = (receipt.points / 100) / 0.15;
       return total + actualBottles;
     }, 0);
     
@@ -104,7 +104,7 @@ export class StatsPage implements OnInit {
     
     const storeMap = new Map<string, number>();
     receipts.forEach(receipt => {
-      const actualBottles = Math.round((receipt.bottle_count / 100) / 0.15);
+      const actualBottles = Math.round((receipt.points / 100) / 0.15);
       const count = storeMap.get(receipt.store_name) || 0;
       storeMap.set(receipt.store_name, count + actualBottles);
     });
