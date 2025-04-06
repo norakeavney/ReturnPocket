@@ -1,0 +1,289 @@
+ion-content {
+  font-family: 'Roboto Mono', monospace;
+}
+
+.auth-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 40px 20px;
+  min-height: 100%;
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 30px;
+
+  .auth-logo {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 15px;
+  }
+
+  h1 {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0 0 8px;
+    color: #4A4845;
+  }
+
+  p {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 16px;
+    color: #6B6864;
+    margin: 0;
+  }
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.auth-tabs {
+  display: flex;
+  width: 100%;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+
+  button {
+    font-family: 'Roboto Mono', monospace;
+    flex: 1;
+    background: none;
+    border: none;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #908E8B;
+    position: relative;
+    transition: all 0.2s ease;
+
+    &.active {
+      color: #4A4845;
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: linear-gradient(to right, #908E8B, #736F6B);
+      }
+    }
+  }
+}
+
+.auth-form {
+  padding: 24px;
+
+  form {
+    width: 100%;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  label {
+    font-family: 'Roboto Mono', monospace;
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #4A4845;
+  }
+
+  .input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 8px;
+    padding: 0 16px;
+    transition: border 0.2s ease;
+
+    &:focus-within {
+      border-color: #736F6B;
+    }
+
+    ion-icon {
+      color: #908E8B;
+      font-size: 20px;
+      margin-right: 10px;
+    }
+
+    .toggle-password {
+      cursor: pointer;
+      padding: 8px 0 8px 8px;
+    }
+
+    input, .county-select {
+      font-family: 'Roboto Mono', monospace;
+      flex: 1;
+      border: none;
+      outline: none;
+      font-size: 16px;
+      padding: 12px 0;
+      background: transparent;
+      color: #4A4845;
+
+      &::placeholder {
+        color: #C5C3C0;
+      }
+    }
+    
+    .county-select {
+      width: 100%;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml;utf8,<svg fill='%23908E8B' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 0 top 50%;
+      cursor: pointer;
+      
+      option {
+        font-family: 'Roboto Mono', monospace;
+        color: #4A4845;
+      }
+    }
+  }
+
+  .error-message {
+    font-family: 'Roboto Mono', monospace;
+    margin-top: 6px;
+    color: #d9534f;
+    font-size: 13px;
+  }
+
+  .form-actions {
+    margin-top: 30px;
+
+    .submit-button {
+      font-family: 'Roboto Mono', monospace;
+      width: 100%;
+      padding: 14px;
+      border-radius: 8px;
+      border: none;
+      background: linear-gradient(to right, #908E8B, #736F6B);
+      color: white;
+      font-size: 16px;
+      font-weight: 500;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.2s ease;
+
+      &:disabled {
+        opacity: 0.7;
+      }
+
+      ion-spinner {
+        --color: white;
+      }
+    }
+  }
+
+  .forgot-password {
+    text-align: center;
+    margin-top: 16px;
+
+    a {
+      font-family: 'Roboto Mono', monospace;
+      color: #6B6864;
+      font-size: 14px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  }
+}
+
+.auth-footer {
+  margin-top: 30px;
+  text-align: center;
+
+  p {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 13px;
+    color: #908E8B;
+    line-height: 1.5;
+
+    a {
+      font-family: 'Roboto Mono', monospace;
+      color: #736F6B;
+      text-decoration: none;
+    }
+  }
+}
+
+.error-toast {
+  font-family: 'Roboto Mono', monospace;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #d9534f;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  max-width: 90%;
+  z-index: 1000;
+
+  ion-icon {
+    margin-right: 8px;
+    font-size: 20px;
+  }
+
+  span {
+    flex: 1;
+    font-size: 14px;
+  }
+
+  button {
+    background: none;
+    border: none;
+    color: white;
+    margin-left: 10px;
+    padding: 4px;
+    cursor: pointer;
+
+    ion-icon {
+      font-size: 18px;
+      margin: 0;
+    }
+  }
+}
+
+.safe-area-top {
+  height: env(safe-area-inset-top);
+  min-height: 15px;
+}
+
+.back-button-container {
+  position: absolute;
+  top: calc(env(safe-area-inset-top) + 5px);
+  left: 5px;
+  z-index: 10;
+}
+
+.back-button {
+  --padding-start: 8px;
+  --padding-end: 8px;
+  --padding-top: 8px;
+  --padding-bottom: 8px;
+  margin: 0;
+  
+  ion-icon {
+    color: #4A4845;
+    font-size: 22px;
+  }
+}
