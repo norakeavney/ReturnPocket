@@ -7,23 +7,32 @@ import {
   CapacitorBarcodeScannerAndroidScanningLibrary
 } from '@capacitor/barcode-scanner';
 
+/**
+ * Service for handling barcode scanning functionality using Capacitor Barcode Scanner plugin.
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class BarcodeService {
   constructor() {}
 
+  /**
+   * Initiates a barcode scanning process and returns the scanned barcode data.
+   * 
+   * @returns A promise that resolves to the scanned barcode data as a string, or `null` if scanning fails.
+   * @throws Logs an error to the console if the scanning process encounters an issue.
+   */
   async scanBarcode(): Promise<string | null> {
     try {
       const result = await CapacitorBarcodeScanner.scanBarcode({
         hint: CapacitorBarcodeScannerTypeHint.ALL, // Can be QRCODE, CODE128, etc.
-        scanInstructions: "Scan your barcode!",
-        scanButton: false,
-        scanText: "Store Me",
-        cameraDirection: CapacitorBarcodeScannerCameraDirection.BACK,
-        scanOrientation: CapacitorBarcodeScannerScanOrientation.ADAPTIVE,
+        scanInstructions: "Scan your barcode!", // Instructions displayed to the user.
+        scanButton: false, // Whether to show a scan button.
+        scanText: "Store Me", // Text displayed during scanning.
+        cameraDirection: CapacitorBarcodeScannerCameraDirection.BACK, // Use the back camera.
+        scanOrientation: CapacitorBarcodeScannerScanOrientation.ADAPTIVE, // Adjust orientation automatically.
         android: {
-          scanningLibrary: CapacitorBarcodeScannerAndroidScanningLibrary.ZXING
+          scanningLibrary: CapacitorBarcodeScannerAndroidScanningLibrary.ZXING // Android-specific scanning library.
         }
       });
 

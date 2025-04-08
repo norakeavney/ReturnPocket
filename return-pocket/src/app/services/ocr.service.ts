@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { createWorker } from 'tesseract.js';
 
+/**
+ * Enum representing the names of supported stores.
+ */
 enum StoreNames {
   Tesco = 'Tesco',
   Dunnes = 'Dunnes',
@@ -14,13 +17,24 @@ enum StoreNames {
 @Injectable({
   providedIn: 'root'
 })
-
+/**
+ * Service for performing OCR (Optical Character Recognition) on images
+ * and extracting relevant data such as store names and amounts.
+ */
 export class OcrService {
 
+  /**
+   * Promise for initializing the Tesseract.js worker.
+   */
   private workerPromise = createWorker('eng');
 
   constructor() { }
 
+  /**
+   * Processes an image by converting it to greyscale and binarizing it.
+   * @param imagePath - The path or URL of the image to process.
+   * @returns A promise that resolves to the processed image as a base64 string.
+   */
   processImage(imagePath: string): Promise<string> {
     
     return new Promise((resolve, reject) => {
@@ -65,6 +79,11 @@ export class OcrService {
 
   }
 
+  /**
+   * Runs OCR on a processed image and extracts the store name and amount.
+   * @param processedImage - The base64 string of the processed image.
+   * @returns A promise that resolves to an object containing the store name and amount.
+   */
   async runOCR(processedImage: string): Promise<{ store: string | null; amount: number | null; }> {
 
     const worker = await this.workerPromise;
@@ -75,6 +94,11 @@ export class OcrService {
 
   }
 
+  /**
+   * Extracts the store name and the highest amount from the OCR text.
+   * @param text - The text extracted from the image using OCR.
+   * @returns An object containing the store name and the highest amount found.
+   */
   extractData(text: string):  {store: string | null; amount: number | null; } {
 
     const lines = text.toUpperCase().split('\n').map(line =>

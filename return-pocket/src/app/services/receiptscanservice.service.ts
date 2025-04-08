@@ -6,11 +6,23 @@ import { OcrService } from './ocr.service';
 import { ModalController } from '@ionic/angular';
 import { ConfirmreceiptmodalComponent } from '../components/confirmreceiptmodal/confirmreceiptmodal.component';
 
+/**
+ * Service responsible for scanning receipts, extracting data using OCR,
+ * and saving the receipt information into the database.
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class ReceiptscanserviceService {
 
+  /**
+   * Constructor to inject required services.
+   * @param sqlite Service for interacting with the SQLite database.
+   * @param geo Service for resolving the user's geolocation.
+   * @param bar Service for scanning barcodes.
+   * @param ocr Service for processing images and extracting text using OCR.
+   * @param modalController Controller for managing modals in the application.
+   */
   constructor(
     private sqlite: SqliteService, 
     private geo: GeolocationService, 
@@ -21,6 +33,12 @@ export class ReceiptscanserviceService {
     console.log("Services injected");
   }
 
+  /**
+   * Scans a receipt, extracts data using OCR, and saves it to the database.
+   * @param imagePath Path to the receipt image.
+   * @param onBarcodeScanned Optional callback triggered after barcode scanning.
+   * @returns The saved receipt object or null if the user cancels confirmation.
+   */
   async scanAndSaveReceipt(imagePath: string, onBarcodeScanned?: () => void) {
     // First scan the barcode
     const barcode = await this.bar.scanBarcode();
@@ -61,6 +79,11 @@ export class ReceiptscanserviceService {
     }
   }
   
+  /**
+   * Displays a confirmation modal for the receipt.
+   * @param receipt The receipt object to confirm.
+   * @returns A promise that resolves to true if the user confirms, or false if they cancel.
+   */
   private async showConfirmationModal(receipt: Receipt): Promise<boolean> {
     const modal = await this.modalController.create({
       component: ConfirmreceiptmodalComponent,
