@@ -39,6 +39,7 @@
     "@capacitor/status-bar": "7.0.0",
     "@ionic/angular": "^8.0.0",
     "@ionic/cli": "^7.2.1",
+    "@supabase/supabase-js": "^2.49.4",
     "@zxing/browser": "^0.1.5",
     "g": "^2.0.1",
     "ionicons": "^7.0.0",

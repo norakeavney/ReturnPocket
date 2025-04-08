@@ -1,0 +1,119 @@
+<ion-content [fullscreen]="true" [scrollY]="true" class="ion-padding">
+  <!-- Safe area spacing for device notches -->
+  <div class="safe-area-top"></div>
+  
+  <!-- Minimal back button - moved below safe area -->
+  <div class="back-button-container">
+    <ion-button fill="clear" class="back-button" (click)="goBack()">
+      <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+    </ion-button>
+  </div>
+
+  <div class="auth-container">
+    <div class="auth-header">
+      <img src="assets/icon/icon.svg" alt="ReturnPocket Logo" class="auth-logo">
+      <h1>ReturnPocket</h1>
+      <p>Simple Scanning, Smart Saving</p>
+    </div>
+
+    <div class="auth-card">
+      <div class="auth-tabs">
+        <button [class.active]="authMode === 'login'" (click)="switchMode('login')">Sign In</button>
+        <button [class.active]="authMode === 'signup'" (click)="switchMode('signup')">Create Account</button>
+      </div>
+
+      <div class="auth-form">
+        <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <div class="input-container">
+              <ion-icon name="mail-outline"></ion-icon>
+              <input type="email" id="email" formControlName="email" placeholder="your@email.com">
+            </div>
+            <div class="error-message" *ngIf="email?.invalid && (email?.dirty || email?.touched)">
+              <span *ngIf="email?.errors?.['required']">Email is required</span>
+              <span *ngIf="email?.errors?.['email']">Please enter a valid email</span>
+            </div>
+          </div>
+
+          <div class="form-group" *ngIf="authMode === 'signup'">
+            <label for="displayName">Display Name</label>
+            <div class="input-container">
+              <ion-icon name="person-outline"></ion-icon>
+              <input type="text" id="displayName" formControlName="displayName" placeholder="Your display name">
+            </div>
+            <div class="error-message" *ngIf="displayNameControl?.invalid && (displayNameControl?.dirty || displayNameControl?.touched)">
+              <span *ngIf="displayNameControl?.errors?.['required']">Display name is required</span>
+            </div>
+          </div>
+
+          <div class="form-group" *ngIf="authMode === 'signup'">
+            <label for="county">County</label>
+            <div class="input-container">
+              <ion-icon name="location-outline"></ion-icon>
+              <select id="county" formControlName="county" class="county-select">
+                <option value="" disabled selected>Select your county</option>
+                <option *ngFor="let county of counties" [value]="county">{{county}}</option>
+              </select>
+            </div>
+            <div class="error-message" *ngIf="countyControl?.invalid && (countyControl?.dirty || countyControl?.touched)">
+              <span *ngIf="countyControl?.errors?.['required']">Please select your county</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <div class="input-container">
+              <ion-icon name="lock-closed-outline"></ion-icon>
+              <input [type]="showPassword ? 'text' : 'password'" id="password" formControlName="password" placeholder="••••••••">
+              <ion-icon [name]="showPassword ? 'eye-off-outline' : 'eye-outline'" class="toggle-password" (click)="togglePasswordVisibility()"></ion-icon>
+            </div>
+            <div class="error-message" *ngIf="password?.invalid && (password?.dirty || password?.touched)">
+              <span *ngIf="password?.errors?.['required']">Password is required</span>
+              <span *ngIf="password?.errors?.['minlength']">Password must be at least 8 characters</span>
+              <span *ngIf="password?.errors?.['strongPassword']">
+                Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character
+              </span>
+            </div>
+          </div>
+
+          <div class="form-group" *ngIf="authMode === 'signup'">
+            <label for="confirmPassword">Confirm Password</label>
+            <div class="input-container">
+              <ion-icon name="lock-closed-outline"></ion-icon>
+              <input [type]="showPassword ? 'text' : 'password'" id="confirmPassword" formControlName="confirmPassword" placeholder="••••••••">
+            </div>
+            <div class="error-message" *ngIf="confirmPassword?.invalid && (confirmPassword?.dirty || confirmPassword?.touched)">
+              <span *ngIf="confirmPassword?.errors?.['required']">Please confirm your password</span>
+              <span *ngIf="confirmPassword?.errors?.['passwordMismatch']">Passwords don't match</span>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="submit-button" [disabled]="authForm.invalid || isLoading">
+              <span *ngIf="!isLoading">{{ authMode === 'login' ? 'Sign In' : 'Create Account' }}</span>
+              <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+            </button>
+          </div>
+
+          <div class="forgot-password" *ngIf="authMode === 'login'">
+            <a (click)="forgotPassword()">Forgot password?</a>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="auth-footer">
+      <p>By continuing, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></p>
+    </div>
+  </div>
+
+  <!-- Error toast -->
+  <div class="error-toast" *ngIf="errorMessage" [@fadeInOut]>
+    <ion-icon name="alert-circle-outline"></ion-icon>
+    <span>{{ errorMessage }}</span>
+    <button (click)="dismissError()">
+      <ion-icon name="close-outline"></ion-icon>
+    </button>
+  </div>
+</ion-content>

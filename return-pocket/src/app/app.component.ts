@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { SqliteService } from './services/sqlite.service';
 import { SplashScreen } from '@capacitor/splash-screen';
+import { SupabaseService } from './services/supabase.service';
 
 @Component({
   selector: 'app-root',
@@ -10,12 +11,14 @@ import { SplashScreen } from '@capacitor/splash-screen';
 })
 export class AppComponent {
 
-  constructor(private sqliteService: SqliteService) {
+  constructor(private sqliteService: SqliteService, private supa: SupabaseService) {
     this.initApp();
   }
 
   async initApp() {
     await this.sqliteService.initialise();
+    const user = await this.supa.getCurrentUser();
+    if (user) this.supa.syncData();
     SplashScreen.hide();
   }
   

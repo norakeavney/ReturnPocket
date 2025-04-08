@@ -17,6 +17,14 @@ const routes: Routes = [
   {
     path: 'receipt-detail/:id',
     loadChildren: () => import('./pages/receipt-detail/receipt-detail.module').then( m => m.ReceiptDetailPageModule)
+  },
+  {
+    path: 'auth',
+    loadChildren: () => import('./pages/auth/auth.module').then( m => m.AuthPageModule)
+  },
+  {
+    path: 'leaderboards',
+    loadChildren: () => import('./pages/leaderboards/leaderboards.module').then( m => m.LeaderboardsPageModule)
   }
 
 ];

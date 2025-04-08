@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { SqliteService } from '../../services/sqlite.service';
+import { SqliteService } from 'src/app/services/sqlite.service';
 import { Router } from '@angular/router';
 
 

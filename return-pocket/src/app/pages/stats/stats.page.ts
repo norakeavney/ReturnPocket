@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
+import { SupabaseService } from 'src/app/services/supabase.service';
 
 interface StatCard {
   title: string;
@@ -36,6 +37,7 @@ interface Achievement {
   imports: [CommonModule, FormsModule, IonicModule]
 })
 export class StatsPage implements OnInit {
+<<<<<<< HEAD
   /** The name of the user. */
   userName = 'John Doe';
 
@@ -46,6 +48,16 @@ export class StatsPage implements OnInit {
   userProfileImage = 'assets/avatar-placeholder.png';
 
   /** The total number of bottles returned by the user. */
+=======
+  userName = '';
+  userLevel = '';
+  userLevelNumber = 1;
+  userPoints = 0;
+  pointsToNextLevel = 100;
+  userLevelProgress = 0; // 0 to 1 value representing progress to next level
+  isLoggedIn = false;
+  isAuthChecked = false;
+>>>>>>> 878492917475ff0fbd33f2ff299c9b3b21f331a9
   totalBottles = 0;
 
   /** The total amount of money saved by the user through recycling. */
@@ -105,9 +117,11 @@ export class StatsPage implements OnInit {
 
   constructor(
     private sqliteService: SqliteService,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private supabaseService: SupabaseService
   ) { }
 
+<<<<<<< HEAD
   /**
    * Lifecycle hook that is called after the component is initialized.
    * Loads the user's stats.
@@ -127,13 +141,124 @@ export class StatsPage implements OnInit {
   /**
    * Loads the user's stats from the SQLite database and updates the UI.
    */
+=======
+  async ngOnInit() {
+    await this.checkAuthStatus();
+    this.loadStats();
+  }
+
+  async ionViewWillEnter() {
+    // Force a refresh of auth status every time the page is entered
+    this.isAuthChecked = false;
+    await this.checkAuthStatus();
+    this.loadStats();
+  }
+
+  async checkAuthStatus() {
+    const user = await this.supabaseService.getCurrentUser();
+    this.isLoggedIn = !!user;
+    this.isAuthChecked = true;
+    
+    if (this.isLoggedIn) {
+      try {
+        // Fetch user profile data from the users table
+        const { data, error } = await this.supabaseService.supabase
+          .from('users')
+          .select('display_name, total_points, user_county')
+          .eq('id', user?.id)
+          .single();
+        
+        if (error) throw error;
+        
+        if (data) {
+          this.userName = data.display_name || 'Recycler';
+          
+          // Store points and calculate level
+          this.userPoints = data.total_points || 0;
+          this.calculateLevel(this.userPoints);
+        } else {
+          this.userName = 'Recycler';
+          this.userLevel = 'Recycling Beginner';
+          this.userLevelNumber = 1;
+          this.userPoints = 0;
+          this.pointsToNextLevel = 100;
+          this.userLevelProgress = 0;
+        }
+      } catch (error) {
+        this.userName = 'Recycler';
+        this.userLevel = 'Recycling Beginner';
+        this.userLevelNumber = 1;
+        this.userPoints = 0;
+        this.pointsToNextLevel = 100;
+        this.userLevelProgress = 0;
+      }
+    } else {
+      // Reset values when not logged in
+      this.userName = '';
+      this.userLevel = '';
+      this.userLevelNumber = 1;
+      this.userPoints = 0;
+      this.pointsToNextLevel = 100;
+      this.userLevelProgress = 0;
+    }
+  }
+
+  // Calculate user level and progress based on points
+  calculateLevel(points: number) {
+    if (points >= 1000) {
+      this.userLevel = 'Recycling Champion';
+      this.userLevelNumber = 5;
+      this.pointsToNextLevel = 1000;  // Max level
+      this.userLevelProgress = 1;  // Full progress
+    } else if (points >= 500) {
+      this.userLevel = 'Recycling Expert';
+      this.userLevelNumber = 4;
+      this.pointsToNextLevel = 1000;
+      this.userLevelProgress = (points - 500) / 500;  // Progress to level 5
+    } else if (points >= 250) {
+      this.userLevel = 'Recycling Pro';
+      this.userLevelNumber = 3;
+      this.pointsToNextLevel = 500;
+      this.userLevelProgress = (points - 250) / 250;  // Progress to level 4
+    } else if (points >= 100) {
+      this.userLevel = 'Dedicated Recycler';
+      this.userLevelNumber = 2;
+      this.pointsToNextLevel = 250;
+      this.userLevelProgress = (points - 100) / 150;  // Progress to level 3
+    } else {
+      this.userLevel = 'Recycling Beginner';
+      this.userLevelNumber = 1;
+      this.pointsToNextLevel = 100;
+      this.userLevelProgress = points / 100;  // Progress to level 2
+    }
+  }
+
+  // Get level color based on level
+  getLevelColor() {
+    switch(this.userLevelNumber) {
+      case 1:
+        return '#6c757d'; // Gray/silver for beginners
+      case 2:
+        return '#3498db'; // Blue
+      case 3:
+        return '#2ecc71'; // Green
+      case 4:
+        return '#f1c40f'; // Gold/yellow
+      case 5:
+        return '#e74c3c'; // Red for champion
+      default:
+        return '#6c757d';
+    }
+  }
+
+>>>>>>> 878492917475ff0fbd33f2ff299c9b3b21f331a9
   loadStats() {
     const receipts = this.sqliteService.getReceipts();
     
     this.totalReceipts = receipts.length;
     
     this.totalBottles = receipts.reduce((total, receipt) => {
-      const actualBottles = (receipt.bottle_count / 100) / 0.15;
+      const actualBottles = (receipt.points / 100) / 0.15;
       return total + actualBottles;
     }, 0);
     
@@ -142,7 +267,7 @@ export class StatsPage implements OnInit {
     
     const storeMap = new Map<string, number>();
     receipts.forEach(receipt => {
-      const actualBottles = Math.round((receipt.bottle_count / 100) / 0.15);
+      const actualBottles = Math.round((receipt.points / 100) / 0.15);
       const count = storeMap.get(receipt.store_name) || 0;
       storeMap.set(receipt.store_name, count + actualBottles);
     });
@@ -280,10 +405,39 @@ export class StatsPage implements OnInit {
     this.achievements[1].achieved = false;
   }
 
+<<<<<<< HEAD
   /**
    * Navigates back to the previous page.
    */
+=======
+  goToLeaderboards() {
+    this.navCtrl.navigateForward('/leaderboards');
+  }
+
+  goToAuth() {
+    this.navCtrl.navigateForward('/auth');
+  }
+
+>>>>>>> 878492917475ff0fbd33f2ff299c9b3b21f331a9
   goBack() {
     this.navCtrl.navigateBack('/');
+  }
+
+  async logout() {
+    try {
+      await this.supabaseService.signOut();
+      // Reset user state
+      this.isLoggedIn = false;
+      this.userName = '';
+      this.userLevel = '';
+      this.userLevelNumber = 1;
+      this.userPoints = 0;
+      this.pointsToNextLevel = 100;
+      this.userLevelProgress = 0;
+      // Navigate to auth page
+      this.navCtrl.navigateRoot('/auth');
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
   }
 }

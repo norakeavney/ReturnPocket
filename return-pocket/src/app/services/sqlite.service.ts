@@ -5,6 +5,7 @@ import { SQLiteConnection, CapacitorSQLite, SQLiteDBConnection } from '@capacito
  * Interface representing a receipt.
  */
 export interface Receipt {
+<<<<<<< HEAD
   id?: number; // Unique identifier for the receipt
   store_name: string; // Name of the store
   location: string; // Location of the store
@@ -13,6 +14,16 @@ export interface Receipt {
   img_path?: string; // Optional image path for the receipt
   barcode_data?: string; // Optional barcode data associated with the receipt
   timestamp?: string; // Timestamp when the receipt was created
+=======
+  id?: number;
+  store_name: string;
+  location: string;
+  points: number;
+  total_amount: number;
+  barcode_data?: string;
+  timestamp?: string;
+  synced?: number;
+>>>>>>> 878492917475ff0fbd33f2ff299c9b3b21f331a9
 }
 
 @Injectable({
@@ -48,11 +59,11 @@ export class SqliteService {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         store_name TEXT,
         location TEXT,
-        bottle_count INTEGER,
+        points INTEGER,
         total_amount REAL,
-        img_path TEXT,
         barcode_data TEXT,
-        timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+        timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+        synced INTEGER DEFAULT 0
       );
       `;
     await this.db.execute(schema);
@@ -76,16 +87,15 @@ export class SqliteService {
    */
   async addReceipt(receipt: Receipt) {
     const query = `
-      INSERT INTO receipts_table (store_name, location, bottle_count, total_amount, img_path, barcode_data)
-      VALUES (?, ?, ?, ?, ?, ?);
+      INSERT INTO receipts_table (store_name, location, points, total_amount, barcode_data)
+      VALUES (?, ?, ?, ?, ?);
     `;
 
     const values = [
       receipt.store_name,
       receipt.location,
-      receipt.bottle_count,
+      receipt.points,
       receipt.total_amount,
-      receipt.img_path,
       receipt.barcode_data
     ];
 
@@ -144,6 +154,41 @@ export class SqliteService {
     const result = await this.db?.query('SELECT * FROM receipts_table WHERE id = ?', [id]);
     return result?.values?.[0] || null;
   }
+
+  async getUnsyncedPointsTotal(): Promise<number> {
+    const res = await this.db?.query("SELECT SUM(points) as total FROM receipts_table WHERE synced = 0");
+    return res?.values?.[0]?.total || 0;
+  }
+
+  async getUnsyncedReceiptIds(): Promise<number[]> {
+    const res = await this.db?.query("SELECT id FROM receipts_table WHERE synced = 0");
+    return res?.values?.map(r => r.id) || [];
+  }  
+
+  async markDataSynced(ids: number[]): Promise<void> {
+    if (!ids.length) return;
+
+    const placeholders = ids.map(() => '?').join(',');
+    const query = `UPDATE receipts_table SET synced = 1 WHERE id IN (${placeholders})`;
+    await this.db?.run(query, ids);
+  }
+
+  async getUnsyncedStoreBreakdown(): Promise<Record<string, number>> {
+    const res = await this.db?.query(`
+      SELECT store_name, SUM(points) as total 
+      FROM receipts_table 
+      WHERE synced = 0 
+      GROUP BY store_name
+    `);
+  
+    const result: Record<string, number> = {};
+    res?.values?.forEach((row: any) => {
+      result[row.store_name] = row.total;
+    });
+  
+    return result;
+  }
+  
   
   
 }

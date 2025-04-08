@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { SqliteService, Receipt } from '../../services/sqlite.service';
+import { SqliteService, Receipt } from 'src/app/services/sqlite.service';
 import {
   trigger, transition, style, animate
 } from '@angular/animations';

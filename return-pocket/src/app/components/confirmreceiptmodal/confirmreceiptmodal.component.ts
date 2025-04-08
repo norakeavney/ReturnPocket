@@ -97,7 +97,7 @@ export class ConfirmreceiptmodalComponent implements OnInit {
       this.receipt.total_amount = this.tempAmount;
       this.isAmountEdited = true;
       // Reset points to 0 if user manually edits amount
-      this.receipt.bottle_count = 0;
+      this.receipt.points = 0;
     }
     this.editingAmount = false;
   }

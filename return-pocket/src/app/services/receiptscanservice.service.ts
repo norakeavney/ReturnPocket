@@ -59,9 +59,8 @@ export class ReceiptscanserviceService {
     const receipt: Receipt = {
       store_name: store || 'Unknown',
       location,
-      bottle_count: points, // Using bottle_count field for points
+      points: points,
       total_amount: amount || 0,
-      img_path: imagePath,
       barcode_data: barcode || '',
       timestamp: new Date().toISOString()
     };

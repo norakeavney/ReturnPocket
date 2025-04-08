@@ -9,26 +9,56 @@
     </ion-button>
   </div>
   
-  <!-- User Profile Card -->
   <ion-card class="user-profile-card">
     <ion-card-content>
-      <div class="profile-container">
-        <div class="avatar-container">
-          <ion-avatar>
-            <img [src]="userProfileImage" alt="Profile Image">
-          </ion-avatar>
+  
+      <ng-container *ngIf="isAuthChecked">
+        
+        <!-- Show user profile when logged in -->
+        <div class="profile-container" *ngIf="isLoggedIn">
+          <div class="level-circle-container">
+            <div class="level-circle" [ngStyle]="{'background': getLevelColor()}">
+              <div class="level-progress" [style.transform]="'rotate(' + userLevelProgress*360 + 'deg)'"></div>
+              <div class="level-number">{{ userLevelNumber }}</div>
+              <div class="level-label">Level</div>
+            </div>
+          </div>
+          <div class="user-info">
+            <h1>{{ userName }}</h1>
+            <p class="hero-tag">{{ userLevel }}</p>
+            <div class="level-progress-text">
+              <span>{{ userPoints }} / {{ pointsToNextLevel }} points</span>
+              <span *ngIf="userLevelProgress < 1">{{ pointsToNextLevel - userPoints }} points to next level</span>
+            </div>
+            <div class="profile-actions">
+              <ion-button fill="solid" size="small" color="primary" class="leaderboard-btn" (click)="goToLeaderboards()">
+                <ion-icon name="trophy-outline" slot="start"></ion-icon>
+                Leaderboards
+              </ion-button>
+            </div>
+          </div>
         </div>
-        <div class="user-info">
-          <h1>{{ userName }}</h1>
-          <p class="hero-tag">{{ userLevel }}</p>
-          <ion-button fill="outline" size="small">
-            <ion-icon name="create-outline" slot="start"></ion-icon>
-            Edit Profile
-          </ion-button>
+  
+        <!-- Show login prompt when not logged in -->
+        <div class="login-prompt" *ngIf="!isLoggedIn">
+          <div class="login-icon">
+            <ion-icon name="person-circle-outline"></ion-icon>
+          </div>
+          <div class="login-info">
+            <h2>Login or Sign Up</h2>
+            <p>to edit profile and view leaderboards</p>
+            <ion-button expand="block" (click)="goToAuth()">
+              <ion-icon name="log-in-outline" slot="start"></ion-icon>
+              Login / Sign Up
+            </ion-button>
+          </div>
         </div>
-      </div>
+  
+      </ng-container>
+  
     </ion-card-content>
   </ion-card>
+  
 
   <!-- Quick Stats Grid - Updated to use animated values -->
   <div class="stats-grid">
@@ -115,4 +145,15 @@
       </div>
     </ion-card-content>
   </ion-card>
+
+  <!-- Logout Button - Only show when logged in -->
+  <ion-button 
+    *ngIf="isLoggedIn" 
+    expand="block" 
+    color="medium" 
+    class="logout-button" 
+    (click)="logout()">
+    <ion-icon name="log-out-outline" slot="start"></ion-icon>
+    Log Out
+  </ion-button>
 </ion-content>
