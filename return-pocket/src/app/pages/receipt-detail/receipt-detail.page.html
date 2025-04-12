@@ -1,13 +1,14 @@
 <ion-content class="receipt-detail" [fullscreen]="true">
-  <!-- Back button -->
+  <!-- Navigation: Back button to return to receipts list -->
   <div class="back-button-container">
     <ion-button fill="clear" class="back-button" (click)="goBack()">
       <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
     </ion-button>
   </div>
 
+  <!-- Main receipt content with slide-in animation -->
   <div class="receipt-wrapper" *ngIf="receipt; else loading" [@slideIn]>
-    <!-- Store Logo positioned to poke out from receipt -->
+    <!-- Store logo container with circular cutout design -->
     <div class="logo-outer-container">
       <img [src]="storeLogoPath"
            (error)="onLogoError()"
@@ -15,15 +16,18 @@
            [alt]="receipt.store_name + ' logo'" />
     </div>
     
-    <!-- 🧾 SVG as CSS Background Container -->
+    <!-- Receipt container with decorative background -->
     <div class="receipt-bg-frame">
       <div class="receipt-content">
+        <!-- Receipt header and store information -->
         <h3 class="subtext">Return Receipt</h3>
         <p class="store-name">{{ receipt.store_name }}</p>
 
+        <!-- Refund amount section -->
         <h1 class="total-label">Refund Amount</h1>
         <div class="total-amount">€{{ receipt.total_amount }}</div>
 
+        <!-- Additional information row: Points and Reminder -->
         <div class="details-row">
           <div class="info-box points-box">
             <label>Points</label>
@@ -42,13 +46,14 @@
           </div>          
         </div>
 
+        <!-- Barcode display section -->
         <div class="barcode">
           <app-barcode [receiptId]="+currentId"></app-barcode>
         </div>
       </div>
     </div>
     
-    <!-- Action Buttons -->
+    <!-- Action buttons for receipt management -->
     <div class="action-buttons">
       <ion-button size="small" expand="block" color="success" (click)="confirmMarkAsUsed()" class="action-button">
         <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
@@ -61,7 +66,7 @@
     </div>
   </div>
 
-  <!-- 🌀 Skeleton Loading -->
+  <!-- Loading skeleton template shown while data is being fetched -->
   <ng-template #loading>
     <div class="receipt-wrapper">
       <ion-skeleton-text animated style="width: 100px; height: 100px; margin: 0 auto; border-radius: 50%"></ion-skeleton-text>
@@ -70,7 +75,7 @@
     </div>
   </ng-template>
 
-  <!-- Reminder Modal -->
+  <!-- Modal for setting/changing receipt reminders -->
   <ion-modal [isOpen]="reminderModalOpen" (didDismiss)="reminderModalOpen = false">
     <app-reminder-picker
     *ngIf="receipt"
@@ -79,7 +84,7 @@
   </app-reminder-picker>
   </ion-modal>
   
-  <!-- Delete Confirmation Modal -->
+  <!-- Confirmation modal for deleting receipts -->
   <ion-modal [isOpen]="deleteModalOpen" (didDismiss)="deleteModalOpen = false">
     <ng-template>
       <ion-header>
@@ -99,7 +104,7 @@
     </ng-template>
   </ion-modal>
   
-  <!-- Mark as Used Confirmation Modal -->
+  <!-- Confirmation modal for marking receipt as used -->
   <ion-modal [isOpen]="markAsUsedModalOpen" (didDismiss)="markAsUsedModalOpen = false">
     <ng-template>
       <ion-header>

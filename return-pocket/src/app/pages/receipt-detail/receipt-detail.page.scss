@@ -1,15 +1,14 @@
 .receipt-detail {
   --background: #eaeaea;
 
-  // Back button container
+  // Navigation controls
   .back-button-container {
     position: absolute;
     top: calc(env(safe-area-inset-top) + 5px);
     left: 5px;
-    z-index: 10;
+    z-index: 10; // Ensure it remains above other content
   }
 
-  // Back button styling
   .back-button {
     position: absolute;
     top: 0;
@@ -27,6 +26,7 @@
     }
   }
 
+  // Main content wrapper
   .receipt-wrapper {
     display: flex;
     flex-direction: column;
@@ -37,14 +37,15 @@
     position: relative;
   }
 
+  // Store logo styling
   .logo-outer-container {
     width: 80px;
     height: 80px;
     position: absolute;
     z-index: 10;
-    top: 17%; /* Position to overlap with the receipt frame */
-    left: 50%; /* Center horizontally */
-    transform: translateX(-50%); /* Center adjustment */
+    top: 17%; // Positioned to overlap with receipt frame
+    left: 50%; // Horizontally centered
+    transform: translateX(-50%); // Centering adjustment
   }
 
   .store-logo {
@@ -54,9 +55,10 @@
     object-fit: contain;
     background: #fff;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    border: 3px solid white;
+    border: 3px solid white; // Clean border around logo
   }
 
+  // Receipt background styling
   .receipt-bg-frame {
     background-image: url('/assets/resources/Receipt.svg');
     background-repeat: no-repeat;
@@ -70,10 +72,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 70px; /* Increased to make room for the overlapping logo */
-    margin-top: 20px; /* Add space at the top for the logo overlap */
+    padding-top: 70px; // Space for logo overlap
+    margin-top: 20px; // Additional spacing at top
   }
 
+  // Receipt content container
   .receipt-content {
     position: relative;
     z-index: 1;
@@ -81,9 +84,10 @@
     width: 100%;
     max-width: 350px;
     margin: 0 auto;
-    padding-top: 30px; /* Add padding to move content down below the logo */
+    padding-top: 30px; // Space below logo
   }
 
+  // Text styling elements
   .subtext {
     font-size: 12px;
     color: #888;
@@ -108,23 +112,25 @@
     font-size: 32px;
     font-weight: bold;
     margin: 6px 0 20px;
-    color: #000; // Ensure text is visible
-    text-align: center; // Center align to avoid layout issues
+    color: #000; // Ensures visibility on light backgrounds
+    text-align: center; // Centered display
   }
 
+  // Information rows layout
   .details-row {
     display: flex;
     gap: 12px;
     justify-content: space-between;
     margin-bottom: 20px;
-    flex-wrap: wrap; // Prevent overlapping by wrapping content
+    flex-wrap: wrap; // Allows content to wrap on smaller screens
 
+    // Information box styling
     .info-box {
       flex: 1;
       background: #f7f7f7;
       border-radius: 12px;
       padding: 10px;
-      min-width: 120px; // Ensure minimum width for proper layout
+      min-width: 120px; // Prevents boxes from becoming too narrow
 
       label {
         font-size: 12px;
@@ -137,12 +143,14 @@
         margin-top: 4px;
       }
       
+      // Reminder status indicator
       .reminder-text {
-        color: #2dd36f;
+        color: #2dd36f; // Success green color
         font-size: 14px;
         margin-bottom: 5px;
       }
 
+      // Reminder button styling
       .reminder-button {
         margin: 0;
         --border-radius: 6px;
@@ -150,6 +158,7 @@
       }
     }
 
+    // Points display styling
     .points-box {
       .points-container {
         display: flex;
@@ -159,59 +168,63 @@
       }
 
       .points-icon {
-        color: #f59e0b;
+        color: #f59e0b; // Gold/amber star color
         font-size: 1rem;
       }
 
       .points-value {
-        color: #f59e0b;
+        color: #f59e0b; // Matching star color
         font-weight: 600;
         font-size: 1rem;
       }
     }
   }
 
+  // Barcode container
   .barcode {
     margin-top: 10px;
   }
 
+  // Modal content styling
   .modal-content {
     padding: 20px;
   }
 
+  // Action buttons container
   .action-buttons {
     width: 100%;
-    max-width: 320px; /* Reduced from 430px */
+    max-width: 320px; // Constrains width for better presentation
     margin-top: 20px;
     display: flex;
-    flex-direction: row; /* Changed to row for side-by-side buttons */
+    flex-direction: row; // Side-by-side button layout
     justify-content: center;
     gap: 10px;
   }
 
+  // Individual action button styling
   .action-button {
     margin: 0;
     --border-radius: 8px;
     font-weight: 500;
-    font-size: 0.9rem; /* Smaller font size */
-    height: 40px; /* Control button height */
-    opacity: 0.85; /* Slightly transparent to be less eye-catching */
-    flex: 1; /* Make buttons equal width */
-    max-width: 150px; /* Limit maximum width */
+    font-size: 0.9rem; // Smaller, more elegant text
+    height: 40px; // Consistent button height
+    opacity: 0.85; // Subtle transparency
+    flex: 1; // Equal width distribution
+    max-width: 150px; // Maximum width constraint
   }
 
-  // iOS-specific fix for potential rendering issues
+  // Device-specific adjustments for iOS
   @media screen and (min-device-width: 375px) and (max-device-width: 812px) and (-webkit-min-device-pixel-ratio: 2) {
     .receipt-bg-frame {
-      padding: 70px 40px; // Adjust padding for iOS
+      padding: 70px 40px; // Increased padding for iOS devices
     }
 
     .total-amount {
-      font-size: 30px; // Slightly reduce font size for better fit
+      font-size: 30px; // Slightly reduced font size for smaller screens
     }
 
     .details-row {
-      gap: 8px; // Reduce gap to fit smaller screens
+      gap: 8px; // Reduced gap between elements
     }
   }
 }

@@ -6,6 +6,11 @@ import {
   trigger, transition, style, animate
 } from '@angular/animations';
 
+/**
+ * Responsible for displaying detailed information about a receipt
+ * including store info, total amount, points, and barcode.
+ * Provides options to set reminders, mark receipts as used, and delete receipts.
+ */
 @Component({
   standalone: false,
   selector: 'app-receipt-detail',
@@ -24,15 +29,34 @@ import {
   ]
 })
 export class ReceiptDetailPage implements OnInit {
+  /** ID of the current receipt being viewed */
   currentId: string = '';
+  
+  /** Receipt data containing store, amount, and other details */
   receipt: Receipt | null = null;
+  
+  /** ISO date string for reminder scheduling */
   reminderDate: string = '';
+  
+  /** Controls visibility of the reminder modal */
   reminderModalOpen: boolean = false;
+  
+  /** Tracks if a reminder has been set for this receipt */
   reminderSet: boolean = false;
+  
+  /** Controls visibility of the delete confirmation modal */
   deleteModalOpen: boolean = false;
+  
+  /** Controls visibility of the mark-as-used confirmation modal */
   markAsUsedModalOpen: boolean = false;
+  
+  /** Error message to display if data loading fails */
   error: string | null = null;
+  
+  /** Path to the store logo image */
   storeLogoPath: string = 'assets/resources/other.png'; 
+  
+  /** Minimum date/time that can be selected for reminders (current time) */
   minDateTime = new Date().toISOString();
 
   constructor(
@@ -43,14 +67,15 @@ export class ReceiptDetailPage implements OnInit {
   ) {}
 
   /**
-   * Navigates back to the receipts page
+   * Navigates back to the receipts list page
    */
   goBack() {
     this.router.navigate(['/receipts']);
   }
 
   /**
-   * Initializes the component by fetching the receipt data based on the current route ID.
+   * Initializes the component by fetching receipt data based on route parameters.
+   * Sets the appropriate store logo based on the receipt's store name.
    */
   async ngOnInit() {
     this.currentId = this.route.snapshot.paramMap.get('id') || '';
@@ -67,8 +92,8 @@ export class ReceiptDetailPage implements OnInit {
   }
 
   /**
-   * Handles the event when a reminder is set.
-   * Closes the reminder modal and marks the reminder as set.
+   * Handles the event when a reminder is successfully set.
+   * Updates UI state and closes the reminder modal.
    */
   onReminderSet() {
     this.reminderSet = true;
@@ -76,17 +101,18 @@ export class ReceiptDetailPage implements OnInit {
   }
 
   /**
-   * Fallback handler for when the store logo image fails to load.
-   * Sets the store logo path to a default image.
+   * Fallback handler when the store logo fails to load.
+   * Sets the logo to a default image.
    */
   onLogoError() {
     this.storeLogoPath = 'assets/resources/other.png';
   }
 
   /**
-   * Retrieves the logo path for a given store name.
-   * @param store - The name of the store.
-   * @returns The path to the store's logo image.
+   * Maps store names to their respective logo image paths.
+   * 
+   * @param store - The name of the store to find a logo for
+   * @returns Path to the store's logo image or a default if not found
    */
   getLogoPath(store: string): string {
     switch (store.toLowerCase()) {
@@ -102,19 +128,19 @@ export class ReceiptDetailPage implements OnInit {
   }
 
   /**
-   * Opens the mark as used confirmation modal
+   * Opens the confirmation modal for marking a receipt as used
    */
   confirmMarkAsUsed() {
     this.markAsUsedModalOpen = true;
   }
 
   /**
-   * Marks the receipt as used by updating the barcode data
+   * Updates the receipt's barcode data to indicate it has been used.
+   * Shows a success toast upon completion and navigates back to home.
    */
   async markAsUsed() {
     if (this.receipt) {
       try {
-        // Update the barcode data to indicate it's been used
         await this.sqliteService.updateBarcodeData(+this.currentId, "ALREADY USED");
         this.markAsUsedModalOpen = false;
         
@@ -126,7 +152,6 @@ export class ReceiptDetailPage implements OnInit {
         });
         await toast.present();
         
-        // Navigate back to home/receipts page
         this.router.navigate(['/home']);
       } catch (err) {
         console.error('Error marking receipt as used:', err);
@@ -136,14 +161,15 @@ export class ReceiptDetailPage implements OnInit {
   }
 
   /**
-   * Opens the delete confirmation modal
+   * Opens the confirmation modal for deleting a receipt
    */
   confirmDelete() {
     this.deleteModalOpen = true;
   }
 
   /**
-   * Deletes the current receipt
+   * Permanently deletes the current receipt from the database.
+   * Shows a success toast upon completion and navigates back to home.
    */
   async deleteReceipt() {
     if (this.receipt) {
@@ -166,7 +192,9 @@ export class ReceiptDetailPage implements OnInit {
   }
 
   /**
-   * Shows an error toast message
+   * Displays an error toast with the provided message.
+   * 
+   * @param message - The error message to display
    */
   private async showErrorToast(message: string) {
     const toast = await this.toastController.create({
