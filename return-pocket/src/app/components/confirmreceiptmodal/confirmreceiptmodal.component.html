@@ -1,24 +1,33 @@
+<!-- Main modal backdrop with fade-in animation -->
 <div class="modal-backdrop" [@fadeIn]="animationState">
+  <!-- Receipt container with slide-in animation -->
   <div class="receipt-container" [@slideIn]="animationState">
+    <!-- Receipt header section with title and store information -->
     <div class="receipt-header">
       <h1>CONFIRM RECEIPT</h1>
       <div class="store-info">
+        <!-- Store logo dynamically loaded based on selected store -->
         <img [src]="getStoreLogo()" alt="Store logo" class="store-logo">
         <div class="store-name-container">
           <h2>{{ receipt.store_name || 'Unknown Store' }}</h2>
+          <!-- Button to change the store selection -->
           <button class="change-store-btn" (click)="changeStore()">Change</button>
         </div>
       </div>
     </div>
     
+    <!-- Visual divider to separate sections -->
     <div class="receipt-divider">* * * * * * * * * * * * * * * * * * * *</div>
     
+    <!-- Receipt content section with details -->
     <div class="receipt-content">
+      <!-- Location detail row -->
       <div class="receipt-detail">
         <span class="detail-label">Location:</span>
         <span class="detail-value">{{ receipt.location || 'Unknown' }}</span>
       </div>
       
+      <!-- Points detail row with warning when amount is edited -->
       <div class="receipt-detail">
         <span class="detail-label">Points:</span>
         <span class="detail-value">
@@ -27,44 +36,56 @@
         </span>
       </div>
       
+      <!-- Amount detail row with editing capability -->
       <div class="receipt-detail">
         <span class="detail-label">Total Amount:</span>
+        <!-- Display mode for amount (not editing) -->
         <div *ngIf="!editingAmount" class="detail-value amount-field">
           <span>€{{ receipt.total_amount.toFixed(2) || '0.00' }}</span>
           <button class="edit-btn" (click)="startEditingAmount()">Edit</button>
         </div>
+        <!-- Edit mode for amount -->
         <div *ngIf="editingAmount" class="edit-amount-field">
           <div class="input-wrapper">
             <span class="currency-symbol">€</span>
+            <!-- Input field for amount editing -->
             <input type="number" 
                   step="0.01" 
                   [(ngModel)]="tempAmount" 
                   class="amount-input">
           </div>
+          <!-- Action buttons for saving or canceling edits -->
           <div class="edit-buttons">
             <button (click)="cancelEditingAmount()" class="cancel-edit-btn">Cancel</button>
             <button (click)="saveAmount()" class="save-edit-btn">Save</button>
           </div>
+          <!-- Warning about points reset when editing amount -->
           <div class="edit-warning">
             <p>Warning: Editing the amount will reset your points to 0</p>
           </div>
         </div>
       </div>
       
+      <!-- Secondary divider with different pattern -->
       <div class="receipt-divider">- - - - - - - - - - - - - - - - - - - -</div>
       
+      <!-- Informational note about receipt usage -->
       <div class="info-note">
         <p><strong>NOTE:</strong> This information is only for your tracking and statistics. 
           Your barcode will still scan normally at the till.</p>
       </div>
     </div>
     
+    <!-- Visual divider before reminder section -->
     <div class="receipt-divider">* * * * * * * * * * * * * * * * * * * *</div>
     
+    <!-- Reminder functionality section -->
     <div class="reminder-section">
+      <!-- Toggle header for enabling/disabling reminders -->
       <div class="reminder-header">
         <span>Remind Me?</span>
         <div class="reminder-toggle">
+          <!-- Toggle switch for reminder activation -->
           <input type="checkbox" id="reminderToggle" 
                  [ngModel]="reminderEnabled" 
                  (ngModelChange)="setReminderEnabled($event)">
@@ -72,8 +93,10 @@
         </div>
       </div>
       
+      <!-- Reminder options (only shown when reminders are enabled) -->
       <div *ngIf="reminderEnabled" class="reminder-options">
         <p>Remind me to scan in:</p>
+        <!-- Time selection buttons -->
         <div class="reminder-time-buttons">
           <button 
             *ngFor="let time of reminderTimes" 
@@ -86,8 +109,10 @@
       </div>
     </div>
     
+    <!-- Visual divider before footer -->
     <div class="receipt-divider">* * * * * * * * * * * * * * * * * * * *</div>
     
+    <!-- Receipt footer with confirm/cancel actions -->
     <div class="receipt-footer">
       <p>IS THIS INFORMATION CORRECT?</p>
       <div class="button-group">
@@ -97,10 +122,11 @@
     </div>
   </div>
   
-  <!-- Store selection overlay -->
+  <!-- Store selection overlay (conditionally rendered) -->
   <div *ngIf="showStoreSelection" class="store-selection-overlay" [@fadeIn]="'in'">
     <div class="store-selection-container" [@slideIn]="'in'">
       <h2>Select Store</h2>
+      <!-- Grid of store options -->
       <div class="store-list">
         <div *ngFor="let store of storeOptions" 
              class="store-option" 
@@ -109,6 +135,7 @@
           <span>{{ store.name }}</span>
         </div>
       </div>
+      <!-- Cancel button to close store selection -->
       <button (click)="showStoreSelection = false" class="cancel-btn">CANCEL</button>
     </div>
   </div>

@@ -1,5 +1,13 @@
+/**
+ * Import Roboto Mono font for receipt-like styling
+ * Font weights 400 (regular) and 700 (bold) are used
+ */
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
 
+/**
+ * Host element covers the entire viewport
+ * Creates a centered overlay for the modal
+ */
 :host {
   display: flex;
   justify-content: center;
@@ -12,6 +20,10 @@
   z-index: 1000;
 }
 
+/**
+ * Semi-transparent backdrop behind the modal
+ * Prevents interaction with elements below the modal
+ */
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -25,6 +37,10 @@
   z-index: 999;
 }
 
+/**
+ * Main receipt container styling
+ * Designed to resemble a physical receipt with decorative edges
+ */
 .receipt-container {
   background-color: #fff;
   max-width: 350px;
@@ -38,7 +54,7 @@
   color: #333;
   position: relative;
   
-  // Slight edge treatment to look like a receipt
+  // Decorative perforated edges for receipt-like appearance
   &::before, &::after {
     content: '';
     position: absolute;
@@ -63,6 +79,9 @@
   }
 }
 
+/**
+ * Receipt header section containing title and store information
+ */
 .receipt-header {
   text-align: center;
   margin-bottom: 15px;
@@ -74,6 +93,7 @@
     color: #333;
   }
   
+  // Container for store logo and name
   .store-info {
     display: flex;
     flex-direction: column;
@@ -114,6 +134,9 @@
   }
 }
 
+/**
+ * Decorative divider with asterisks to separate receipt sections
+ */
 .receipt-divider {
   text-align: center;
   margin: 15px 0;
@@ -122,7 +145,11 @@
   letter-spacing: -1px;
 }
 
+/**
+ * Main content area of the receipt with details and options
+ */
 .receipt-content {
+  // Individual detail rows with label-value pairs
   .receipt-detail {
     display: flex;
     justify-content: space-between;
@@ -137,6 +164,7 @@
       text-align: right;
     }
     
+    // Amount field with edit button
     .amount-field {
       display: flex;
       align-items: center;
@@ -154,15 +182,18 @@
       }
     }
     
+    // Warning shown when points are affected by amount editing
     .points-warning {
       font-size: 0.75rem;
       color: #ff6b6b;
       margin-left: 5px;
     }
     
+    // Amount editing interface
     .edit-amount-field {
       width: 100%;
       
+      // Input field with currency symbol
       .input-wrapper {
         display: flex;
         align-items: center;
@@ -182,6 +213,7 @@
         }
       }
       
+      // Save/cancel buttons for amount editing
       .edit-buttons {
         display: flex;
         justify-content: space-between;
@@ -207,6 +239,7 @@
         }
       }
       
+      // Warning about points reset when amount is edited
       .edit-warning {
         background-color: rgba(255, 107, 107, 0.1);
         padding: 5px;
@@ -222,6 +255,7 @@
     }
   }
   
+  // Informational note explaining the purpose of the receipt data
   .info-note {
     background-color: rgba(255, 235, 190, 0.5);
     padding: 10px;
@@ -237,9 +271,11 @@
     }
   }
   
+  // Reminder section allowing users to set scan reminders
   .reminder-section {
     margin: 15px 0;
     
+    // Toggle header for enabling/disabling reminders
     .reminder-header {
       display: flex;
       justify-content: space-between;
@@ -251,6 +287,7 @@
         font-size: 0.95rem;
       }
       
+      // Custom toggle switch for enabling reminders
       .reminder-toggle {
         position: relative;
         
@@ -293,12 +330,14 @@
       }
     }
     
+    // Options for reminder time selection
     .reminder-options {
       p {
         font-size: 0.85rem;
         margin: 5px 0 10px;
       }
       
+      // Time selection button group
       .reminder-time-buttons {
         display: flex;
         justify-content: space-between;
@@ -329,6 +368,9 @@
   }
 }
 
+/**
+ * Receipt footer with confirm/cancel buttons
+ */
 .receipt-footer {
   text-align: center;
   
@@ -339,6 +381,7 @@
     color: #333;
   }
   
+  // Container for action buttons
   .button-group {
     display: flex;
     justify-content: space-between;
@@ -380,7 +423,9 @@
   }
 }
 
-// Store selection overlay
+/**
+ * Store selection overlay that appears when changing stores
+ */
 .store-selection-overlay {
   position: fixed;
   top: 0;
@@ -394,6 +439,9 @@
   z-index: 1100;
 }
 
+/**
+ * Container for store selection options
+ */
 .store-selection-container {
   background-color: white;
   width: 90%;
@@ -410,6 +458,7 @@
     font-size: 1.3rem;
   }
   
+  // Grid layout for store options
   .store-list {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -446,6 +495,7 @@
     }
   }
   
+  // Cancel button for store selection
   .cancel-btn {
     display: block;
     width: 100%;
@@ -463,7 +513,9 @@
   }
 }
 
-// Animation keyframes
+/**
+ * Animation keyframes for modal transitions
+ */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -480,7 +532,10 @@
   }
 }
 
-// Add this specific style at the bottom of the file to ensure it overrides any conflicting styles
+/**
+ * Override styles for reminder time buttons
+ * Ensures consistent styling across different viewports
+ */
 .reminder-time-buttons {
   display: flex !important;
   flex-wrap: wrap !important;
