@@ -1,8 +1,8 @@
 <ion-content [fullscreen]="true" [scrollY]="true" class="ion-padding">
-  <!-- Safe area spacing for device notches -->
+  <!-- Device-specific notch safety area -->
   <div class="safe-area-top"></div>
   
-  <!-- Minimal back button - moved below safe area -->
+  <!-- Navigation back button -->
   <div class="back-button-container">
     <ion-button fill="clear" class="back-button" (click)="goBack()">
       <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
@@ -10,20 +10,25 @@
   </div>
 
   <div class="auth-container">
+    <!-- App branding header -->
     <div class="auth-header">
       <img src="assets/icon/icon.svg" alt="ReturnPocket Logo" class="auth-logo">
       <h1>ReturnPocket</h1>
       <p>Simple Scanning, Smart Saving</p>
     </div>
 
+    <!-- Authentication card with forms -->
     <div class="auth-card">
+      <!-- Login/Signup mode selector tabs -->
       <div class="auth-tabs">
         <button [class.active]="authMode === 'login'" (click)="switchMode('login')">Sign In</button>
         <button [class.active]="authMode === 'signup'" (click)="switchMode('signup')">Create Account</button>
       </div>
 
+      <!-- Authentication form container -->
       <div class="auth-form">
         <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
+          <!-- Email field (both login and signup) -->
           <div class="form-group">
             <label for="email">Email</label>
             <div class="input-container">
@@ -36,6 +41,7 @@
             </div>
           </div>
 
+          <!-- Display name field (signup only) -->
           <div class="form-group" *ngIf="authMode === 'signup'">
             <label for="displayName">Display Name</label>
             <div class="input-container">
@@ -47,6 +53,7 @@
             </div>
           </div>
 
+          <!-- County selector field (signup only) -->
           <div class="form-group" *ngIf="authMode === 'signup'">
             <label for="county">County</label>
             <div class="input-container">
@@ -61,6 +68,7 @@
             </div>
           </div>
 
+          <!-- Password field (both login and signup) -->
           <div class="form-group">
             <label for="password">Password</label>
             <div class="input-container">
@@ -77,6 +85,7 @@
             </div>
           </div>
 
+          <!-- Confirm password field (signup only) -->
           <div class="form-group" *ngIf="authMode === 'signup'">
             <label for="confirmPassword">Confirm Password</label>
             <div class="input-container">
@@ -89,6 +98,7 @@
             </div>
           </div>
 
+          <!-- Form submission controls -->
           <div class="form-actions">
             <button type="submit" class="submit-button" [disabled]="authForm.invalid || isLoading">
               <span *ngIf="!isLoading">{{ authMode === 'login' ? 'Sign In' : 'Create Account' }}</span>
@@ -96,6 +106,7 @@
             </button>
           </div>
 
+          <!-- Password recovery link (login only) -->
           <div class="forgot-password" *ngIf="authMode === 'login'">
             <a (click)="forgotPassword()">Forgot password?</a>
           </div>
@@ -103,12 +114,13 @@
       </div>
     </div>
 
+    <!-- Legal terms and policies footer -->
     <div class="auth-footer">
       <p>By continuing, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></p>
     </div>
   </div>
 
-  <!-- Error toast -->
+  <!-- Error notification toast -->
   <div class="error-toast" *ngIf="errorMessage" [@fadeInOut]>
     <ion-icon name="alert-circle-outline"></ion-icon>
     <span>{{ errorMessage }}</span>

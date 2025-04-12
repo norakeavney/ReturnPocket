@@ -1,7 +1,9 @@
+/* Base styles for typography */
 ion-content {
   font-family: 'Roboto Mono', monospace;
 }
 
+/* Main container layout */
 .auth-container {
   display: flex;
   flex-direction: column;
@@ -11,6 +13,7 @@ ion-content {
   min-height: 100%;
 }
 
+/* Header section with logo and title */
 .auth-header {
   text-align: center;
   margin-bottom: 30px;
@@ -37,6 +40,7 @@ ion-content {
   }
 }
 
+/* Main authentication card container */
 .auth-card {
   width: 100%;
   max-width: 400px;
@@ -46,6 +50,7 @@ ion-content {
   overflow: hidden;
 }
 
+/* Tab navigation between login/signup modes */
 .auth-tabs {
   display: flex;
   width: 100%;
@@ -79,6 +84,7 @@ ion-content {
   }
 }
 
+/* Form container styling */
 .auth-form {
   padding: 24px;
 
