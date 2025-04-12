@@ -28,6 +28,8 @@ export class ReceiptCardComponent  {
    * @returns The file path to the store's logo.
    */
   getStoreLogo(store: string): string {
+    if (!store) return 'assets/resources/store-logos/other.png';
+    
     switch (store.toLowerCase()) {
       case 'tesco': return 'assets/resources/store-logos/tesco.png';
       case 'lidl': return 'assets/resources/store-logos/lidl.png';

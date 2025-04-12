@@ -4,16 +4,25 @@
       <div class="left">
         <img [src]="getStoreLogo(receipt.store_name)" class="store-logo" />
         <div class="info">
-          <div class="store-name">{{ receipt.store_name }}</div>
+          <div class="store-name">{{ receipt.store_name || 'Unknown Store' }}</div>
           <div class="location">{{ receipt.location }}</div>
-          <div class="points">{{ receipt.points }} Points</div>
+          <div class="points-container">
+            <span class="points-icon">⭐</span>
+            <span class="points">{{ receipt.points }} Points</span>
+          </div>
         </div>
       </div>
 
       <div class="right">
         <div class="total-label">TOTAL</div>
         <div class="total-amount">€{{ receipt.total_amount }}</div>
-        <a class="view-barcode" (click)="viewReceipt(receipt.id)">View Barcode</a>
+        <div class="barcode-link-container">
+          <a class="view-barcode" *ngIf="receipt.barcode_data !== 'ALREADY USED'" (click)="viewReceipt(receipt.id)">View Barcode</a>
+          <div class="scanned-indicator" *ngIf="receipt.barcode_data === 'ALREADY USED'">
+            <span class="scanned-icon">✓</span>
+            <span class="scanned-text">Scanned</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
