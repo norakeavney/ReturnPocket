@@ -1,11 +1,19 @@
+<!-- Main receipt card container -->
 <div class="receipt-card">
+  <!-- Card with white background and shadow -->
   <div class="receipt-background">
     <div class="receipt-content">
+      <!-- Left side: Store information section -->
       <div class="left">
+        <!-- Store logo with dynamic source based on store name -->
         <img [src]="getStoreLogo(receipt.store_name)" class="store-logo" />
+        <!-- Store details container -->
         <div class="info">
+          <!-- Store name with fallback value if not provided -->
           <div class="store-name">{{ receipt.store_name || 'Unknown Store' }}</div>
+          <!-- Store location display -->
           <div class="location">{{ receipt.location }}</div>
+          <!-- Points reward indicator -->
           <div class="points-container">
             <span class="points-icon">⭐</span>
             <span class="points">{{ receipt.points }} Points</span>
@@ -13,11 +21,16 @@
         </div>
       </div>
 
+      <!-- Right side: Financial information and actions -->
       <div class="right">
+        <!-- Total amount section -->
         <div class="total-label">TOTAL</div>
         <div class="total-amount">€{{ receipt.total_amount }}</div>
+        <!-- Conditional display for barcode link or scanned indicator -->
         <div class="barcode-link-container">
+          <!-- Show "View Barcode" link if receipt hasn't been used -->
           <a class="view-barcode" *ngIf="receipt.barcode_data !== 'ALREADY USED'" (click)="viewReceipt(receipt.id)">View Barcode</a>
+          <!-- Show "Scanned" indicator if receipt has been used -->
           <div class="scanned-indicator" *ngIf="receipt.barcode_data === 'ALREADY USED'">
             <span class="scanned-icon">✓</span>
             <span class="scanned-text">Scanned</span>

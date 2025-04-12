@@ -1,12 +1,16 @@
+/* Receipt Card Component - Core styles for card display and layout */
+
+/* Card Container styles */
 .receipt-card {
   width: 100%;
   max-width: 430px;
   margin: 12px auto;
 }
 
+/* Visual container for the card */
 .receipt-background {
   background: white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
   border-radius: 16px;
   display: flex;
   padding: 20px 24px;
@@ -15,31 +19,39 @@
   width: 100%;
 }
 
+/* Layout Structure Components */
+
+/* Content wrapper with flexbox layout */
 .receipt-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap; 
-  gap: 12px;       
+  flex-wrap: wrap;
+  gap: 12px;
   width: 100%;
 }
 
+/* Left section with store info */
 .left {
   display: flex;
   align-items: center;
   gap: 12px;
-  flex: 1; 
-  min-width: 0;
+  flex: 1;
+  min-width: 0; /* Prevents overflow on narrow screens */
 }
 
+/* Right section with pricing and actions */
 .right {
   text-align: right;
-  flex-shrink: 0; 
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
 }
 
+/* Store Information Elements */
+
+/* Store logo styling */
 .store-logo {
   width: 40px;
   height: 40px;
@@ -47,11 +59,13 @@
   object-fit: fill;
 }
 
+/* Container for store details */
 .info {
   display: flex;
   flex-direction: column;
 }
 
+/* Store name styling */
 .store-name {
   font-weight: bold;
   font-size: 1.1rem;
@@ -59,6 +73,16 @@
   color: #333;
 }
 
+/* Store location styling */
+.location {
+  font-size: 0.85rem;
+  color: #555;
+  margin-bottom: 4px;
+}
+
+/* Rewards Points Elements */
+
+/* Container for points information */
 .points-container {
   display: flex;
   align-items: center;
@@ -66,53 +90,58 @@
   margin-top: 2px;
 }
 
+/* Points icon styling */
 .points-icon {
   color: #f59e0b;
   font-size: 0.8rem;
 }
 
+/* Points value styling */
 .points {
   font-size: 0.85rem;
   color: #f59e0b;
   font-weight: 600;
 }
 
-.location {
-  font-size: 0.85rem;
-  color: #555;
-  margin-bottom: 4px;
-}
+/* Financial Information Elements */
 
+/* Total label styling */
 .total-label {
   font-size: 0.7rem;
   text-transform: uppercase;
   color: #888;
 }
 
+/* Total amount styling */
 .total-amount {
   font-size: 1.2rem;
   font-weight: bold;
   margin: 4px 0;
-  color: #000000; /* Ensure dark text color for better visibility */
-  text-shadow: 0px 0px 1px rgba(255,255,255,0.5); /* Add subtle text shadow for contrast */
-  background-color: rgba(255,255,255,0.7); /* Add semi-transparent background */
-  padding: 3px 6px; /* Add some padding around the text */
-  border-radius: 4px; /* Round the corners of the background */
-  display: inline-block; /* Keep the background only around the text */
+  color: #000000;
+  text-shadow: 0px 0px 1px rgba(255,255,255,0.5);
+  background-color: rgba(255,255,255,0.7);
+  padding: 3px 6px;
+  border-radius: 4px;
+  display: inline-block;
 }
 
+/* Action Elements and Status Indicators */
+
+/* Container for barcode link or status */
 .barcode-link-container {
-  margin-top: 4px; /* Add space between total amount and barcode link */
+  margin-top: 4px;
 }
 
+/* Barcode link styling */
 .view-barcode {
   color: #f59e0b;
   font-weight: 600;
   font-size: 0.9rem;
   cursor: pointer;
-  display: inline-block; /* Make it behave like a block element */
+  display: inline-block;
 }
 
+/* Scanned indicator styling */
 .scanned-indicator {
   display: flex;
   align-items: center;
@@ -122,10 +151,12 @@
   font-weight: 600;
 }
 
+/* Scanned icon styling */
 .scanned-icon {
   font-size: 1rem;
 }
 
+/* Scanned text styling */
 .scanned-text {
   letter-spacing: 0.5px;
 }
