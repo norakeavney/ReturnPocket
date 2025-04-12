@@ -1,14 +1,19 @@
+<!-- Main container with fade animation -->
 <div class="receipt-container" [@fadeIn]="animationState">
+  <!-- Receipt Header: App title and timestamp -->
   <div class="receipt-header">
     <h1>RETURN POCKET</h1>
     <p class="timestamp">{{ currentDate | date:'MMM dd, yyyy hh:mm a' }}</p>
   </div>
   
+  <!-- Decorative divider -->
   <div class="receipt-divider">* * * * * * * * * * * * * * * * * * * *</div>
   
+  <!-- Main Content: How-to instructions -->
   <div class="receipt-content">
     <h2>HOW IT WORKS</h2>
     
+    <!-- Step 1: Receipt Capture Instructions -->
     <div class="step">
       <div class="step-number">1</div>
       <div class="step-text">
@@ -17,8 +22,10 @@
       </div>
     </div>
     
+    <!-- Divider between steps -->
     <div class="receipt-divider">- - - - - - - - - - - - - - - - - - - -</div>
     
+    <!-- Step 2: Barcode Scanning Instructions -->
     <div class="step">
       <div class="step-number">2</div>
       <div class="step-text">
@@ -27,8 +34,10 @@
       </div>
     </div>
     
+    <!-- Divider between steps -->
     <div class="receipt-divider">- - - - - - - - - - - - - - - - - - - -</div>
     
+    <!-- Step 3: Verification Instructions -->
     <div class="step">
       <div class="step-number">3</div>
       <div class="step-text">
@@ -38,8 +47,10 @@
     </div>
   </div>
   
+  <!-- Decorative divider -->
   <div class="receipt-divider">* * * * * * * * * * * * * * * * * * * *</div>
   
+  <!-- Footer: Thank you message and close button -->
   <div class="receipt-footer">
     <p>THANK YOU FOR USING RETURN POCKET</p>
     <button (click)="closeModal()" class="got-it-btn">GOT IT!</button>

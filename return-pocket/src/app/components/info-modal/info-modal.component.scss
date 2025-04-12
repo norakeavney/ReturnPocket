@@ -1,5 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
 
+/* ---------------------------------------------
+ * Modal Container and Background
+ * --------------------------------------------- */
 :host {
   display: flex;
   justify-content: center;
@@ -13,6 +16,9 @@
   z-index: 1000;
 }
 
+/* ---------------------------------------------
+ * Receipt Container Styling
+ * --------------------------------------------- */
 .receipt-container {
   background-color: #fff;
   max-width: 350px;
@@ -129,6 +135,9 @@
   }
 }
 
+/* ---------------------------------------------
+ * Receipt Header Section
+ * --------------------------------------------- */
 .receipt-header {
   text-align: center;
   margin-bottom: 15px;
@@ -145,6 +154,9 @@
   }
 }
 
+/* ---------------------------------------------
+ * Divider Elements
+ * --------------------------------------------- */
 .receipt-divider {
   text-align: center;
   margin: 15px 0;
@@ -153,6 +165,9 @@
   letter-spacing: -1px;
 }
 
+/* ---------------------------------------------
+ * Main Content Area
+ * --------------------------------------------- */
 .receipt-content {
   h2 {
     text-align: center;
@@ -161,6 +176,9 @@
   }
 }
 
+/* ---------------------------------------------
+ * Step Elements and Numbering
+ * --------------------------------------------- */
 .step {
   display: flex;
   margin: 20px 0;
@@ -192,6 +210,9 @@
   }
 }
 
+/* ---------------------------------------------
+ * Footer Section
+ * --------------------------------------------- */
 .receipt-footer {
   text-align: center;
   
@@ -222,7 +243,9 @@
   }
 }
 
-// Animation related styles
+/* ---------------------------------------------
+ * Animations
+ * --------------------------------------------- */
 .fade-in {
   opacity: 0;
   animation: fadeIn 0.3s forwards;

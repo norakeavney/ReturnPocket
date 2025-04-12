@@ -2,6 +2,12 @@ import { Component, OnInit, Output, EventEmitter, ChangeDetectorRef } from '@ang
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { CommonModule } from '@angular/common';
 
+/**
+ * InfoModalComponent
+ * 
+ * A modal component styled as a receipt that provides instructions on how to use
+ * the Return Pocket application. Features animated step numbers and fade transitions.
+ */
 @Component({
   selector: 'app-info-modal',
   templateUrl: './info-modal.component.html',
@@ -24,18 +30,30 @@ import { CommonModule } from '@angular/common';
   ]
 })
 export class InfoModalComponent implements OnInit {
+  /** Emits when the modal should be closed */
   @Output() close = new EventEmitter<void>();
   
+  /** Current date for display in receipt header */
   currentDate: Date = new Date();
+  
+  /** Controls the animation state of the modal */
   animationState: string = 'visible';
 
+  /**
+   * @param cdr Change detector reference for triggering detection cycles
+   */
   constructor(private cdr: ChangeDetectorRef) { }
 
+  /**
+   * Initialize the component and set up animations
+   * - Forces change detection to ensure text renders properly
+   * - Creates staggered animation effects for step numbers
+   */
   ngOnInit() {
-    // Force change detection to ensure text renders
+    // Force initial change detection to ensure content renders
     this.cdr.detectChanges();
     
-    // Auto-animate steps with a slight delay
+    // Animate step numbers with staggered timing for visual interest
     setTimeout(() => {
       const steps = document.querySelectorAll('.step-number');
       steps.forEach((step, index) => {
@@ -45,12 +63,17 @@ export class InfoModalComponent implements OnInit {
       });
     }, 500);
     
-    // Force another change detection after delay
+    // Ensure all content is properly rendered after animations
     setTimeout(() => {
       this.cdr.detectChanges();
     }, 100);
   }
 
+  /**
+   * Handles the modal close action with exit animation
+   * - Changes animation state to trigger fade-out
+   * - Emits close event after animation completes
+   */
   closeModal() {
     this.animationState = 'void';
     setTimeout(() => {
