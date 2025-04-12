@@ -1,15 +1,17 @@
+// Main content styling with consistent font and background
 ion-content {
   --background: #f8f8f8;
   font-family: 'Roboto Mono', monospace;
 }
 
-// Safe area spacing for device notches
+// Safe area spacing for device notches (iOS compatibility)
 .safe-area-top {
   height: env(safe-area-inset-top);
   min-height: 15px;
 }
 
-// Back button container
+// Container that positions the back button with proper spacing 
+// from device edges and notches
 .back-button-container {
   position: absolute;
   top: calc(env(safe-area-inset-top) + 5px);
@@ -17,7 +19,8 @@ ion-content {
   z-index: 10;
 }
 
-// Back button styling
+// Back button with minimal styling and proper positioning
+// Uses absolute positioning to ensure consistent placement
 .back-button {
   position: absolute;
   top: 0;
@@ -35,7 +38,7 @@ ion-content {
   }
 }
 
-// Page header
+// Page header section with title and optional filter indicators
 .page-header {
   margin-top: 30px;
   margin-bottom: 20px;
@@ -57,7 +60,8 @@ ion-content {
   }
 }
 
-// Filter badge in header
+// Badge showing active filters in the header
+// Displays county name and/or store logo
 .filter-badge {
   display: inline-flex;
   align-items: center;
@@ -75,7 +79,8 @@ ion-content {
   }
 }
 
-// Filter card
+// Card containing filter options
+// Displayed when filter toggle is activated
 .filter-card {
   margin: 0 0 16px 0;
   border-radius: 16px;
@@ -87,6 +92,7 @@ ion-content {
   }
 }
 
+// Styling for filter form controls
 .filter-controls {
   ion-item {
     --background: transparent;
@@ -114,6 +120,7 @@ ion-content {
   }
 }
 
+// Individual filter section with title and selection controls
 .filter-section {
   margin-bottom: 16px;
   
@@ -134,13 +141,15 @@ ion-content {
   }
 }
 
-// Store logo grid
+// Grid layout for store logo selection
+// Displays 4 stores per row with responsive spacing
 .store-logo-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 8px;
 }
 
+// Individual store logo item with selection indicator
 .store-logo-item {
   display: flex;
   flex-direction: column;
@@ -162,6 +171,7 @@ ion-content {
     color: #4A4845;
   }
   
+  // Styling for the currently selected store
   &.selected {
     background-color: rgba(var(--ion-color-primary-rgb), 0.1);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -172,11 +182,13 @@ ion-content {
     }
   }
   
+  // Touch feedback when pressing a store logo
   &:active {
     transform: scale(0.95);
   }
 }
 
+// Container for Apply and Reset filter buttons
 .filter-buttons {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -188,7 +200,7 @@ ion-content {
   }
 }
 
-// User rank card
+// Card that displays the current user's rank when not in top 10
 .user-rank-card {
   margin: 0 0 16px 0;
   border-radius: 16px;
@@ -200,11 +212,14 @@ ion-content {
   }
 }
 
+// Flex layout for user rank information
 .user-rank-content {
   display: flex;
   align-items: center;
 }
 
+// Circular badge displaying rank number
+// Uses different colors for different ranking positions
 .rank-badge {
   width: 60px;
   height: 60px;
@@ -219,22 +234,27 @@ ion-content {
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
 }
 
+// Gold color for 1st place
 .rank-badge.gold {
   background: linear-gradient(135deg, #FFD700, #FFA500);
 }
 
+// Silver color for 2nd place
 .rank-badge.silver {
   background: linear-gradient(135deg, #C0C0C0, #A9A9A9);
 }
 
+// Bronze color for 3rd place
 .rank-badge.bronze {
   background: linear-gradient(135deg, #CD7F32, #A0522D);
 }
 
+// Standard color for all other ranks
 .rank-badge.medium {
   background: linear-gradient(135deg, #6c757d, #495057);
 }
 
+// Text information about the user's rank
 .rank-info {
   h2 {
     margin: 0 0 4px 0;
@@ -250,7 +270,7 @@ ion-content {
   }
 }
 
-// Leaderboard card
+// Card containing the main leaderboard display
 .leaderboard-card {
   margin: 0 0 16px 0;
   border-radius: 16px;
@@ -286,7 +306,7 @@ ion-content {
   }
 }
 
-// Loading, error and empty states
+// Consistent styling for loading, error and empty state messages
 .loading-container, .error-container, .empty-state {
   display: flex;
   flex-direction: column;
@@ -311,12 +331,13 @@ ion-content {
   }
 }
 
-// Leaderboard list
+// List container for the leaderboard items
 ion-list {
   background: transparent;
   padding: 0;
 }
 
+// Individual leaderboard user item
 ion-item {
   --background: transparent;
   --border-color: rgba(0, 0, 0, 0.05);
@@ -338,6 +359,7 @@ ion-item {
   }
 }
 
+// Smaller rank indicator used in list items
 .rank-indicator {
   width: 40px;
   height: 40px;
@@ -350,6 +372,7 @@ ion-item {
   color: white;
 }
 
+// Medal colors for top 3 positions
 .rank-indicator.gold {
   background: linear-gradient(135deg, #FFD700, #FFA500);
 }
@@ -366,6 +389,7 @@ ion-item {
   background: linear-gradient(135deg, #6c757d, #495057);
 }
 
+// Points display on the right side of each leaderboard item
 .points-display {
   display: flex;
   flex-direction: column;
@@ -383,7 +407,7 @@ ion-item {
   }
 }
 
-// Highlight current user
+// Special styling to highlight the current user in the leaderboard
 .current-user {
   --background: rgba(var(--ion-color-primary-rgb), 0.05);
   border-left: 3px solid var(--ion-color-primary);
@@ -393,9 +417,11 @@ ion-item {
     font-weight: 600;
   }
   
+  // Subtle pulsing animation to draw attention to the current user
   animation: pulse 2s infinite;
 }
 
+// Keyframes for the pulsing animation
 @keyframes pulse {
   0% {
     --background: rgba(var(--ion-color-primary-rgb), 0.05);
@@ -408,7 +434,8 @@ ion-item {
   }
 }
 
-// Score footer style (for ellipsis between top 10 and current user)
+// Footer displayed when current user is outside top 10
+// Shows ellipsis and count of users between top 10 and current position
 .score-footer {
   display: flex;
   flex-direction: column;
@@ -431,7 +458,8 @@ ion-item {
   }
 }
 
-// Improve rank badge and indicator
+// Shared styling for rank badges and indicators
+// Ensures consistent appearance across different usages
 .rank-badge, .rank-indicator {
   display: flex;
   align-items: center;

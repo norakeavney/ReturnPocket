@@ -5,19 +5,26 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
+/**
+ * Interface representing a user in the leaderboard
+ * Contains user information and scoring data
+ */
 interface LeaderboardUser {
-  id: string;
-  display_name: string;
-  total_points: number;
-  user_county: string;
-  rank?: number;
-  store_points?: Record<string, number>;
+  id: string;                          // Unique user identifier
+  display_name: string;                // User's display name
+  total_points: number;                // Total recycling points
+  user_county: string;                 // User's county location
+  rank?: number;                       // User's position in the leaderboard
+  store_points?: Record<string, number>; // Points by store (store name -> points)
 }
 
+/**
+ * Interface representing a selectable store option in the filters
+ */
 interface StoreOption {
-  name: string;
-  logo: string;
-  value: string;
+  name: string;    // Display name of the store
+  logo: string;    // Path to store logo image
+  value: string;   // Store identifier used in data
 }
 
 @Component({
@@ -28,11 +35,16 @@ interface StoreOption {
   imports: [CommonModule, FormsModule, IonicModule]
 })
 export class LeaderboardsPage implements OnInit {
+  /** Complete list of all users for the leaderboard */
   users: LeaderboardUser[] = [];
-  filteredUsers: LeaderboardUser[] = [];
-  topUsers: LeaderboardUser[] = []; // To store top 10 users
   
-  // Predefined list of all Irish counties
+  /** Filtered subset of users based on selected filters */
+  filteredUsers: LeaderboardUser[] = [];
+  
+  /** Top ranked users (up to 10) to display in the main leaderboard */
+  topUsers: LeaderboardUser[] = [];
+  
+  /** Complete list of Irish counties for location filtering */
   irishCounties: string[] = [
     'Antrim', 'Armagh', 'Carlow', 'Cavan', 'Clare', 'Cork',
     'Derry', 'Donegal', 'Down', 'Dublin', 'Fermanagh', 'Galway',
@@ -42,7 +54,7 @@ export class LeaderboardsPage implements OnInit {
     'Wexford', 'Wicklow'
   ];
   
-  // Predefined store options with logos
+  /** Available stores for filtering with their display information */
   storeOptions: StoreOption[] = [
     { name: 'Aldi', logo: '/assets/resources/store-logos/aldi.png', value: 'Aldi' },
     { name: 'Centra', logo: '/assets/resources/store-logos/centra.png', value: 'Centra' },
@@ -54,25 +66,49 @@ export class LeaderboardsPage implements OnInit {
     { name: 'Other', logo: '/assets/resources/store-logos/other.png', value: 'Other' }
   ];
   
+  /** Controls visibility of the filter panel */
   showFilters: boolean = false;
+  
+  /** Currently selected county filter (empty string = no filter) */
   selectedCounty: string = '';
+  
+  /** Currently selected store filter (empty string = no filter) */
   selectedStore: string = '';
   
+  /** Indicates whether leaderboard data is currently loading */
   isLoading: boolean = true;
+  
+  /** Error message to display if data loading fails */
   loadingError: string = '';
   
+  /** ID of the currently logged in user */
   currentUserId: string | null = null;
+  
+  /** Current user's position in the leaderboard */
   currentUserRank: number = 0;
+  
+  /** Complete data for the current user */
   currentUserData: LeaderboardUser | null = null;
+  
+  /** Indicates if the current user is in the top 10 positions */
   isCurrentUserInTop10: boolean = false;
   
+  /**
+   * Constructor with dependency injection
+   * @param navCtrl - Navigation controller for page routing
+   * @param supabaseService - Service handling Supabase database operations
+   */
   constructor(
     private navCtrl: NavController,
     private supabaseService: SupabaseService
   ) {}
 
+  /**
+   * Lifecycle hook that runs when the component initializes
+   * Gets current user and loads leaderboard data
+   */
   async ngOnInit() {
-    // Get current user
+    // Get current user from authentication
     const user = await this.supabaseService.getCurrentUser();
     if (user) {
       this.currentUserId = user.id;
@@ -81,12 +117,16 @@ export class LeaderboardsPage implements OnInit {
     await this.loadLeaderboardData();
   }
   
+  /**
+   * Fetches leaderboard data from the database and processes it
+   * Sets up users list, rankings, and filtered views
+   */
   async loadLeaderboardData() {
     this.isLoading = true;
     this.loadingError = '';
     
     try {
-      // Fetch users ordered by total points
+      // Fetch users data from Supabase, ordered by total points (descending)
       const { data, error } = await this.supabaseService.supabase
         .from('users')
         .select('id, display_name, total_points, user_county, store_points')
@@ -95,21 +135,20 @@ export class LeaderboardsPage implements OnInit {
       if (error) throw error;
       
       if (data) {
-        console.log('Leaderboard data received:', data); // Debug log to check fetched data
+        console.log('Leaderboard data received:', data);
         
-        // Add rank to each user
+        // Process user data: add rankings and ensure store_points is valid
         this.users = data.map((user, index) => ({
           ...user,
           rank: index + 1,
-          // Ensure store_points is an object
           store_points: user.store_points || {}
         }));
         
-        // Initialize filtered users
+        // Initialize filtered users with all users
         this.filteredUsers = [...this.users];
         this.updateTopUsers();
         
-        // Find current user data and rank
+        // Find and process current user information
         if (this.currentUserId) {
           this.currentUserData = this.users.find(u => u.id === this.currentUserId) || null;
           if (this.currentUserData) {
@@ -131,34 +170,44 @@ export class LeaderboardsPage implements OnInit {
     }
   }
   
+  /**
+   * Updates the top users list with the first 10 users from filtered results
+   */
   updateTopUsers() {
-    // Update the top 10 users from filtered users
     this.topUsers = this.filteredUsers.slice(0, 10);
-    console.log('Top users updated:', this.topUsers); // Debug log to check top users
+    console.log('Top users updated:', this.topUsers);
   }
   
+  /**
+   * Toggles the visibility of the filter panel
+   */
   toggleFilters() {
     this.showFilters = !this.showFilters;
   }
   
+  /**
+   * Applies selected filters to the user list
+   * Filters by county and/or store and updates rankings accordingly
+   */
   applyFilters() {
     // Start with all users
     let filtered = [...this.users];
     
-    // Filter by county if selected
+    // Apply county filter if selected
     if (this.selectedCounty) {
       filtered = filtered.filter(user => user.user_county === this.selectedCounty);
     }
     
-    // Filter by store if selected
+    // Apply store filter if selected
     if (this.selectedStore) {
+      // Filter users who have points from the selected store
       filtered = filtered.filter(user => 
         user.store_points && 
         user.store_points[this.selectedStore] !== undefined &&
         user.store_points[this.selectedStore] > 0
       );
       
-      // If we're filtering by store, sort by that store's points
+      // When filtering by store, sort by that store's points instead of total points
       if (filtered.length > 0) {
         filtered.sort((a, b) => {
           const aPoints = a.store_points?.[this.selectedStore] || 0;
@@ -166,7 +215,7 @@ export class LeaderboardsPage implements OnInit {
           return bPoints - aPoints;
         });
         
-        // Update ranks based on store points
+        // Recalculate ranks based on filtered and sorted results
         filtered = filtered.map((user, index) => ({
           ...user,
           rank: index + 1
@@ -177,47 +226,57 @@ export class LeaderboardsPage implements OnInit {
     this.filteredUsers = filtered;
     this.updateTopUsers();
     
-    // Update current user info after filtering
+    // Update current user's rank in the filtered results
     if (this.currentUserId && this.currentUserData) {
       const userInFiltered = this.filteredUsers.find(u => u.id === this.currentUserId);
       if (userInFiltered) {
         this.currentUserRank = userInFiltered.rank || 0;
         this.isCurrentUserInTop10 = this.currentUserRank <= 10;
       } else {
-        // User not in filtered results
+        // User not in filtered results (doesn't match filter criteria)
         this.currentUserRank = 0;
         this.isCurrentUserInTop10 = false;
       }
     }
     
-    // Hide filters after applying
+    // Auto-hide the filter panel after applying filters
     this.showFilters = false;
   }
   
+  /**
+   * Resets all filters and restores the original leaderboard
+   */
   resetFilters() {
     this.selectedCounty = '';
     this.selectedStore = '';
     this.filteredUsers = [...this.users];
     this.updateTopUsers();
     
-    // Reset current user rank info
+    // Restore current user's original rank
     if (this.currentUserId && this.currentUserData) {
       this.currentUserRank = this.currentUserData.rank || 0;
       this.isCurrentUserInTop10 = this.currentUserRank <= 10;
     }
     
-    // Apply filter changes
+    // Apply the reset filters
     this.applyFilters();
   }
   
-  // Get the selected store logo
+  /**
+   * Returns the logo URL for the currently selected store
+   * @returns URL string for the store logo or empty string if no store selected
+   */
   getSelectedStoreLogo(): string {
     if (!this.selectedStore) return '';
     const store = this.storeOptions.find(s => s.value === this.selectedStore);
     return store ? store.logo : '';
   }
   
-  // Get badge color based on rank
+  /**
+   * Determines the appropriate badge color based on rank
+   * @param rank - The user's position in the leaderboard
+   * @returns CSS class string for the badge color
+   */
   getBadgeColor(rank: number): string {
     if (rank === 1) return 'gold';
     if (rank === 2) return 'silver';
@@ -225,7 +284,11 @@ export class LeaderboardsPage implements OnInit {
     return 'medium';
   }
   
-  // Display rank with appropriate suffix (1st, 2nd, 3rd, etc.)
+  /**
+   * Formats the rank number with the appropriate ordinal suffix
+   * @param rank - The user's position in the leaderboard
+   * @returns Formatted rank string (e.g., "1st", "2nd", "3rd", "4th")
+   */
   formatRank(rank: number): string {
     if (rank % 100 >= 11 && rank % 100 <= 13) {
       return `${rank}th`;
@@ -239,7 +302,12 @@ export class LeaderboardsPage implements OnInit {
     }
   }
   
-  // Get points to display based on filter
+  /**
+   * Returns the appropriate points value based on current filters
+   * Shows store-specific points when a store filter is applied
+   * @param user - User data object
+   * @returns Number of points to display
+   */
   getPoints(user: LeaderboardUser): number {
     if (this.selectedStore && user.store_points) {
       return user.store_points[this.selectedStore] || 0;
@@ -247,11 +315,19 @@ export class LeaderboardsPage implements OnInit {
     return user.total_points;
   }
   
-  // Return true if the user is the current logged in user
+  /**
+   * Checks if a user is the currently logged in user
+   * Used to highlight the current user in the leaderboard
+   * @param userId - User ID to check
+   * @returns Boolean indicating if this is the current user
+   */
   isCurrentUser(userId: string): boolean {
     return userId === this.currentUserId;
   }
   
+  /**
+   * Navigates back to the stats page
+   */
   goBack() {
     this.navCtrl.navigateBack('/stats');
   }
