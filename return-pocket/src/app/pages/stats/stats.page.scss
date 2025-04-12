@@ -1,8 +1,10 @@
+/* Base element styling */
 ion-content {
   --background: #f8f8f8;
   font-family: 'Roboto Mono', monospace;
 }
 
+/* Card styling with consistent visual language */
 ion-card {
   margin: 16px;
   border-radius: 16px;
@@ -20,21 +22,23 @@ ion-card {
   }
 }
 
+/* Button spacing consistency */
 ion-button {
   margin-top: 16px;
 }
 
+/* Item sliding layout */
 ion-item-sliding {
   margin-bottom: 8px;
 }
 
-// Safe area spacing for device notches/dynamic islands
+/* Device-specific safe area handling for notches and dynamic islands */
 .safe-area-top {
   height: env(safe-area-inset-top);
   min-height: 15px;
 }
 
-// Back button container to position it correctly
+/* Positioning container for back button with proper spacing from device edges */
 .back-button-container {
   position: absolute;
   top: calc(env(safe-area-inset-top) + 5px);
@@ -42,7 +46,7 @@ ion-item-sliding {
   z-index: 10;
 }
 
-// Back button styling - repositioned
+/* Back button styling with touch-friendly target size */
 .back-button {
   position: absolute;
   top: 0;
@@ -60,25 +64,28 @@ ion-item-sliding {
   }
 }
 
-// User Profile Card
+/* User profile card with enhanced visual hierarchy */
 .user-profile-card {
-  margin-top: 30px;  // Increased from 10px to 30px
+  margin-top: 30px;
   margin-bottom: 20px;
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
+/* Flex container for profile information */
 .profile-container {
   display: flex;
   align-items: center;
   padding: 10px 5px;
 }
 
+/* Hide avatar container until implemented */
 .avatar-container {
   display: none;
 }
 
+/* User information layout and typography */
 .user-info {
   flex: 1;
   
@@ -96,6 +103,7 @@ ion-item-sliding {
   }
 }
 
+/* Action buttons in the profile section */
 .profile-actions {
   display: flex;
   gap: 8px;
@@ -118,13 +126,14 @@ ion-item-sliding {
   }
 }
 
-// Login Prompt Styling
+/* Login prompt for unauthenticated users */
 .login-prompt {
   display: flex;
   align-items: center;
   padding: 16px 10px;
 }
 
+/* Icon styling in the login prompt */
 .login-icon {
   margin-right: 16px;
   
@@ -134,6 +143,7 @@ ion-item-sliding {
   }
 }
 
+/* Login information text and layout */
 .login-info {
   flex: 1;
   
@@ -160,7 +170,7 @@ ion-item-sliding {
   }
 }
 
-// Stats Grid
+/* Responsive grid layout for statistic cards */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -168,6 +178,7 @@ ion-item-sliding {
   margin: 0 14px 20px 14px;
 }
 
+/* Individual statistic card styling */
 .stat-card {
   border-radius: 12px;
   margin: 0;
@@ -200,7 +211,7 @@ ion-item-sliding {
   }
 }
 
-// Store Card
+/* Store ranking card styling */
 .store-card {
   margin-bottom: 20px;
   border-radius: 12px;
@@ -215,17 +226,18 @@ ion-item-sliding {
   }
 }
 
-// Achievement styling
+/* Visual distinction for achieved achievements */
 .achieved {
   opacity: 1;
 }
 
-// Fix for ion-list background
+/* List styling fixes for Ionic components */
 ion-list {
   background: transparent;
   padding: 0;
 }
 
+/* Individual list item styling with consistent visual language */
 ion-item {
   --background: transparent;
   --border-color: rgba(0, 0, 0, 0.05);
@@ -261,22 +273,25 @@ ion-item {
   }
 }
 
+/* Visual distinction for unachieved achievements */
 ion-item:not(.achieved) {
   opacity: 0.7;
 }
 
-// Environmental Impact
+/* Environmental impact card styling */
 .impact-card {
   margin-bottom: 20px;
   border-radius: 12px;
 }
 
+/* Layout for impact statistics */
 .impact-stats {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
 }
 
+/* Individual environmental impact metric styling */
 .impact-item {
   text-align: center;
   padding: 8px;
@@ -295,6 +310,7 @@ ion-item:not(.achieved) {
   }
 }
 
+/* Empty state messaging */
 .empty-state {
   text-align: center;
   padding: 20px;
@@ -302,12 +318,13 @@ ion-item:not(.achieved) {
   font-style: italic;
 }
 
-// Level Circle
+/* Level visualization container */
 .level-circle-container {
   margin-right: 16px;
   position: relative;
 }
 
+/* Circular level indicator with consistent sizing */
 .level-circle {
   width: 70px;
   height: 70px;
@@ -321,6 +338,7 @@ ion-item:not(.achieved) {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
+/* Progress indicator within the level circle */
 .level-progress {
   position: absolute;
   top: 0;
@@ -333,6 +351,7 @@ ion-item:not(.achieved) {
   z-index: 1;
 }
 
+/* Level number display */
 .level-number {
   font-size: 28px;
   font-weight: 700;
@@ -341,6 +360,7 @@ ion-item:not(.achieved) {
   line-height: 1;
 }
 
+/* Level label display */
 .level-label {
   font-size: 10px;
   color: rgba(255, 255, 255, 0.9);
@@ -349,6 +369,7 @@ ion-item:not(.achieved) {
   letter-spacing: 0.5px;
 }
 
+/* Progress text display */
 .level-progress-text {
   display: flex;
   flex-direction: column;
@@ -363,7 +384,7 @@ ion-item:not(.achieved) {
   }
 }
 
-// Logout Button
+/* Logout button styling */
 .logout-button {
   margin: 20px 16px 30px;
   --border-radius: 12px;

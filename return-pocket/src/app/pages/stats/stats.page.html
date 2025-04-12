@@ -1,28 +1,34 @@
 <ion-content class="ion-padding">
-  <!-- Safe area spacing for device notches -->
+  <!-- Safe area spacing to accommodate device-specific notches and UI elements -->
   <div class="safe-area-top"></div>
   
-  <!-- Minimal back button - moved below safe area -->
+  <!-- Back navigation button positioned below safe area -->
   <div class="back-button-container">
     <ion-button fill="clear" class="back-button" (click)="goBack()">
       <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
     </ion-button>
   </div>
   
+  <!-- User profile or login prompt card -->
   <ion-card class="user-profile-card">
     <ion-card-content>
   
+      <!-- Container that waits for auth check to complete before displaying UI -->
       <ng-container *ngIf="isAuthChecked">
         
-        <!-- Show user profile when logged in -->
+        <!-- User profile section visible only when logged in -->
         <div class="profile-container" *ngIf="isLoggedIn">
+          <!-- Level visualization with circular progress indicator -->
           <div class="level-circle-container">
             <div class="level-circle" [ngStyle]="{'background': getLevelColor()}">
+              <!-- Progress indicator that rotates based on progress percentage -->
               <div class="level-progress" [style.transform]="'rotate(' + userLevelProgress*360 + 'deg)'"></div>
               <div class="level-number">{{ userLevelNumber }}</div>
               <div class="level-label">Level</div>
             </div>
           </div>
+          
+          <!-- User information section with name, level, and progress details -->
           <div class="user-info">
             <h1>{{ userName }}</h1>
             <p class="hero-tag">{{ userLevel }}</p>
@@ -30,6 +36,8 @@
               <span>{{ userPoints }} / {{ pointsToNextLevel }} points</span>
               <span *ngIf="userLevelProgress < 1">{{ pointsToNextLevel - userPoints }} points to next level</span>
             </div>
+            
+            <!-- User action buttons for navigation and interaction -->
             <div class="profile-actions">
               <ion-button fill="solid" size="small" color="primary" class="leaderboard-btn" (click)="goToLeaderboards()">
                 <ion-icon name="trophy-outline" slot="start"></ion-icon>
@@ -39,7 +47,7 @@
           </div>
         </div>
   
-        <!-- Show login prompt when not logged in -->
+        <!-- Login prompt visible only when not logged in -->
         <div class="login-prompt" *ngIf="!isLoggedIn">
           <div class="login-icon">
             <ion-icon name="person-circle-outline"></ion-icon>
@@ -59,8 +67,7 @@
     </ion-card-content>
   </ion-card>
   
-
-  <!-- Quick Stats Grid - Updated to use animated values -->
+  <!-- Statistics grid showing key metrics with animated counters -->
   <div class="stats-grid">
     <ion-card class="stat-card" *ngFor="let stat of statCards">
       <ion-card-content>
@@ -71,7 +78,7 @@
     </ion-card>
   </div>
 
-  <!-- Top Stores -->
+  <!-- Top stores section showing preferred recycling locations -->
   <ion-card class="store-card">
     <ion-card-header>
       <ion-card-title>
@@ -80,10 +87,12 @@
       </ion-card-title>
     </ion-card-header>
     <ion-card-content>
+      <!-- Empty state message shown when no store data is available -->
       <div class="empty-state" *ngIf="topStores.length === 0">
         No store data available yet. Start returning bottles to see your stats!
       </div>
       
+      <!-- Stores list shown when data is available -->
       <ion-list lines="none" *ngIf="topStores.length > 0">
         <ion-item *ngFor="let store of topStores; let i = index">
           <ion-label>
@@ -96,7 +105,7 @@
     </ion-card-content>
   </ion-card>
 
-  <!-- Achievements -->
+  <!-- Achievements section showing user's progress and accomplishments -->
   <ion-card>
     <ion-card-header>
       <ion-card-title>
@@ -106,6 +115,7 @@
     </ion-card-header>
     <ion-card-content>
       <ion-list lines="none">
+        <!-- Achievement items with visual differentiation between completed and pending -->
         <ion-item *ngFor="let achievement of achievements" [class.achieved]="achievement.achieved">
           <ion-icon [name]="achievement.icon" slot="start" [color]="achievement.achieved ? 'success' : 'medium'"></ion-icon>
           <ion-label>
@@ -120,7 +130,7 @@
     </ion-card-content>
   </ion-card>
 
-  <!-- Environmental Impact - Updated to use animated values -->
+  <!-- Environmental impact section showing ecological benefits -->
   <ion-card class="impact-card">
     <ion-card-header>
       <ion-card-title>
@@ -130,14 +140,17 @@
     </ion-card-header>
     <ion-card-content>
       <div class="impact-stats">
+        <!-- Bottles recycled metric -->
         <div class="impact-item">
           <div class="impact-value">{{ displayBottles }}</div>
           <div class="impact-label">Bottles Recycled</div>
         </div>
+        <!-- CO₂ emissions saved metric -->
         <div class="impact-item">
           <div class="impact-value">{{ displayCO2 }}kg</div>
           <div class="impact-label">CO₂ Emissions Saved</div>
         </div>
+        <!-- Landfill space saved metric -->
         <div class="impact-item">
           <div class="impact-value">{{ displayLandfill }}m³</div>
           <div class="impact-label">Landfill Space Saved</div>
@@ -146,7 +159,7 @@
     </ion-card-content>
   </ion-card>
 
-  <!-- Logout Button - Only show when logged in -->
+  <!-- Logout button shown only to authenticated users -->
   <ion-button 
     *ngIf="isLoggedIn" 
     expand="block" 
