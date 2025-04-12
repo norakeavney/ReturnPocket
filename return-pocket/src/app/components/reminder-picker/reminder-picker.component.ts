@@ -1,9 +1,9 @@
 // Imports
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule, ToastController } from '@ionic/angular';
-import {trigger,style,transition,animate,state} from '@angular/animations'; // Animation imports
+import {trigger,style,transition,animate,state} from '@angular/animations';
 import { ReminderService } from '../../services/reminder.service';
 import { Receipt } from '../../services/sqlite.service';
 
@@ -42,48 +42,66 @@ import { Receipt } from '../../services/sqlite.service';
     ])
   ]
 })
-export class ReminderPickerComponent {
+export class ReminderPickerComponent implements OnInit {
   @Input() receipt!: Receipt;
   @Output() reminderSet: EventEmitter<void> = new EventEmitter<void>();
 
   // Component state
   reminderDate: string = '';
   minDateTime: string = new Date().toISOString();
+  isSubmitting: boolean = false;
 
   constructor(
     private reminderService: ReminderService,
     private toastCtrl: ToastController
   ) {}
 
+  ngOnInit() {
+    // Set default date to tomorrow
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(9, 0, 0, 0); // Set to 9:00 AM
+    this.reminderDate = tomorrow.toISOString();
+  }
+
   /**
    * Sets a reminder for the receipt.
-   * 
-   * This method validates the selected reminder date and schedules a notification
-   * if the date is valid. It ensures that the reminder is set for a future date
-   * and calculates the delay in minutes before scheduling the reminder.
-   * 
-   * @returns {Promise<void>} A promise that resolves when the reminder is set or rejects on failure.
    */
   async setReminder(): Promise<void> {
-    if (!this.reminderDate || !this.receipt) return;
-
-    const selected = new Date(this.reminderDate);
-    if (selected <= new Date()) {
-      return this.showToast('Please select a future date and time', 'warning');
-    }
-
-    const delayMins = Math.floor((selected.getTime() - Date.now()) / 60000);
-
+    if (this.isSubmitting) return; // Prevent double submission
+    this.isSubmitting = true;
+    
     try {
-      await this.reminderService.scheduleReminder(
+      if (!this.reminderDate || !this.receipt) {
+        this.showToast('Please select a date and time', 'warning');
+        this.isSubmitting = false;
+        return;
+      }
+
+      const selected = new Date(this.reminderDate);
+      const now = new Date();
+      
+      if (selected <= now) {
+        this.showToast('Please select a future date and time', 'warning');
+        this.isSubmitting = false;
+        return;
+      }
+
+      const delayMins = Math.floor((selected.getTime() - now.getTime()) / 60000);
+      console.log('Setting reminder for:', selected.toLocaleString(), 'Delay minutes:', delayMins);
+
+      const notificationId = await this.reminderService.scheduleReminder(
         `Don't forget to use your ${this.receipt.store_name} receipt!`,
         delayMins
       );
+      
+      console.log('Reminder set with ID:', notificationId);
       this.showToast('Reminder set successfully!', 'success');
-      this.reminderSet.emit();
+      setTimeout(() => this.reminderSet.emit(), 1000); // Give some time for the toast to show
     } catch (e) {
       console.error('Failed to set reminder:', e);
-      this.showToast('Failed to set reminder', 'danger');
+      this.showToast('Failed to set reminder. Please try again.', 'danger');
+      this.isSubmitting = false;
     }
   }
 
@@ -113,11 +131,10 @@ export class ReminderPickerComponent {
 
   /**
    * Handler for reminder completion.
-   * 
-   * This method is triggered when the reminder is marked as done. It calls
-   * the `setReminder` method to ensure the reminder is properly set.
    */
   handleReminderDone(): void {
+    // This method is no longer needed as we removed the default buttons
+    // But we'll keep it for backward compatibility
     this.setReminder();
   }
 }

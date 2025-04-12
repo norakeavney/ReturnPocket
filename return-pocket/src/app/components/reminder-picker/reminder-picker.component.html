@@ -1,17 +1,20 @@
-<ion-card>
-  <ion-card-header>
-    <ion-card-title>Set a Reminder</ion-card-title>
-  </ion-card-header>
-  <ion-card-content>
-    <div [@popup]>
+<div [@popup]>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Set a Reminder</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
       <ion-datetime
         [(ngModel)]="reminderDate"
         [min]="minDateTime"
         presentation="date-time"
-        show-default-buttons="true"
-        (ionDone)="handleReminderDone()">
+        show-default-buttons="false">
       </ion-datetime>
-    </div>
-    
-  </ion-card-content>
-</ion-card>
+      
+      <div class="button-container">
+        <ion-button color="medium" (click)="reminderSet.emit()">Cancel</ion-button>
+        <ion-button color="primary" (click)="setReminder()">Set Reminder</ion-button>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</div>
