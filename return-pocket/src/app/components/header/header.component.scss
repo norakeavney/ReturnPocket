@@ -1,13 +1,16 @@
+/* Host element styles - provides base layout for the entire component */
 :host {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 16px;
+    /* Ensures proper spacing on devices with notches/safe areas */
     padding-top: calc(16px + env(safe-area-inset-top));
     font-family: 'Roboto Mono', monospace;
 }
 
+/* Main container for all header content */
 .header-container {
     display: flex;
     flex-direction: column;
@@ -18,10 +21,12 @@
     text-align: center;
 }
 
+/* Container for the optional logo image */
 .logo-section {
     margin-bottom: 12px;
 }
 
+/* Container for the text elements (main and sub headings) */
 .text-section {
     display: flex;
     flex-direction: column;
@@ -29,18 +34,21 @@
     gap: 4px;
 }
 
+/* Styling for the header logo image */
 .header-logo {
     width: 180px;
     height: 180px;
     object-fit: contain;
 }
 
+/* Main heading text style - uses Material Design typography class */
 .mat-headline-4 {
     color: #333333;
     font-weight: 500;
     margin: 0;
 }
 
+/* Subheading text style - uses Material Design typography class */
 .mat-subheading-2 {
     font-weight: 400;
     font-size: 1em;

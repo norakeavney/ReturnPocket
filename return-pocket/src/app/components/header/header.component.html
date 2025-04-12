@@ -1,12 +1,17 @@
+<!-- Main header container with flex layout -->
 <div class="header-container">
+  <!-- Logo section - conditionally rendered when imgSrc is provided -->
   <div class="logo-section" *ngIf="imgSrc">
     <img [src]="imgSrc" alt="Header logo" class="header-logo">
   </div>
+  
+  <!-- Text content section with main and optional subtext -->
   <div class="text-section">
     <h1 class="mat-headline-4">{{ mainText }}</h1>
+    <!-- Subtext heading - only rendered when subText is provided -->
     <h2 *ngIf="subText" class="mat-subheading-2">{{ subText }}</h2>
   </div>
 </div>
 
-<!-- Apply custom styles -->
+<!-- Container for applying any custom styles passed to the component -->
 <div [ngStyle]="customStyles"></div>
