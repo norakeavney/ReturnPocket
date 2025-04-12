@@ -113,40 +113,80 @@ export class ConfirmreceiptmodalComponent implements OnInit {
     return Math.round(amount * 100);
   }
   
-  setReminderTime(minutes: number) {
-    this.selectedReminderTime = minutes;
-  }
-  
-  scheduleReminder() {
-    if (this.reminderEnabled && this.selectedReminderTime) {
+  /**
+   * Schedule a reminder notification
+   */
+  async scheduleReminder() {
+    if (!this.reminderEnabled || this.selectedReminderTime === null) {
+      return;
+    }
+    
+    try {
       const storeName = this.receipt.store_name || 'Unknown Store';
       const amount = this.receipt.total_amount.toFixed(2);
       const message = `Don't forget to scan your ${storeName} receipt for €${amount} at the till!`;
       
-      this.reminderService.scheduleReminder(message, this.selectedReminderTime);
+      console.log(`Scheduling reminder for ${storeName} in ${this.selectedReminderTime} minutes`);
+      
+      const notificationId = await this.reminderService.scheduleReminder(
+        message, 
+        this.selectedReminderTime
+      );
+      
+      console.log('Reminder scheduled with ID:', notificationId);
+      
+      // Show feedback to user
+      const toast = document.createElement('ion-toast');
+      toast.message = `Reminder set for ${this.selectedReminderTime} minutes from now`;
+      toast.duration = 2000;
+      toast.position = 'bottom';
+      toast.color = 'success';
+      document.body.appendChild(toast);
+      await toast.present();
+      
+    } catch (error) {
+      console.error('Failed to schedule reminder:', error);
+      
+      // Show error to user
+      const toast = document.createElement('ion-toast');
+      toast.message = 'Failed to set reminder';
+      toast.duration = 2000;
+      toast.position = 'bottom';
+      toast.color = 'danger';
+      document.body.appendChild(toast);
+      await toast.present();
     }
   }
   
-  // Add this method to handle the reminder toggle
+  /**
+   * Set which reminder time is selected
+   */
+  setReminderTime(minutes: number) {
+    this.selectedReminderTime = minutes;
+    console.log('Reminder time set to', minutes, 'minutes');
+  }
+  
+  /**
+   * Enable or disable the reminder feature
+   */
   setReminderEnabled(enabled: boolean) {
     this.reminderEnabled = enabled;
-    // When enabling, select the first option by default and force change detection
-    if (enabled) {
-      if (this.selectedReminderTime === null) {
-        this.selectedReminderTime = this.reminderTimes[0].value;
-      }
-      
-      // Force UI refresh with a slight delay
-      setTimeout(() => {
-        this.selectedReminderTime = this.selectedReminderTime;
-      }, 50);
+    console.log('Reminder enabled:', enabled);
+    
+    // When enabling, select the first option by default if nothing is selected
+    if (enabled && this.selectedReminderTime === null) {
+      this.selectedReminderTime = this.reminderTimes[0].value;
     }
   }
 
-  confirmReceipt() {
-    if (this.reminderEnabled && this.selectedReminderTime) {
-      this.scheduleReminder();
+  /**
+   * Confirm the receipt and schedule reminder if enabled
+   */
+  async confirmReceipt() {
+    if (this.reminderEnabled && this.selectedReminderTime !== null) {
+      await this.scheduleReminder();
     }
+    
     this.confirmed.emit(this.receipt);
     this.modalController.dismiss(this.receipt);
   }

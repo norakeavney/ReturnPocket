@@ -177,7 +177,23 @@ export class SqliteService {
   
     return result;
   }
-  
-  
+
+  /**
+   * Updates the barcode data for a receipt.
+   * Used to mark receipts as "used" by changing the barcode data.
+   * @param id The ID of the receipt.
+   * @param barcodeData The new barcode data to set.
+   * @throws Error if the operation fails.
+   */
+  async updateBarcodeData(id: number, barcodeData: string) {
+    const query = 'UPDATE receipts_table SET barcode_data = ? WHERE id = ?';
+    try {
+      await this.db?.run(query, [barcodeData, id]);
+      await this.loadReceipts(); // Refresh the local cache
+    } catch (error) {
+      console.error('Error updating barcode data:', error);
+      throw error;
+    }
+  }
   
 }
