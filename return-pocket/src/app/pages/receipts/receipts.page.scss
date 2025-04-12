@@ -1,14 +1,16 @@
+/* Main content container styling */
 ion-content {
-    --background: #f8c8c8; /* Keep the pink background */
+    --background: #f8c8c8; /* Pink background for brand identity */
     display: flex;
     justify-content: center; /* Center receipts horizontally */
     align-items: center; /* Center receipts vertically */
     flex-direction: column;
     min-height: 100vh;
     padding: 20px;
-    padding-bottom: calc(env(safe-area-inset-bottom) + 20px); /* Add safe area padding for iOS */
+    padding-bottom: calc(env(safe-area-inset-bottom) + 20px); /* iOS safe area adjustment */
 }
 
+/* Back button positioning and container */
 .back-button-container {
     position: absolute;
     top: calc(env(safe-area-inset-top) + 5px);
@@ -16,6 +18,7 @@ ion-content {
     z-index: 10;
 }
 
+/* Back button styling for consistent tap area and appearance */
 .back-button {
     position: absolute;
     top: 0;
@@ -33,48 +36,55 @@ ion-content {
     }
 }
 
+/* Spacing to accommodate device notches and status bars */
 .safe-area-top {
     height: env(safe-area-inset-top);
     min-height: 15px;
 }
 
+/* Receipt list container layout */
 .receipt-list {
     display: flex;
     flex-direction: column;
     gap: 16px;
     width: 100%;
-    max-width: 600px;
+    max-width: 600px; /* Limit width for readability on larger screens */
     padding: 16px;
     margin: 0 auto;
 }
 
+/* Individual receipt container styling */
 .receipt-container {
     width: 100%;
     min-height: auto;
-    text-align: center; /* Ensure total amount is centered */
+    text-align: center; /* Center the total amount */
 }
 
+/* Filters and sorting options container */
 .filter-container {
     padding: 16px;
-    background: rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.7); /* Semi-transparent for visual hierarchy */
     border-radius: 12px;
     margin: 16px;
-    margin-top: 60px; /* Keep the top margin to avoid overlap with back button */
+    margin-top: 60px; /* Space to avoid overlap with back button */
 }
 
+/* Labels for filter/sort button groups */
 .button-group-label {
     font-size: 0.9em;
     color: #666;
     margin-bottom: 8px;
 }
 
+/* Layout for button groupings */
 .button-group {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
     gap: 8px;
     margin-bottom: 16px;
 }
 
+/* Store filter button container */
 .store-buttons {
     display: flex;
     flex-wrap: wrap;
@@ -82,6 +92,7 @@ ion-content {
     margin-bottom: 8px;
 }
 
+/* Common button styling with active state */
 ion-button {
     --background: #ffffff;
     --color: #333333;
@@ -91,25 +102,27 @@ ion-button {
     --padding-end: 12px;
 
     &.active {
-      --background: #ff9ecd;
+      --background: #ff9ecd; /* Pink highlight for active state */
       --color: #ffffff;
     }
 }
 
+/* Margin for button sections */
 .sort-buttons, .store-filters {
     margin-bottom: 16px;
 }
 
+/* Total amount display styling for readability */
 .total-amount {
-    font-size: 1.5em; /* Larger font for better visibility */
+    font-size: 1.5em;
     font-weight: bold;
-    color: #333; /* Keep dark text color for contrast */
+    color: #333;
     margin-top: 16px;
     padding: 8px;
-    background: rgba(255, 255, 255, 0.9); /* Light background for contrast */
+    background: rgba(255, 255, 255, 0.9);
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    display: inline-block; /* Ensure the background wraps the text */
-    min-width: 80px; /* Ensure minimum width for visibility */
-    border: 1px solid rgba(0,0,0,0.1); /* Add subtle border for better visibility */
+    display: inline-block;
+    min-width: 80px; /* Minimum width for consistent appearance */
+    border: 1px solid rgba(0,0,0,0.1);
 }

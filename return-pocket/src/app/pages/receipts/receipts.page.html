@@ -1,16 +1,17 @@
 <ion-content class="ion-padding">
-  <!-- Safe area spacing for device notches -->
+  <!-- Safe area spacing to handle device notches and status bars -->
   <div class="safe-area-top"></div>
   
-  <!-- Back button -->
+  <!-- Navigation back button - fixed position in top left -->
   <div class="back-button-container">
     <ion-button fill="clear" class="back-button" (click)="goBack()">
       <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
     </ion-button>
   </div>
   
-  <!-- Added top margin to create space after the back button -->
+  <!-- Filter and sorting controls section -->
   <div class="filter-container">
+    <!-- Date and amount sorting options -->
     <div class="sort-buttons">
       <div class="button-group-label">Sort by:</div>
       <div class="button-group">
@@ -33,12 +34,15 @@
       </div>
     </div>
 
+    <!-- Store filtering options - dynamically populated -->
     <div class="store-filters">
       <div class="button-group-label">Stores:</div>
       <div class="store-buttons">
+        <!-- "All stores" filter option -->
         <ion-button [class.active]="filterStore === ''" (click)="setFilterStore('')" size="small">
           All
         </ion-button>
+        <!-- Dynamic store filter buttons based on available unique stores -->
         <ion-button *ngFor="let store of uniqueStores" 
                     [class.active]="filterStore === store" 
                     (click)="setFilterStore(store)"
@@ -49,7 +53,9 @@
     </div>
   </div>
 
+  <!-- Main receipt list container - displays filtered and sorted receipts -->
   <div class="receipt-list">
+    <!-- Receipt card component for each item with click navigation -->
     <app-receipt-card *ngFor="let receipt of filteredReceipts"
                       [receipt]="receipt"
                       (click)="viewReceipt(receipt.id?.toString())">
