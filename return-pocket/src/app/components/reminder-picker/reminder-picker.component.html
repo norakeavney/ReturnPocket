@@ -1,9 +1,14 @@
+<!-- Main container with popup animation -->
 <div [@popup]>
   <ion-card>
+    <!-- Header section -->
     <ion-card-header>
       <ion-card-title>Set a Reminder</ion-card-title>
     </ion-card-header>
+    
+    <!-- Content section with date/time picker and action buttons -->
     <ion-card-content>
+      <!-- Ionic datetime picker configured with minimum date constraint -->
       <ion-datetime
         [(ngModel)]="reminderDate"
         [min]="minDateTime"
@@ -11,6 +16,7 @@
         show-default-buttons="false">
       </ion-datetime>
       
+      <!-- Action buttons for canceling or confirming the reminder -->
       <div class="button-container">
         <ion-button color="medium" (click)="reminderSet.emit()">Cancel</ion-button>
         <ion-button color="primary" (click)="setReminder()">Set Reminder</ion-button>

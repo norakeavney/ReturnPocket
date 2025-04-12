@@ -3,13 +3,15 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule, ToastController } from '@ionic/angular';
-import {trigger,style,transition,animate,state} from '@angular/animations';
+import {trigger, style, transition, animate, state} from '@angular/animations';
 import { ReminderService } from '../../services/reminder.service';
 import { Receipt } from '../../services/sqlite.service';
 
 /**
- * Component for picking reminder dates(notifications) for receipts
- * Includes animation for smooth entry/exit transitions
+ * ReminderPickerComponent
+ * 
+ * A modal component that allows users to select a date and time for setting reminders for receipts.
+ * Features an animated transition for smooth entry and exit effects.
  */
 @Component({
   selector: 'app-reminder-picker',
@@ -43,32 +45,51 @@ import { Receipt } from '../../services/sqlite.service';
   ]
 })
 export class ReminderPickerComponent implements OnInit {
+  /** The receipt for which the reminder is being set */
   @Input() receipt!: Receipt;
+  
+  /** Event emitted when a reminder is successfully set or the picker is dismissed */
   @Output() reminderSet: EventEmitter<void> = new EventEmitter<void>();
 
-  // Component state
+  /** Selected date and time for the reminder */
   reminderDate: string = '';
+  
+  /** Minimum selectable date-time (current time) */
   minDateTime: string = new Date().toISOString();
+  
+  /** Flag to prevent multiple submissions */
   isSubmitting: boolean = false;
 
+  /**
+   * Creates an instance of ReminderPickerComponent.
+   * @param reminderService - Service for scheduling notification reminders
+   * @param toastCtrl - Controller for displaying toast notifications
+   */
   constructor(
     private reminderService: ReminderService,
     private toastCtrl: ToastController
   ) {}
 
+  /**
+   * Lifecycle hook that initializes the component.
+   * Sets default reminder time to 9:00 AM tomorrow.
+   */
   ngOnInit() {
-    // Set default date to tomorrow
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
-    tomorrow.setHours(9, 0, 0, 0); // Set to 9:00 AM
+    tomorrow.setHours(9, 0, 0, 0);
     this.reminderDate = tomorrow.toISOString();
   }
 
   /**
-   * Sets a reminder for the receipt.
+   * Schedules a reminder notification for the receipt.
+   * Validates the selected date and time before setting the reminder.
+   * Emits the reminderSet event upon successful completion.
+   * 
+   * @returns Promise that resolves when the reminder is set or rejected on validation failure
    */
   async setReminder(): Promise<void> {
-    if (this.isSubmitting) return; // Prevent double submission
+    if (this.isSubmitting) return;
     this.isSubmitting = true;
     
     try {
@@ -97,7 +118,7 @@ export class ReminderPickerComponent implements OnInit {
       
       console.log('Reminder set with ID:', notificationId);
       this.showToast('Reminder set successfully!', 'success');
-      setTimeout(() => this.reminderSet.emit(), 1000); // Give some time for the toast to show
+      setTimeout(() => this.reminderSet.emit(), 1000);
     } catch (e) {
       console.error('Failed to set reminder:', e);
       this.showToast('Failed to set reminder. Please try again.', 'danger');
@@ -106,15 +127,11 @@ export class ReminderPickerComponent implements OnInit {
   }
 
   /**
-   * Displays a toast message to the user.
+   * Displays a toast notification to the user.
    * 
-   * This method creates and presents a toast notification with the specified
-   * message and color. The toast is displayed at the bottom of the screen for
-   * a duration of 2 seconds.
-   * 
-   * @param {string} message - The message to display.
-   * @param {'success' | 'warning' | 'danger'} color - The color of the toast, indicating its type.
-   * @returns {Promise<void>} A promise that resolves when the toast is presented.
+   * @param message - The notification message to display
+   * @param color - The color theme of the toast indicating its type (success, warning, or danger)
+   * @returns Promise that resolves when the toast is presented
    */
   private async showToast(
     message: string, 
@@ -130,11 +147,10 @@ export class ReminderPickerComponent implements OnInit {
   }
 
   /**
-   * Handler for reminder completion.
+   * Legacy handler for reminder completion.
+   * Maintained for backward compatibility but functionally equivalent to setReminder.
    */
   handleReminderDone(): void {
-    // This method is no longer needed as we removed the default buttons
-    // But we'll keep it for backward compatibility
     this.setReminder();
   }
 }
