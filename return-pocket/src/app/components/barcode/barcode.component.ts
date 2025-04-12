@@ -4,9 +4,10 @@ import { SqliteService } from 'src/app/services/sqlite.service';
 import { RebuilderService } from 'src/app/services/rebuilder.service';
 
 /**
- * BarcodeComponent is responsible for rendering a barcode on a canvas element.
- * It fetches barcode data using the SqliteService and generates the barcode
- * using the RebuilderService.
+ * Renders a barcode on a canvas element based on data retrieved from the database.
+ * 
+ * This component connects the SqliteService for data retrieval with the 
+ * RebuilderService for actual barcode generation on a canvas element.
  */
 @Component({
   selector: 'app-barcode',
@@ -18,38 +19,40 @@ import { RebuilderService } from 'src/app/services/rebuilder.service';
 export class BarcodeComponent implements OnInit, AfterViewInit {
 
   /**
-   * The ID of the receipt for which the barcode is to be generated.
+   * Database ID of the receipt for which to generate a barcode.
+   * This value must be provided by the parent component.
    */
   @Input() receiptId!: number;
 
   /**
-   * The data used to generate the barcode.
+   * Raw data used to generate the barcode.
+   * Null indicates no barcode data is available.
    */
   public barcodeData: string | null = null;
 
   /**
-   * A flag to ensure the barcode is only initialized once.
+   * Flag to prevent multiple initialization attempts of the same barcode.
+   * Set to true once the barcode has been successfully generated.
    */
   private barcodeInitialized = false;
 
   /**
-   * Constructor to inject required services.
-   * @param sql - Service to interact with SQLite database.
-   * @param builder - Service to generate the barcode.
+   * @param sql - Provides methods to interact with the SQLite database
+   * @param builder - Provides barcode generation functionality
    */
   constructor(private sql: SqliteService, private builder: RebuilderService) {}
 
   /**
-   * Lifecycle hook that is called after the component is initialized.
-   * Fetches the barcode data for the given receipt ID.
+   * Fetches barcode data for the provided receipt ID when the component initializes.
+   * Sets barcodeData to null if no data is found.
    */
   async ngOnInit() {
     this.barcodeData = await this.sql.getBarcodeDataById(this.receiptId);
   }
 
   /**
-   * Lifecycle hook that is called after the component's view has been initialized.
-   * Delays the rendering of the barcode to ensure the canvas element is available.
+   * Initiates barcode rendering with a slight delay to ensure the DOM is fully rendered.
+   * The delay ensures the canvas element is available in the DOM before attempting to draw.
    */
   ngAfterViewInit() {
     setTimeout(() => {
@@ -58,8 +61,12 @@ export class BarcodeComponent implements OnInit, AfterViewInit {
   }
 
   /**
-   * Renders the barcode on a canvas element if the barcode data is available
-   * and the barcode has not already been initialized.
+   * Renders the barcode on the canvas element.
+   * 
+   * Only attempts rendering if:
+   * 1. Valid barcode data exists
+   * 2. The barcode hasn't already been initialized
+   * 3. The canvas element is present in the DOM
    */
   private renderBarcode() {
     if (this.barcodeData && !this.barcodeInitialized) {

@@ -1,7 +1,12 @@
+<!-- Main container for barcode display with consistent styling -->
 <div class="barcode-container">
+  <!-- Conditional display: Shows barcode canvas when data is available -->
   <div *ngIf="barcodeData; else noBarcode" class="barcode-wrapper">
+    <!-- Canvas element where the barcode will be rendered by RebuilderService -->
     <canvas id="barcode"></canvas>
   </div>
+  
+  <!-- Fallback template when no barcode data is available -->
   <ng-template #noBarcode>
     <div class="no-barcode-message">
       <p>No barcode data available</p>
