@@ -1,12 +1,60 @@
 .receipt-detail {
   --background: #eaeaea;
 
+  // Back button container
+  .back-button-container {
+    position: absolute;
+    top: calc(env(safe-area-inset-top) + 5px);
+    left: 5px;
+    z-index: 10;
+  }
+
+  // Back button styling
+  .back-button {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    margin: 0;
+    --padding-start: 8px;
+    --padding-end: 8px;
+    --padding-top: 8px;
+    --padding-bottom: 8px;
+    
+    ion-icon {
+      font-size: 22px;
+      color: #4A4845;
+    }
+  }
+
   .receipt-wrapper {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     padding: 20px;
+    position: relative;
+  }
+
+  .logo-outer-container {
+    width: 80px;
+    height: 80px;
+    position: absolute;
+    z-index: 10;
+    top: 17%; /* Position to overlap with the receipt frame */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Center adjustment */
+  }
+
+  .store-logo {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: contain;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    border: 3px solid white;
   }
 
   .receipt-bg-frame {
@@ -22,6 +70,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-top: 70px; /* Increased to make room for the overlapping logo */
+    margin-top: 20px; /* Add space at the top for the logo overlap */
   }
 
   .receipt-content {
@@ -31,31 +81,20 @@
     width: 100%;
     max-width: 350px;
     margin: 0 auto;
-  }
-
-  .store-logo-container {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 10px;
-  }
-
-  .store-logo {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    object-fit: contain;
-    background: #fff;
-    box-shadow: 0 0 4px rgba(0,0,0,0.1);
+    padding-top: 30px; /* Add padding to move content down below the logo */
   }
 
   .subtext {
     font-size: 12px;
     color: #888;
+    margin-top: 10px;
   }
 
   .store-name {
     font-weight: 600;
+    font-size: 1.2rem;
     margin: 4px 0 10px;
+    color: #333;
   }
 
   .total-label {
@@ -97,6 +136,38 @@
         font-size: 16px;
         margin-top: 4px;
       }
+      
+      .reminder-text {
+        color: #2dd36f;
+        font-size: 14px;
+        margin-bottom: 5px;
+      }
+
+      .reminder-button {
+        margin: 0;
+        --border-radius: 6px;
+        font-size: 0.8rem;
+      }
+    }
+
+    .points-box {
+      .points-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+      }
+
+      .points-icon {
+        color: #f59e0b;
+        font-size: 1rem;
+      }
+
+      .points-value {
+        color: #f59e0b;
+        font-weight: 600;
+        font-size: 1rem;
+      }
     }
   }
 
@@ -106,6 +177,27 @@
 
   .modal-content {
     padding: 20px;
+  }
+
+  .action-buttons {
+    width: 100%;
+    max-width: 320px; /* Reduced from 430px */
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row; /* Changed to row for side-by-side buttons */
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .action-button {
+    margin: 0;
+    --border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.9rem; /* Smaller font size */
+    height: 40px; /* Control button height */
+    opacity: 0.85; /* Slightly transparent to be less eye-catching */
+    flex: 1; /* Make buttons equal width */
+    max-width: 150px; /* Limit maximum width */
   }
 
   // iOS-specific fix for potential rendering issues

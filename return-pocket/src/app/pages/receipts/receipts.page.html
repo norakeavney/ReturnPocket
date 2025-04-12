@@ -1,10 +1,15 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Receipts</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
+<ion-content class="ion-padding">
+  <!-- Safe area spacing for device notches -->
+  <div class="safe-area-top"></div>
+  
+  <!-- Back button -->
+  <div class="back-button-container">
+    <ion-button fill="clear" class="back-button" (click)="goBack()">
+      <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+    </ion-button>
+  </div>
+  
+  <!-- Added top margin to create space after the back button -->
   <div class="filter-container">
     <div class="sort-buttons">
       <div class="button-group-label">Sort by:</div>

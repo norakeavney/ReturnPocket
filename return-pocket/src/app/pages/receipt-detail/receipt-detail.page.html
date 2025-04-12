@@ -1,16 +1,23 @@
 <ion-content class="receipt-detail" [fullscreen]="true">
+  <!-- Back button -->
+  <div class="back-button-container">
+    <ion-button fill="clear" class="back-button" (click)="goBack()">
+      <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+    </ion-button>
+  </div>
+
   <div class="receipt-wrapper" *ngIf="receipt; else loading" [@slideIn]>
+    <!-- Store Logo positioned to poke out from receipt -->
+    <div class="logo-outer-container">
+      <img [src]="storeLogoPath"
+           (error)="onLogoError()"
+           class="store-logo"
+           [alt]="receipt.store_name + ' logo'" />
+    </div>
+    
     <!-- 🧾 SVG as CSS Background Container -->
     <div class="receipt-bg-frame">
       <div class="receipt-content">
-        <!-- Store Logo -->
-        <div class="store-logo-container">
-          <img [src]="storeLogoPath"
-               (error)="onLogoError()"
-               class="store-logo"
-               [alt]="receipt.store_name + ' logo'" />
-        </div>
-
         <h3 class="subtext">Return Receipt</h3>
         <p class="store-name">{{ receipt.store_name }}</p>
 
@@ -18,16 +25,19 @@
         <div class="total-amount">€{{ receipt.total_amount }}</div>
 
         <div class="details-row">
-          <div class="info-box">
+          <div class="info-box points-box">
             <label>Points</label>
-            <div>{{ receipt.points }}</div>
+            <div class="points-container">
+              <span class="points-icon">⭐</span>
+              <span class="points-value">{{ receipt.points }}</span>
+            </div>
           </div>
           <div class="info-box">
             <label>Reminder</label>
-            <div *ngIf="reminderSet">Reminder is set</div>
-            <ion-button size="small" fill="clear" (click)="reminderModalOpen = true">
+            <div *ngIf="reminderSet" class="reminder-text">Set ✓</div>
+            <ion-button size="small" fill="outline" color="primary" (click)="reminderModalOpen = true" class="reminder-button">
               <ion-icon slot="start" name="alarm-outline"></ion-icon>
-              {{ reminderSet ? 'Change' : 'Set' }}
+              {{ reminderSet ? 'Change' : 'Set Reminder' }}
             </ion-button>
           </div>          
         </div>
@@ -36,6 +46,18 @@
           <app-barcode [receiptId]="+currentId"></app-barcode>
         </div>
       </div>
+    </div>
+    
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <ion-button size="small" expand="block" color="success" (click)="confirmMarkAsUsed()" class="action-button">
+        <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
+        Mark Used
+      </ion-button>
+      <ion-button size="small" expand="block" color="medium" (click)="confirmDelete()" class="action-button">
+        <ion-icon slot="start" name="trash-outline"></ion-icon>
+        Delete
+      </ion-button>
     </div>
   </div>
 
@@ -55,6 +77,45 @@
     [receipt]="receipt"
     (reminderSet)="onReminderSet()">
   </app-reminder-picker>
+  </ion-modal>
   
+  <!-- Delete Confirmation Modal -->
+  <ion-modal [isOpen]="deleteModalOpen" (didDismiss)="deleteModalOpen = false">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Confirm Delete</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="deleteModalOpen = false">Cancel</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <p>Are you sure you want to delete this receipt?</p>
+        <ion-button expand="block" color="danger" (click)="deleteReceipt()">
+          Delete
+        </ion-button>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+  
+  <!-- Mark as Used Confirmation Modal -->
+  <ion-modal [isOpen]="markAsUsedModalOpen" (didDismiss)="markAsUsedModalOpen = false">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Confirm Mark as Used</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="markAsUsedModalOpen = false">Cancel</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <p>Are you sure you want to mark this receipt as used? The barcode will no longer be valid.</p>
+        <ion-button expand="block" color="success" (click)="markAsUsed()">
+          Confirm
+        </ion-button>
+      </ion-content>
+    </ng-template>
   </ion-modal>
 </ion-content>

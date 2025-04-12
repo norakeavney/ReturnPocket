@@ -9,6 +9,35 @@ ion-content {
     padding-bottom: calc(env(safe-area-inset-bottom) + 20px); /* Add safe area padding for iOS */
 }
 
+.back-button-container {
+    position: absolute;
+    top: calc(env(safe-area-inset-top) + 5px);
+    left: 5px;
+    z-index: 10;
+}
+
+.back-button {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    margin: 0;
+    --padding-start: 8px;
+    --padding-end: 8px;
+    --padding-top: 8px;
+    --padding-bottom: 8px;
+    
+    ion-icon {
+      font-size: 22px;
+      color: #4A4845;
+    }
+}
+
+.safe-area-top {
+    height: env(safe-area-inset-top);
+    min-height: 15px;
+}
+
 .receipt-list {
     display: flex;
     flex-direction: column;
@@ -30,6 +59,7 @@ ion-content {
     background: rgba(255, 255, 255, 0.7);
     border-radius: 12px;
     margin: 16px;
+    margin-top: 60px; /* Keep the top margin to avoid overlap with back button */
 }
 
 .button-group-label {
@@ -73,10 +103,13 @@ ion-button {
 .total-amount {
     font-size: 1.5em; /* Larger font for better visibility */
     font-weight: bold;
-    color: #333;
+    color: #333; /* Keep dark text color for contrast */
     margin-top: 16px;
     padding: 8px;
-    background: rgba(255, 255, 255, 0.9); /* Subtle background for contrast */
+    background: rgba(255, 255, 255, 0.9); /* Light background for contrast */
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: inline-block; /* Ensure the background wraps the text */
+    min-width: 80px; /* Ensure minimum width for visibility */
+    border: 1px solid rgba(0,0,0,0.1); /* Add subtle border for better visibility */
 }

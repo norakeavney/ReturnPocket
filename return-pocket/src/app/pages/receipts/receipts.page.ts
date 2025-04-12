@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NavController } from '@ionic/angular';
 import { SqliteService } from 'src/app/services/sqlite.service';
 import { Router } from '@angular/router';
 
@@ -17,7 +18,7 @@ export class ReceiptsPage {
   filterStore: string = '';
   uniqueStores: string[] = [];
 
-  constructor(private sqliteService: SqliteService, private router: Router) {
+  constructor(private sqliteService: SqliteService, private router: Router, private navCtrl: NavController) {
     this.uniqueStores = [...new Set(this.receipts.map(r => r.store_name))];
     this.applyFilters();
   }
@@ -76,7 +77,8 @@ export class ReceiptsPage {
     this.filterStore = store;
     this.applyFilters();
   }
+
+  goBack() {
+    this.navCtrl.navigateBack('/');
+  }
 }
-
-
-

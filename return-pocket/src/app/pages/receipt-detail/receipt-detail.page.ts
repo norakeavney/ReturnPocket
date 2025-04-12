@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SqliteService, Receipt } from 'src/app/services/sqlite.service';
+import { ToastController } from '@ionic/angular';
 import {
   trigger, transition, style, animate
 } from '@angular/animations';
@@ -21,7 +22,6 @@ import {
       ])
     ])
   ]
-  
 })
 export class ReceiptDetailPage implements OnInit {
   currentId: string = '';
@@ -29,14 +29,25 @@ export class ReceiptDetailPage implements OnInit {
   reminderDate: string = '';
   reminderModalOpen: boolean = false;
   reminderSet: boolean = false;
+  deleteModalOpen: boolean = false;
+  markAsUsedModalOpen: boolean = false;
   error: string | null = null;
   storeLogoPath: string = 'assets/resources/other.png'; 
   minDateTime = new Date().toISOString();
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private sqliteService: SqliteService,
+    private toastController: ToastController
   ) {}
+
+  /**
+   * Navigates back to the receipts page
+   */
+  goBack() {
+    this.router.navigate(['/receipts']);
+  }
 
   /**
    * Initializes the component by fetching the receipt data based on the current route ID.
@@ -90,5 +101,80 @@ export class ReceiptDetailPage implements OnInit {
     }
   }
 
- 
+  /**
+   * Opens the mark as used confirmation modal
+   */
+  confirmMarkAsUsed() {
+    this.markAsUsedModalOpen = true;
+  }
+
+  /**
+   * Marks the receipt as used by updating the barcode data
+   */
+  async markAsUsed() {
+    if (this.receipt) {
+      try {
+        // Update the barcode data to indicate it's been used
+        await this.sqliteService.updateBarcodeData(+this.currentId, "ALREADY USED");
+        this.markAsUsedModalOpen = false;
+        
+        const toast = await this.toastController.create({
+          message: 'Receipt marked as used',
+          duration: 2000,
+          color: 'success',
+          position: 'bottom'
+        });
+        await toast.present();
+        
+        // Navigate back to home/receipts page
+        this.router.navigate(['/home']);
+      } catch (err) {
+        console.error('Error marking receipt as used:', err);
+        this.showErrorToast('Failed to update receipt');
+      }
+    }
+  }
+
+  /**
+   * Opens the delete confirmation modal
+   */
+  confirmDelete() {
+    this.deleteModalOpen = true;
+  }
+
+  /**
+   * Deletes the current receipt
+   */
+  async deleteReceipt() {
+    if (this.receipt) {
+      try {
+        await this.sqliteService.deleteReceipt(+this.currentId);
+        this.deleteModalOpen = false;
+        const toast = await this.toastController.create({
+          message: 'Receipt deleted successfully',
+          duration: 2000,
+          color: 'success',
+          position: 'bottom'
+        });
+        await toast.present();
+        this.router.navigate(['/home']);
+      } catch (err) {
+        console.error('Error deleting receipt:', err);
+        this.showErrorToast('Failed to delete receipt');
+      }
+    }
+  }
+
+  /**
+   * Shows an error toast message
+   */
+  private async showErrorToast(message: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000,
+      color: 'danger',
+      position: 'bottom'
+    });
+    await toast.present();
+  }
 }
