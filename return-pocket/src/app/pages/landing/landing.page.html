@@ -1,14 +1,19 @@
 <ion-content [fullscreen]="true" [scrollY]="false">
+  <!-- Application header with branding and tagline -->
   <app-header [mainText]="''" [subText]="'Simple Scanning, Smart Saving'" [imgSrc]="'assets/icon/icon.svg'"></app-header>
   
+  <!-- Main navigation container with action buttons -->
   <div class="nav-container">
     <div class="actions-grid">
+      <!-- Primary action: Receipt scanning button (spans full width) -->
       <div class="button-wrapper">
         <button class="action-button scan-action" (click)="takePicture()">
           <ion-icon name="scan-outline"></ion-icon>
           <span>Scan Receipt</span>
         </button>
       </div>
+      
+      <!-- Secondary action: View receipts history -->
       <div class="button-wrapper">
         <button class="action-button view-action" routerLink="/receipts">
           <ion-icon name="albums-outline"></ion-icon>
@@ -16,6 +21,7 @@
         </button>
       </div>
       
+      <!-- Secondary action: Analytics and statistics -->
       <div class="button-wrapper">
         <button class="action-button stats-action" routerLink="/stats">
           <ion-icon name="bar-chart-outline"></ion-icon>
@@ -25,9 +31,10 @@
     </div>
   </div>
   
+  <!-- Information modal shown before scanning to provide instructions -->
   <app-info-modal *ngIf="showInfoModal" (close)="handleModalClose()"></app-info-modal>
   
-  <!-- Loading overlay -->
+  <!-- Loading overlay with spinner and message shown during receipt processing -->
   <div class="loading-overlay" *ngIf="isLoading">
     <div class="loading-content">
       <ion-spinner name="crescent" color="primary"></ion-spinner>

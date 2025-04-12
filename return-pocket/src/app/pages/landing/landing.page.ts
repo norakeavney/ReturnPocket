@@ -4,6 +4,10 @@ import { Geolocation } from '@capacitor/geolocation';
 import { LocalNotifications } from '@capacitor/local-notifications';
 import { ReceiptscanserviceService } from 'src/app/services/receiptscanservice.service';
 
+/**
+ * Landing page component that serves as the main entry point of the application.
+ * Provides functionality for receipt scanning and navigation to other main features.
+ */
 @Component({
   standalone: false,
   selector: 'app-landing',
@@ -14,22 +18,32 @@ export class LandingPage implements OnInit, OnDestroy {
 
   constructor(private receiptScan: ReceiptscanserviceService) { }
 
+  /** Stores the path to the captured receipt image */
   imagePath: string | null = null;
+  
+  /** Controls the visibility of the pre-scan information modal */
   showInfoModal: boolean = false;
+  
+  /** Indicates whether a receipt scanning operation is in progress */
   isLoading: boolean = false;
+  
+  /** Message displayed to the user during loading operations */
   loadingMessage: string = 'Working our magic!';
+  
+  /** Reference to the loading timeout for cleanup purposes */
   private loadingTimeout: number | null = null;
   
   /**
-   * Displays the info modal before initiating the picture-taking process.
+   * Initiates the receipt capture flow by displaying the information modal.
+   * The actual picture taking will happen after the modal is closed.
    */
   async takePicture() {
-    // Show the info modal first before taking a picture
     this.showInfoModal = true;
   }
 
   /**
-   * Clears any active loading timeout to prevent memory leaks or unintended behavior.
+   * Utility method to clean up any active loading timeout.
+   * Prevents memory leaks and ensures proper state management.
    */
   private clearLoadingTimeout() {
     if (this.loadingTimeout !== null) {
@@ -39,15 +53,13 @@ export class LandingPage implements OnInit, OnDestroy {
   }
 
   /**
-   * Handles the closing of the info modal and proceeds with taking a picture.
-   * Initiates receipt scanning and manages the loading state.
+   * Processes modal closing event and initiates the receipt capture workflow.
+   * Controls the camera operation, receipt scanning process, and loading state management.
    */
   async handleModalClose() {
-    // Hide the modal
     this.showInfoModal = false;
     
     try {
-      // Now proceed with taking the picture
       const image = await Camera.getPhoto({
         quality: 90,
         allowEditing: false,
@@ -59,26 +71,22 @@ export class LandingPage implements OnInit, OnDestroy {
         this.imagePath = image.webPath;
         
         try {
-          // Start processing the receipt - let the scanAndSaveReceipt method notify us when to show loading
           await this.receiptScan.scanAndSaveReceipt(
             this.imagePath, 
             () => {
-              // This callback is called after barcode is scanned to start showing loading state
               this.isLoading = true;
               
-              // Ensure loading shows for at least 2 seconds for better UX
               this.clearLoadingTimeout();
               this.loadingTimeout = window.setTimeout(() => {
-                this.loadingTimeout = null; // Clear reference when done
+                this.loadingTimeout = null;
               }, 2000);
             }
           ).finally(() => {
-            // Wait a little if needed to ensure loading shows for minimum time
             if (this.loadingTimeout !== null) {
               setTimeout(() => {
                 this.isLoading = false;
                 this.clearLoadingTimeout();
-              }, 500); // Small buffer to ensure minimum display time
+              }, 500);
             } else {
               this.isLoading = false;
             }
@@ -98,26 +106,23 @@ export class LandingPage implements OnInit, OnDestroy {
   }
 
   /**
-   * Lifecycle hook that runs when the component is initialized.
-   * Requests necessary permissions for Camera, Geolocation, and Local Notifications.
+   * Initializes the component and requests necessary device permissions.
+   * Requests access to camera, location services, and notification capabilities.
    */
   async ngOnInit() {
-    // When the app boots up for the first time, get permissions
     await Camera.requestPermissions();
     await Geolocation.requestPermissions();
     await LocalNotifications.requestPermissions();
   }
   
   /**
-   * Lifecycle hook that runs when the component is destroyed.
-   * Ensures cleanup of timeouts and resets the loading state.
+   * Performs cleanup when the component is being destroyed.
+   * Ensures all timeouts are cleared and the loading state is reset.
    */
   ngOnDestroy() {
     this.clearLoadingTimeout();
     this.isLoading = false;
   }
-
-  
 }
 
 
