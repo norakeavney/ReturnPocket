@@ -5,25 +5,14 @@ import { SQLiteConnection, CapacitorSQLite, SQLiteDBConnection } from '@capacito
  * Interface representing a receipt.
  */
 export interface Receipt {
-<<<<<<< HEAD
+  points: any;
   id?: number; // Unique identifier for the receipt
   store_name: string; // Name of the store
   location: string; // Location of the store
-  bottle_count: number; // Number of bottles in the receipt
   total_amount: number; // Total amount for the receipt
   img_path?: string; // Optional image path for the receipt
   barcode_data?: string; // Optional barcode data associated with the receipt
   timestamp?: string; // Timestamp when the receipt was created
-=======
-  id?: number;
-  store_name: string;
-  location: string;
-  points: number;
-  total_amount: number;
-  barcode_data?: string;
-  timestamp?: string;
-  synced?: number;
->>>>>>> 878492917475ff0fbd33f2ff299c9b3b21f331a9
 }
 
 @Injectable({

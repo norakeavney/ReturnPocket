@@ -6,9 +6,10 @@ ion-content {
     flex-direction: column;
     min-height: 100vh;
     padding: 20px;
-  }
-  
-  .receipt-list {
+    padding-bottom: calc(env(safe-area-inset-bottom) + 20px); /* Add safe area padding for iOS */
+}
+
+.receipt-list {
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -16,54 +17,66 @@ ion-content {
     max-width: 600px;
     padding: 16px;
     margin: 0 auto;
-  }
-  
-  .receipt-container {
+}
+
+.receipt-container {
     width: 100%;
     min-height: auto;
-  }
+    text-align: center; /* Ensure total amount is centered */
+}
 
-  .filter-container {
+.filter-container {
     padding: 16px;
     background: rgba(255, 255, 255, 0.7);
     border-radius: 12px;
     margin: 16px;
-  }
-  
-  .button-group-label {
+}
+
+.button-group-label {
     font-size: 0.9em;
     color: #666;
     margin-bottom: 8px;
-  }
-  
-  .button-group {
+}
+
+.button-group {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
     margin-bottom: 16px;
-  }
-  
-  .store-buttons {
+}
+
+.store-buttons {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
     margin-bottom: 8px;
-  }
-  
-  ion-button {
+}
+
+ion-button {
     --background: #ffffff;
     --color: #333333;
     --border-radius: 20px;
     --box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     --padding-start: 12px;
     --padding-end: 12px;
-  
+
     &.active {
       --background: #ff9ecd;
       --color: #ffffff;
     }
-  }
-  
-  .sort-buttons, .store-filters {
+}
+
+.sort-buttons, .store-filters {
     margin-bottom: 16px;
-  }
+}
+
+.total-amount {
+    font-size: 1.5em; /* Larger font for better visibility */
+    font-weight: bold;
+    color: #333;
+    margin-top: 16px;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.9); /* Subtle background for contrast */
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}

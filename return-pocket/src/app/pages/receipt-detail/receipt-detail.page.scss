@@ -69,6 +69,8 @@
     font-size: 32px;
     font-weight: bold;
     margin: 6px 0 20px;
+    color: #000; // Ensure text is visible
+    text-align: center; // Center align to avoid layout issues
   }
 
   .details-row {
@@ -76,12 +78,14 @@
     gap: 12px;
     justify-content: space-between;
     margin-bottom: 20px;
+    flex-wrap: wrap; // Prevent overlapping by wrapping content
 
     .info-box {
       flex: 1;
       background: #f7f7f7;
       border-radius: 12px;
       padding: 10px;
+      min-width: 120px; // Ensure minimum width for proper layout
 
       label {
         font-size: 12px;
@@ -102,5 +106,20 @@
 
   .modal-content {
     padding: 20px;
+  }
+
+  // iOS-specific fix for potential rendering issues
+  @media screen and (min-device-width: 375px) and (max-device-width: 812px) and (-webkit-min-device-pixel-ratio: 2) {
+    .receipt-bg-frame {
+      padding: 70px 40px; // Adjust padding for iOS
+    }
+
+    .total-amount {
+      font-size: 30px; // Slightly reduce font size for better fit
+    }
+
+    .details-row {
+      gap: 8px; // Reduce gap to fit smaller screens
+    }
   }
 }

@@ -37,18 +37,6 @@ interface Achievement {
   imports: [CommonModule, FormsModule, IonicModule]
 })
 export class StatsPage implements OnInit {
-<<<<<<< HEAD
-  /** The name of the user. */
-  userName = 'John Doe';
-
-  /** The user's current level or title. */
-  userLevel = 'Recycling Champion';
-
-  /** The path to the user's profile image. */
-  userProfileImage = 'assets/avatar-placeholder.png';
-
-  /** The total number of bottles returned by the user. */
-=======
   userName = '';
   userLevel = '';
   userLevelNumber = 1;
@@ -57,7 +45,6 @@ export class StatsPage implements OnInit {
   userLevelProgress = 0; // 0 to 1 value representing progress to next level
   isLoggedIn = false;
   isAuthChecked = false;
->>>>>>> 878492917475ff0fbd33f2ff299c9b3b21f331a9
   totalBottles = 0;
 
   /** The total amount of money saved by the user through recycling. */
@@ -121,27 +108,6 @@ export class StatsPage implements OnInit {
     private supabaseService: SupabaseService
   ) { }
 
-<<<<<<< HEAD
-  /**
-   * Lifecycle hook that is called after the component is initialized.
-   * Loads the user's stats.
-   */
-  ngOnInit() {
-    this.loadStats();
-  }
-
-  /**
-   * Lifecycle hook that is called when the page is about to enter and become active.
-   * Reloads the user's stats.
-   */
-  ionViewWillEnter() {
-    this.loadStats();
-  }
-
-  /**
-   * Loads the user's stats from the SQLite database and updates the UI.
-   */
-=======
   async ngOnInit() {
     await this.checkAuthStatus();
     this.loadStats();
@@ -251,7 +217,6 @@ export class StatsPage implements OnInit {
     }
   }
 
->>>>>>> 878492917475ff0fbd33f2ff299c9b3b21f331a9
   loadStats() {
     const receipts = this.sqliteService.getReceipts();
     
@@ -405,11 +370,6 @@ export class StatsPage implements OnInit {
     this.achievements[1].achieved = false;
   }
 
-<<<<<<< HEAD
-  /**
-   * Navigates back to the previous page.
-   */
-=======
   goToLeaderboards() {
     this.navCtrl.navigateForward('/leaderboards');
   }
@@ -418,7 +378,6 @@ export class StatsPage implements OnInit {
     this.navCtrl.navigateForward('/auth');
   }
 
->>>>>>> 878492917475ff0fbd33f2ff299c9b3b21f331a9
   goBack() {
     this.navCtrl.navigateBack('/');
   }
