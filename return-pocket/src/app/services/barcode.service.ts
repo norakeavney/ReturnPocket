@@ -8,7 +8,8 @@ import {
 } from '@capacitor/barcode-scanner';
 
 /**
- * Service for handling barcode scanning functionality using Capacitor Barcode Scanner plugin.
+ * Service that provides barcode scanning functionality using
+ * the Capacitor Barcode Scanner plugin.
  */
 @Injectable({
   providedIn: 'root'
@@ -17,10 +18,11 @@ export class BarcodeService {
   constructor() {}
 
   /**
-   * Initiates a barcode scanning process and returns the scanned barcode data.
+   * Launches the device camera interface to scan a barcode.
+   * Configures the scanner with appropriate settings for receipt barcodes
+   * and handles the scanning process.
    * 
-   * @returns A promise that resolves to the scanned barcode data as a string, or `null` if scanning fails.
-   * @throws Logs an error to the console if the scanning process encounters an issue.
+   * @returns Promise resolving to the scanned barcode data string or null if scanning fails/cancels
    */
   async scanBarcode(): Promise<string | null> {
     try {
@@ -39,6 +41,7 @@ export class BarcodeService {
       return result.ScanResult || null; // Returns the barcode data
     } catch (error) {
       console.error("❌ Barcode Scan Error:", error);
+      console.error("Ensure the device camera is accessible and permissions are granted.");
       return null;
     }
   }

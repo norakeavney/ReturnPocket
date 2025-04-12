@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import * as JsBarcode from 'jsbarcode';
 
 /**
- * Service responsible for generating barcodes using the JsBarcode library.
+ * Service responsible for generating visual barcode representations
+ * from stored barcode data.
  */
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,9 @@ export class RebuilderService {
   constructor() { }
 
   /**
-   * Generates a barcode and renders it on the provided HTML canvas element.
+   * Generates and renders a visual barcode on a canvas element.
+   * Uses CODE128 format with customized display settings for optimal
+   * scanning by retail barcode readers.
    * 
    * @param barcodeString - The string data to encode in the barcode.
    * @param HTMLElement - The HTMLCanvasElement where the barcode will be rendered.

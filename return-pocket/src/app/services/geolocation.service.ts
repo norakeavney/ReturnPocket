@@ -4,8 +4,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 
 /**
- * Service to handle geolocation-related functionality, including retrieving
- * the user's current coordinates and resolving location details using reverse geocoding.
+ * Service that handles device location functionality and address resolution.
+ * Uses Capacitor Geolocation plugin and OpenStreetMap's Nominatim API.
  */
 @Injectable({
   providedIn: 'root'
@@ -15,9 +15,9 @@ export class GeolocationService {
   constructor(private http: HttpClient) { }
 
   /**
-   * Retrieves the current geographic coordinates (latitude and longitude) of the user.
+   * Retrieves the device's current geographic coordinates.
    * 
-   * @returns A promise that resolves to an object containing latitude and longitude.
+   * @returns Promise resolving to latitude and longitude coordinates
    */
   async getCurrentCoords(): Promise<{ latitude: number, longitude: number }> {
     const position = await Geolocation.getCurrentPosition({ enableHighAccuracy: true });
@@ -28,11 +28,12 @@ export class GeolocationService {
   }
 
   /**
-   * Performs reverse geocoding to resolve a human-readable address from geographic coordinates.
+   * Converts geographic coordinates to a human-readable address
+   * using OpenStreetMap's Nominatim reverse geocoding service.
    * 
-   * @param latitude - The latitude of the location.
-   * @param longitude - The longitude of the location.
-   * @returns A promise that resolves to a string representing the address, or "Unknown" if not found.
+   * @param latitude - Geographic latitude coordinate
+   * @param longitude - Geographic longitude coordinate
+   * @returns Promise resolving to a formatted address string or "Unknown"
    */
   async reverseGeocode(latitude: number, longitude: number): Promise<string> {
     const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`;
@@ -65,14 +66,13 @@ export class GeolocationService {
   }
 
   /**
-   * Resolves the user's current location to a human-readable address.
-   * Combines `getCurrentCoords` and `reverseGeocode` methods.
+   * Convenience method that retrieves current location coordinates
+   * and resolves them to a human-readable address in one operation.
    * 
-   * @returns A promise that resolves to a string representing the address, or "Unknown" if not found.
+   * @returns Promise resolving to a formatted address string or "Unknown"
    */
   async resolveLocation(): Promise<string> {
     const coords = await this.getCurrentCoords();
     return this.reverseGeocode(coords.latitude, coords.longitude);
   }
-  
 }

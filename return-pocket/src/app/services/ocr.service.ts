@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { createWorker } from 'tesseract.js';
 
 /**
- * Enum representing the names of supported stores.
+ * Enum defining supported retail store names for recognition in receipts.
  */
 enum StoreNames {
   Tesco = 'Tesco',
@@ -14,26 +14,29 @@ enum StoreNames {
   Spar = 'Spar',
 }
 
+/**
+ * Service that handles Optical Character Recognition (OCR) operations.
+ * Processes receipt images to extract store names and monetary amounts.
+ */
 @Injectable({
   providedIn: 'root'
 })
-/**
- * Service for performing OCR (Optical Character Recognition) on images
- * and extracting relevant data such as store names and amounts.
- */
 export class OcrService {
 
   /**
-   * Promise for initializing the Tesseract.js worker.
+   * Lazily initialized Tesseract.js worker for text recognition.
+   * Uses English language training data.
    */
   private workerPromise = createWorker('eng');
 
   constructor() { }
 
   /**
-   * Processes an image by converting it to greyscale and binarizing it.
-   * @param imagePath - The path or URL of the image to process.
-   * @returns A promise that resolves to the processed image as a base64 string.
+   * Processes a receipt image to optimize it for OCR text extraction.
+   * Applies grayscale conversion and binarization to enhance text contrast.
+   * 
+   * @param imagePath - The path or data URL of the image to process
+   * @returns Promise resolving to the processed image as a base64 data URL
    */
   processImage(imagePath: string): Promise<string> {
     
@@ -80,9 +83,11 @@ export class OcrService {
   }
 
   /**
-   * Runs OCR on a processed image and extracts the store name and amount.
-   * @param processedImage - The base64 string of the processed image.
-   * @returns A promise that resolves to an object containing the store name and amount.
+   * Executes the OCR process on a processed image to extract text,
+   * then identifies store name and monetary amounts.
+   * 
+   * @param processedImage - Base64 encoded processed image data
+   * @returns Promise resolving to an object with store name and highest amount found
    */
   async runOCR(processedImage: string): Promise<{ store: string | null; amount: number | null; }> {
 
@@ -95,9 +100,11 @@ export class OcrService {
   }
 
   /**
-   * Extracts the store name and the highest amount from the OCR text.
-   * @param text - The text extracted from the image using OCR.
-   * @returns An object containing the store name and the highest amount found.
+   * Analyzes OCR text to extract retail store name and monetary amounts.
+   * Matches known store names and identifies currency values using regex patterns.
+   * 
+   * @param text - Raw text extracted from the image by OCR
+   * @returns Object containing the identified store name and highest monetary amount
    */
   extractData(text: string):  {store: string | null; amount: number | null; } {
 

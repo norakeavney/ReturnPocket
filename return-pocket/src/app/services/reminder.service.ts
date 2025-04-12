@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { LocalNotifications } from '@capacitor/local-notifications';
 
 /**
- * Service to handle scheduling reminders using local notifications.
+ * Service that manages scheduling and handling of local push notifications
+ * for receipt return reminders.
  */
 @Injectable({
   providedIn: 'root'
@@ -14,10 +15,12 @@ export class ReminderService {
   }
 
   /**
-   * Schedules a reminder notification.
+   * Schedules a reminder notification to be displayed after a specified delay.
    * 
-   * @param message - The message to display in the notification.
-   * @param delayInMins - The delay in minutes after which the notification should be shown.
+   * @param message - The body text to display in the notification
+   * @param delayInMins - The number of minutes to wait before showing the notification
+   * @returns Promise resolving to the notification ID that can be used to cancel if needed
+   * @throws Error if the notification scheduling fails
    */
   async scheduleReminder(message: string, delayInMins: number) {
     try {

@@ -2,36 +2,39 @@ import { Injectable } from '@angular/core';
 import { SQLiteConnection, CapacitorSQLite, SQLiteDBConnection } from '@capacitor-community/sqlite';
 
 /**
- * Interface representing a receipt.
+ * Interface representing a receipt stored in the local database.
  */
 export interface Receipt {
-  points: any;
-  id?: number; // Unique identifier for the receipt
-  store_name: string; // Name of the store
-  location: string; // Location of the store
-  total_amount: number; // Total amount for the receipt
-  img_path?: string; // Optional image path for the receipt
-  barcode_data?: string; // Optional barcode data associated with the receipt
-  timestamp?: string; // Timestamp when the receipt was created
+  id?: number;                // Unique identifier for the receipt
+  store_name: string;         // Name of the store where the receipt was issued
+  location: string;           // Physical location of the store
+  points: any;                // Points earned from this receipt
+  total_amount: number;       // Total monetary amount on the receipt
+  img_path?: string;          // Optional path to stored receipt image
+  barcode_data?: string;      // Optional barcode data associated with the receipt
+  timestamp?: string;         // Timestamp when the receipt was recorded
 }
 
+/**
+ * Service for managing local SQLite database operations related to receipts.
+ * Handles CRUD operations and synchronization tracking for receipt data.
+ */
 @Injectable({
   providedIn: 'root'
 })
-/**
- * Service for managing SQLite database operations related to receipts.
- */
 export class SqliteService {
 
-  private receipts: Receipt[] = []; // Local cache of receipts
+  private receipts: Receipt[] = [];                                      // Local cache of receipts
   private sqlite: SQLiteConnection = new SQLiteConnection(CapacitorSQLite); // SQLite connection instance
-  private db: SQLiteDBConnection | null = null; // SQLite database connection
+  private db: SQLiteDBConnection | null = null;                         // SQLite database connection
 
   constructor() { }
 
   /**
    * Initializes the SQLite database connection and creates the receipts table if it doesn't exist.
-   * @returns A promise that resolves to true when initialization is complete.
+   * Must be called before any other database operations.
+   * 
+   * @returns Promise resolving to true when initialization completes successfully
    */
   async initialise() {
 
@@ -63,6 +66,7 @@ export class SqliteService {
 
   /**
    * Loads all receipts from the database into the local cache.
+   * Called automatically after database operations that modify data.
    */
   async loadReceipts() {
     const receipts = await this.db?.query('SELECT * FROM receipts_table');
@@ -71,8 +75,9 @@ export class SqliteService {
 
   /**
    * Adds a new receipt to the database and updates the local cache.
-   * @param receipt The receipt object to be added.
-   * @throws Error if the operation fails.
+   * 
+   * @param receipt - The receipt object to be added
+   * @throws Error if database operation fails
    */
   async addReceipt(receipt: Receipt) {
     const query = `
@@ -99,8 +104,9 @@ export class SqliteService {
 
   /**
    * Deletes a receipt from the database by its ID and updates the local cache.
-   * @param id The ID of the receipt to delete.
-   * @throws Error if the operation fails.
+   * 
+   * @param id - The ID of the receipt to delete
+   * @throws Error if deletion fails
    */
   async deleteReceipt(id: number) {
     const query = 'DELETE FROM receipts_table WHERE id = ?';
@@ -115,7 +121,8 @@ export class SqliteService {
   
   /**
    * Retrieves all receipts from the local cache.
-   * @returns An array of receipts.
+   * 
+   * @returns Array of receipt objects
    */
   getReceipts() {
     return this.receipts;
@@ -123,8 +130,9 @@ export class SqliteService {
 
   /**
    * Retrieves the barcode data of a receipt by its ID.
-   * @param id The ID of the receipt.
-   * @returns A promise that resolves to the barcode data or null if not found.
+   * 
+   * @param id - The ID of the receipt
+   * @returns Promise resolving to barcode data string or null if not found
    */
   async getBarcodeDataById(id: number): Promise<string | null> {
     const query = 'SELECT barcode_data FROM receipts_table WHERE id = ?';
@@ -135,25 +143,41 @@ export class SqliteService {
   }
 
   /**
-   * Retrieves a receipt by its ID.
-   * @param id The ID of the receipt.
-   * @returns A promise that resolves to the receipt object or null if not found.
+   * Retrieves a complete receipt record by its ID.
+   * 
+   * @param id - The ID of the receipt
+   * @returns Promise resolving to the receipt object or null if not found
    */
   async getReceiptById(id: number): Promise<Receipt | null> {
     const result = await this.db?.query('SELECT * FROM receipts_table WHERE id = ?', [id]);
     return result?.values?.[0] || null;
   }
 
+  /**
+   * Calculates the total points from unsynced receipts.
+   * 
+   * @returns Promise resolving to the sum of points from unsynced receipts
+   */
   async getUnsyncedPointsTotal(): Promise<number> {
     const res = await this.db?.query("SELECT SUM(points) as total FROM receipts_table WHERE synced = 0");
     return res?.values?.[0]?.total || 0;
   }
 
+  /**
+   * Retrieves IDs of all unsynced receipts.
+   * 
+   * @returns Promise resolving to an array of receipt IDs
+   */
   async getUnsyncedReceiptIds(): Promise<number[]> {
     const res = await this.db?.query("SELECT id FROM receipts_table WHERE synced = 0");
     return res?.values?.map(r => r.id) || [];
   }  
 
+  /**
+   * Marks specified receipts as synchronized with the remote database.
+   * 
+   * @param ids - Array of receipt IDs to mark as synced
+   */
   async markDataSynced(ids: number[]): Promise<void> {
     if (!ids.length) return;
 
@@ -162,6 +186,11 @@ export class SqliteService {
     await this.db?.run(query, ids);
   }
 
+  /**
+   * Generates a breakdown of points by store name from unsynced receipts.
+   * 
+   * @returns Promise resolving to an object mapping store names to point totals
+   */
   async getUnsyncedStoreBreakdown(): Promise<Record<string, number>> {
     const res = await this.db?.query(`
       SELECT store_name, SUM(points) as total 
@@ -180,10 +209,11 @@ export class SqliteService {
 
   /**
    * Updates the barcode data for a receipt.
-   * Used to mark receipts as "used" by changing the barcode data.
-   * @param id The ID of the receipt.
-   * @param barcodeData The new barcode data to set.
-   * @throws Error if the operation fails.
+   * Typically used to mark receipts as "used" or to update scanned information.
+   * 
+   * @param id - The ID of the receipt to update
+   * @param barcodeData - The new barcode data to set
+   * @throws Error if the update operation fails
    */
   async updateBarcodeData(id: number, barcodeData: string) {
     const query = 'UPDATE receipts_table SET barcode_data = ? WHERE id = ?';
